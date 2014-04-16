@@ -15,10 +15,12 @@ namespace FLSAM.AccountHelper
 
             var eqList = new uiTables.ShipEquipDataTable();
 
-            foreach (var hp in Universe.Gis.Ships.FindByHash(curCharacter.ShipArch).GetHardpointsRows())
-            {
-                eqList.AddShipEquipRow(hp.Name, hp.EquipType, "",hp.HPType);
-            }
+            var shipHP = Universe.Gis.Ships.FindByHash(curCharacter.ShipArch);
+            if (shipHP != null)
+                foreach (var hp in shipHP.GetHardpointsRows())
+                {
+                    eqList.AddShipEquipRow(hp.Name, hp.EquipType, "",hp.HPType);
+                }
 
 
             foreach (var equip in curCharacter.EquipmentList)

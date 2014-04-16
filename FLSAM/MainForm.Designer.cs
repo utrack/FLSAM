@@ -57,7 +57,6 @@
             this.radioSearchSystem = new System.Windows.Forms.RadioButton();
             this.radioSearchBase = new System.Windows.Forms.RadioButton();
             this.comboSearchLocation = new System.Windows.Forms.ComboBox();
-            this.systemsSearchBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button2 = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
@@ -75,6 +74,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.textLocation = new System.Windows.Forms.TextBox();
             this.button6 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.objectListView1 = new BrightIdeasSoftware.ObjectListView();
@@ -88,8 +88,6 @@
             this.shipsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dateLastOnline = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
-            this.comboBoxSystem = new System.Windows.Forms.ComboBox();
-            this.systemsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.textBoxMoney = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -128,6 +126,7 @@
             this.equipmentListBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.gameInfoSet = new FLSAM.GD.DB.GameInfoSet();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.systemsSearchBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
             this.statusStrip1.SuspendLayout();
@@ -136,7 +135,6 @@
             this.groupBox3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.systemsSearchBindingSource)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.equipmentSearchBindingSource)).BeginInit();
@@ -147,7 +145,6 @@
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.objectListView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.shipsBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.systemsBindingSource)).BeginInit();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.olvRep)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericRep)).BeginInit();
@@ -163,6 +160,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.systemsSearchBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -455,8 +453,7 @@
             // 
             this.comboSearchLocation.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.comboSearchLocation.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboSearchLocation.DataSource = this.systemsSearchBindingSource;
-            this.comboSearchLocation.DisplayMember = "Name";
+            this.comboSearchLocation.DisplayMember = "Nickname";
             this.comboSearchLocation.FormattingEnabled = true;
             this.comboSearchLocation.Location = new System.Drawing.Point(3, 80);
             this.comboSearchLocation.Name = "comboSearchLocation";
@@ -635,6 +632,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.textLocation);
             this.tabPage3.Controls.Add(this.button6);
             this.tabPage3.Controls.Add(this.label7);
             this.tabPage3.Controls.Add(this.objectListView1);
@@ -647,7 +645,6 @@
             this.tabPage3.Controls.Add(this.comboBoxShip);
             this.tabPage3.Controls.Add(this.dateLastOnline);
             this.tabPage3.Controls.Add(this.label4);
-            this.tabPage3.Controls.Add(this.comboBoxSystem);
             this.tabPage3.Controls.Add(this.textBoxMoney);
             this.tabPage3.Controls.Add(this.label3);
             this.tabPage3.Controls.Add(this.label2);
@@ -666,9 +663,16 @@
             this.tabPage3.Text = "Main";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // textLocation
+            // 
+            this.textLocation.Location = new System.Drawing.Point(88, 147);
+            this.textLocation.Name = "textLocation";
+            this.textLocation.Size = new System.Drawing.Size(262, 20);
+            this.textLocation.TabIndex = 25;
+            // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(364, 120);
+            this.button6.Location = new System.Drawing.Point(364, 116);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 20);
             this.button6.TabIndex = 24;
@@ -704,9 +708,10 @@
             // 
             // textCreatedAt
             // 
+            this.textCreatedAt.Enabled = false;
             this.textCreatedAt.Location = new System.Drawing.Point(88, 226);
             this.textCreatedAt.Name = "textCreatedAt";
-            this.textCreatedAt.Size = new System.Drawing.Size(218, 20);
+            this.textCreatedAt.Size = new System.Drawing.Size(262, 20);
             this.textCreatedAt.TabIndex = 20;
             // 
             // buttonLastOReset
@@ -755,7 +760,7 @@
             this.comboBoxShip.FormattingEnabled = true;
             this.comboBoxShip.Location = new System.Drawing.Point(88, 173);
             this.comboBoxShip.Name = "comboBoxShip";
-            this.comboBoxShip.Size = new System.Drawing.Size(218, 21);
+            this.comboBoxShip.Size = new System.Drawing.Size(262, 21);
             this.comboBoxShip.TabIndex = 15;
             this.comboBoxShip.ValueMember = "Hash";
             // 
@@ -763,7 +768,7 @@
             // 
             this.dateLastOnline.Location = new System.Drawing.Point(88, 200);
             this.dateLastOnline.Name = "dateLastOnline";
-            this.dateLastOnline.Size = new System.Drawing.Size(218, 20);
+            this.dateLastOnline.Size = new System.Drawing.Size(262, 20);
             this.dateLastOnline.TabIndex = 14;
             // 
             // label4
@@ -775,32 +780,21 @@
             this.label4.TabIndex = 13;
             this.label4.Text = "Last Online";
             // 
-            // comboBoxSystem
-            // 
-            this.comboBoxSystem.DataSource = this.systemsBindingSource;
-            this.comboBoxSystem.DisplayMember = "Name";
-            this.comboBoxSystem.FormattingEnabled = true;
-            this.comboBoxSystem.Location = new System.Drawing.Point(88, 146);
-            this.comboBoxSystem.Name = "comboBoxSystem";
-            this.comboBoxSystem.Size = new System.Drawing.Size(218, 21);
-            this.comboBoxSystem.TabIndex = 12;
-            this.comboBoxSystem.ValueMember = "Nickname";
-            // 
             // textBoxMoney
             // 
             this.textBoxMoney.Location = new System.Drawing.Point(88, 120);
             this.textBoxMoney.Name = "textBoxMoney";
-            this.textBoxMoney.Size = new System.Drawing.Size(218, 20);
+            this.textBoxMoney.Size = new System.Drawing.Size(262, 20);
             this.textBoxMoney.TabIndex = 9;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(36, 149);
+            this.label3.Location = new System.Drawing.Point(27, 150);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 13);
+            this.label3.Size = new System.Drawing.Size(48, 13);
             this.label3.TabIndex = 8;
-            this.label3.Text = "System";
+            this.label3.Text = "Location";
             // 
             // label2
             // 
@@ -1112,6 +1106,7 @@
             this.olvColumn18.AspectName = "Item1";
             this.olvColumn18.CellPadding = null;
             this.olvColumn18.Text = "Item";
+            this.olvColumn18.Width = 150;
             // 
             // olvColumn17
             // 
@@ -1211,7 +1206,6 @@
             this.flowLayoutPanel4.PerformLayout();
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.systemsSearchBindingSource)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
@@ -1226,7 +1220,6 @@
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.objectListView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.shipsBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.systemsBindingSource)).EndInit();
             this.tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.olvRep)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericRep)).EndInit();
@@ -1243,6 +1236,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.systemsSearchBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1285,9 +1279,7 @@
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.ComboBox comboBoxSystem;
         private System.Windows.Forms.TextBox textBoxMoney;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBoxAdmin;
@@ -1297,7 +1289,6 @@
         private System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.BindingSource systemsBindingSource;
         private BrightIdeasSoftware.OLVColumn olvColumn6;
         private System.Windows.Forms.DateTimePicker dateLastOnline;
         private System.Windows.Forms.Label label4;
@@ -1310,7 +1301,6 @@
         private System.Windows.Forms.RadioButton radioSearchSystem;
         private System.Windows.Forms.RadioButton radioSearchBase;
         private System.Windows.Forms.ComboBox comboSearchLocation;
-        private System.Windows.Forms.BindingSource systemsSearchBindingSource;
         private System.Windows.Forms.ComboBox comboBoxShip;
         private System.Windows.Forms.BindingSource shipsBindingSource;
         private System.Windows.Forms.Label label5;
@@ -1349,6 +1339,9 @@
         private BrightIdeasSoftware.OLVColumn olvColumn16;
         private System.Windows.Forms.Label labelHoldSize;
         private System.Windows.Forms.Label labelHoldCurrent;
+        private System.Windows.Forms.TextBox textLocation;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.BindingSource systemsSearchBindingSource;
     }
 }
 

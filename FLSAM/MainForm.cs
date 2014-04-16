@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using FLAccountDB;
@@ -19,9 +20,8 @@ namespace FLSAM
         {
             InitializeComponent();
 
-            Universe.Parse(@"g:\Games\freelancer\fl-Disc487\dev");
+            //Universe.Parse(@"g:\Games\freelancer\fl-Disc487\dev");
             equipmentSearchBindingSource.DataSource = Universe.Gis.Equipment;
-            systemsBindingSource.DataSource = Universe.Gis.Systems;
             systemsSearchBindingSource.DataSource = Universe.Gis.Systems;
             shipsBindingSource.DataSource = Universe.Gis.Ships;
             equipmentListBindingSource.DataSource = Universe.Gis.Equipment;
@@ -57,7 +57,8 @@ namespace FLSAM
                 value =>
                 {
                     if ((string) value == "") return "";
-                    return Universe.Gis.Bases.FindByNickname((string) value).Name;
+                    var val = Universe.Gis.Bases.FindByNickname((string) value);
+                    return val != null ? val.Name : value.ToString();
                 };
 
             olvRep.GetColumn("Faction").AspectToStringConverter =
@@ -85,7 +86,9 @@ namespace FLSAM
                 {
                     if (value == null) return "";
                     //TODO: dropped once?
-                    return Universe.Gis.Ships.FindByHash((uint)value).Name;
+                    var val = Universe.Gis.Ships.FindByHash((uint) value);
+                    return val != null ? val.Name : value.ToString();
+                    //return val.Name ?? ;
                 };
 
             DBiFace.DBPercentChanged += DBiFace_DBPercentChanged;
@@ -290,8 +293,34 @@ namespace FLSAM
             _curCharacter = md.GetCharacter(Properties.Settings.Default.FLDBPath);
             textBoxName.Text = _curCharacter.Name;
             textBoxMoney.Text = _curCharacter.Money.ToString(CultureInfo.InvariantCulture);
-            comboBoxSystem.SelectedValue = _curCharacter.System.ToLowerInvariant();
+            //comboBoxSystem.SelectedValue = _curCharacter.System.ToLowerInvariant();
             comboBoxShip.SelectedValue = _curCharacter.ShipArch;
+
+
+            var sysRow = Universe.Gis.Systems.FindByNickname(_curCharacter.System);
+            var sysName = sysRow != null ? sysRow.Name : _curCharacter.System;
+
+
+            if (_curCharacter.Base != null)
+            {
+                var baseRow = Universe.Gis.Bases.FindByNickname(_curCharacter.Base);
+                var baseName = baseRow != null ? baseRow.Name : _curCharacter.Base;
+                textLocation.Text = String.Format("{0} ({1}), docked at {2}",
+                    sysName,
+                    _curCharacter.System,
+                    baseName
+                    );
+            }
+            else
+            {
+                textLocation.Text = String.Format("{0} ({1}), in space",
+                    sysName,
+                    _curCharacter.System
+                    );
+            }
+
+
+
 
             var ship = Universe.Gis.Ships.FindByHash(_curCharacter.ShipArch);
             
@@ -309,27 +338,22 @@ namespace FLSAM
             dlvEquipment.DataSource = eqList;
             if (DBiFace.IsHookAvailable())
                 checkIsOnline.Checked = DBiFace.HookTransport.IsOnServer(_curCharacter.Name);
+
+            textCreatedAt.Text = _curCharacter.Created.ToLongDateString();
         }
 
         private void RefreshCargoSpace()
         {
-            float curHold = 0;
-            foreach (var hold in _curCharacter.Cargo)
-            {
-                var item = Universe.Gis.Equipment.FindByHash(hold.Item1);
-                if (item == null)
-                    continue;
-                curHold += item.Volume * hold.Item2;
-            }
+            var curHold = (from hold in _curCharacter.Cargo 
+                           let item = Universe.Gis.Equipment.FindByHash(hold.Item1) 
+                           where item != null 
+                           select item.Volume*hold.Item2).Sum() 
+                           + _curCharacter.EquipmentList.Select(
+                           hold => Universe.Gis.Equipment.FindByHash(hold.Item1)
+                           )
+                           .Where(item => item != null)
+                           .Sum(item => item.Volume);
 
-
-            foreach (var hold in _curCharacter.EquipmentList)
-            {
-                var item = Universe.Gis.Equipment.FindByHash(hold.Item1);
-                if (item == null)
-                    continue;
-                curHold += item.Volume;
-            }
 
             labelHoldCurrent.Text = String.Format("Current: {0:0.00}", curHold);
         }
