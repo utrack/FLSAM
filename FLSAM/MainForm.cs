@@ -194,6 +194,7 @@ namespace FLSAM
         void DBiFace_OnReadyRequest(List<Metadata> meta)
         {
             fastObjectListView1.SetObjects(meta);
+            _log.NewMessage(LogType.Info, "Displayed {0} players",meta.Count);
         }
 
         private void DBiFace_DBPercentChanged(int percent, int qcount)
@@ -530,6 +531,11 @@ namespace FLSAM
 
 
         #endregion
+
+        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
 
     }
 }

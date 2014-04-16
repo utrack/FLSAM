@@ -101,7 +101,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GameInfoSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="LogMessage.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
