@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="uiTables" targetNamespace="http://tempuri.org/uiTables.xsd" xmlns:mstns="http://tempuri.org/uiTables.xsd" xmlns="http://tempuri.org/uiTables.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="uiTables" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="uiTables" msprop:Generator_UserDSName="uiTables">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ShipEquip" msprop:Generator_TableClassName="ShipEquipDataTable" msprop:Generator_TableVarName="tableShipEquip" msprop:Generator_RowChangedName="ShipEquipRowChanged" msprop:Generator_TablePropName="ShipEquip" msprop:Generator_RowDeletingName="ShipEquipRowDeleting" msprop:Generator_RowChangingName="ShipEquipRowChanging" msprop:Generator_RowEvHandlerName="ShipEquipRowChangeEventHandler" msprop:Generator_RowDeletedName="ShipEquipRowDeleted" msprop:Generator_RowClassName="ShipEquipRow" msprop:Generator_UserTableName="ShipEquip" msprop:Generator_RowEvArgName="ShipEquipRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="HPName" msprop:Generator_ColumnVarNameInTable="columnHPName" msprop:Generator_ColumnPropNameInRow="HPName" msprop:Generator_ColumnPropNameInTable="HPNameColumn" msprop:Generator_UserColumnName="HPName" type="xs:string" minOccurs="0" />
+              <xs:element name="EquipType" msprop:Generator_ColumnVarNameInTable="columnEquipType" msprop:Generator_ColumnPropNameInRow="EquipType" msprop:Generator_ColumnPropNameInTable="EquipTypeColumn" msprop:Generator_UserColumnName="EquipType" type="xs:string" minOccurs="0" />
+              <xs:element name="Equipment" msprop:Generator_ColumnVarNameInTable="columnEquipment" msprop:Generator_ColumnPropNameInRow="Equipment" msprop:Generator_ColumnPropNameInTable="EquipmentColumn" msprop:Generator_UserColumnName="Equipment" type="xs:string" minOccurs="0" />
+              <xs:element name="HPNickname" msprop:Generator_ColumnVarNameInTable="columnHPNickname" msprop:Generator_ColumnPropNameInRow="HPNickname" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInTable="HPNicknameColumn" msprop:Generator_UserColumnName="HPNickname" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

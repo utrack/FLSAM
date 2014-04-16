@@ -1,0 +1,29 @@
+﻿namespace FLSAM.GD
+{
+    enum EquipTypes
+    {
+        Engine,
+        Powerplant,
+        Scanner,
+        Tractor,
+        Cloak,
+        Armor,
+        InternalFX,
+        AttachedFX,
+        Light,
+        Gun,
+        ShieldGen,
+        Thruster,
+        Mine,
+        MineDropper,
+        Misc,
+        Munition,
+        RepairKit,
+        Projectile,
+        Turret,
+        Countermeasure,
+        CountermeasureDropper,
+        ShieldBattery,
+        Cargo
+    }
+}

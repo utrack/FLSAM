@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="GameInfoSet" targetNamespace="http://tempuri.org/GameInfoSet.xsd" xmlns:mstns="http://tempuri.org/GameInfoSet.xsd" xmlns="http://tempuri.org/GameInfoSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="GameInfoSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="GameInfoSet" msprop:Generator_UserDSName="GameInfoSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Bases" msprop:Generator_TableClassName="BasesDataTable" msprop:Generator_TableVarName="tableBases" msprop:Generator_RowChangedName="BasesRowChanged" msprop:Generator_TablePropName="Bases" msprop:Generator_RowDeletingName="BasesRowDeleting" msprop:Generator_RowChangingName="BasesRowChanging" msprop:Generator_RowEvHandlerName="BasesRowChangeEventHandler" msprop:Generator_RowDeletedName="BasesRowDeleted" msprop:Generator_RowClassName="BasesRow" msprop:Generator_UserTableName="Bases" msprop:Generator_RowEvArgName="BasesRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Nickname" msprop:Generator_ColumnVarNameInTable="columnNickname" msprop:Generator_ColumnPropNameInRow="Nickname" msprop:Generator_ColumnPropNameInTable="NicknameColumn" msprop:Generator_UserColumnName="Nickname" type="xs:string" />
+              <xs:element name="Name" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="Infocard" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="Infocard" msprop:Generator_ColumnVarNameInTable="columnInfocard" msprop:Generator_ColumnPropNameInTable="InfocardColumn" msprop:Generator_UserColumnName="Infocard" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Systems" msprop:Generator_TableClassName="SystemsDataTable" msprop:Generator_TableVarName="tableSystems" msprop:Generator_TablePropName="Systems" msprop:Generator_RowDeletingName="SystemsRowDeleting" msprop:Generator_RowChangingName="SystemsRowChanging" msprop:Generator_RowEvHandlerName="SystemsRowChangeEventHandler" msprop:Generator_RowDeletedName="SystemsRowDeleted" msprop:Generator_UserTableName="Systems" msprop:Generator_RowChangedName="SystemsRowChanged" msprop:Generator_RowEvArgName="SystemsRowChangeEvent" msprop:Generator_RowClassName="SystemsRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Nickname" msprop:Generator_ColumnVarNameInTable="columnNickname" msprop:Generator_ColumnPropNameInRow="Nickname" msprop:Generator_ColumnPropNameInTable="NicknameColumn" msprop:Generator_UserColumnName="Nickname" type="xs:string" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="Infocard" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="Infocard" msprop:Generator_ColumnVarNameInTable="columnInfocard" msprop:Generator_ColumnPropNameInTable="InfocardColumn" msprop:Generator_UserColumnName="Infocard" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Equipment" msprop:Generator_TableClassName="EquipmentDataTable" msprop:Generator_TableVarName="tableEquipment" msprop:Generator_RowChangedName="EquipmentRowChanged" msprop:Generator_TablePropName="Equipment" msprop:Generator_RowDeletingName="EquipmentRowDeleting" msprop:Generator_RowChangingName="EquipmentRowChanging" msprop:Generator_RowEvHandlerName="EquipmentRowChangeEventHandler" msprop:Generator_RowDeletedName="EquipmentRowDeleted" msprop:Generator_RowClassName="EquipmentRow" msprop:Generator_UserTableName="Equipment" msprop:Generator_RowEvArgName="EquipmentRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Hash" msprop:Generator_ColumnVarNameInTable="columnHash" msprop:Generator_ColumnPropNameInRow="Hash" msprop:Generator_ColumnPropNameInTable="HashColumn" msprop:Generator_UserColumnName="Hash" type="xs:unsignedInt" />
+              <xs:element name="Type" msprop:Generator_ColumnVarNameInTable="columnType" msprop:Generator_ColumnPropNameInRow="Type" msprop:Generator_ColumnPropNameInTable="TypeColumn" msprop:Generator_UserColumnName="Type" type="xs:string" minOccurs="0" />
+              <xs:element name="Hardpoint" msprop:Generator_ColumnVarNameInTable="columnHardpoint" msprop:Generator_ColumnPropNameInRow="Hardpoint" msprop:Generator_ColumnPropNameInTable="HardpointColumn" msprop:Generator_UserColumnName="Hardpoint" type="xs:string" minOccurs="0" />
+              <xs:element name="Nickname" msprop:Generator_ColumnVarNameInTable="columnNickname" msprop:Generator_ColumnPropNameInRow="Nickname" msprop:Generator_ColumnPropNameInTable="NicknameColumn" msprop:Generator_UserColumnName="Nickname" type="xs:string" minOccurs="0" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="Infocard" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="Infocard" msprop:Generator_ColumnVarNameInTable="columnInfocard" msprop:Generator_ColumnPropNameInTable="InfocardColumn" msprop:Generator_UserColumnName="Infocard" type="xs:string" minOccurs="0" />
+              <xs:element name="Volume" msprop:Generator_ColumnVarNameInTable="columnVolume" msprop:Generator_ColumnPropNameInRow="Volume" msprop:Generator_ColumnPropNameInTable="VolumeColumn" msprop:Generator_UserColumnName="Volume" type="xs:float" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Factions" msprop:Generator_TableClassName="FactionsDataTable" msprop:Generator_TableVarName="tableFactions" msprop:Generator_RowChangedName="FactionsRowChanged" msprop:Generator_TablePropName="Factions" msprop:Generator_RowDeletingName="FactionsRowDeleting" msprop:Generator_RowChangingName="FactionsRowChanging" msprop:Generator_RowEvHandlerName="FactionsRowChangeEventHandler" msprop:Generator_RowDeletedName="FactionsRowDeleted" msprop:Generator_RowClassName="FactionsRow" msprop:Generator_UserTableName="Factions" msprop:Generator_RowEvArgName="FactionsRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Hash" msprop:Generator_ColumnVarNameInTable="columnHash" msprop:Generator_ColumnPropNameInRow="Hash" msprop:Generator_ColumnPropNameInTable="HashColumn" msprop:Generator_UserColumnName="Hash" type="xs:unsignedInt" />
+              <xs:element name="Nickname" msprop:Generator_ColumnVarNameInTable="columnNickname" msprop:Generator_ColumnPropNameInRow="Nickname" msprop:Generator_ColumnPropNameInTable="NicknameColumn" msprop:Generator_UserColumnName="Nickname" type="xs:string" minOccurs="0" />
+              <xs:element name="FactionName" msprop:Generator_ColumnVarNameInTable="columnFactionName" msprop:Generator_ColumnPropNameInRow="FactionName" msprop:Generator_ColumnPropNameInTable="FactionNameColumn" msprop:Generator_UserColumnName="FactionName" type="xs:string" minOccurs="0" />
+              <xs:element name="ShortName" msprop:Generator_ColumnVarNameInTable="columnShortName" msprop:Generator_ColumnPropNameInRow="ShortName" msprop:Generator_ColumnPropNameInTable="ShortNameColumn" msprop:Generator_UserColumnName="ShortName" type="xs:string" minOccurs="0" />
+              <xs:element name="Infocard" msprop:Generator_ColumnVarNameInTable="columnInfocard" msprop:Generator_ColumnPropNameInRow="Infocard" msprop:Generator_ColumnPropNameInTable="InfocardColumn" msprop:Generator_UserColumnName="Infocard" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Ships" msprop:Generator_TableClassName="ShipsDataTable" msprop:Generator_TableVarName="tableShips" msprop:Generator_RowChangedName="ShipsRowChanged" msprop:Generator_TablePropName="Ships" msprop:Generator_RowDeletingName="ShipsRowDeleting" msprop:Generator_RowChangingName="ShipsRowChanging" msprop:Generator_RowEvHandlerName="ShipsRowChangeEventHandler" msprop:Generator_RowDeletedName="ShipsRowDeleted" msprop:Generator_RowClassName="ShipsRow" msprop:Generator_UserTableName="Ships" msprop:Generator_RowEvArgName="ShipsRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Hash" msprop:Generator_ColumnVarNameInTable="columnHash" msprop:Generator_ColumnPropNameInRow="Hash" msprop:Generator_ColumnPropNameInTable="HashColumn" msprop:Generator_UserColumnName="Hash" type="xs:unsignedInt" />
+              <xs:element name="Nickname" msprop:Generator_ColumnVarNameInTable="columnNickname" msprop:Generator_ColumnPropNameInRow="Nickname" msprop:Generator_ColumnPropNameInTable="NicknameColumn" msprop:Generator_UserColumnName="Nickname" type="xs:string" minOccurs="0" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="Infocard" msprop:Generator_ColumnVarNameInTable="columnInfocard" msprop:Generator_ColumnPropNameInRow="Infocard" msprop:Generator_ColumnPropNameInTable="InfocardColumn" msprop:Generator_UserColumnName="Infocard" type="xs:string" minOccurs="0" />
+              <xs:element name="HoldSize" msprop:Generator_ColumnVarNameInTable="columnHoldSize" msprop:Generator_ColumnPropNameInRow="HoldSize" msprop:Generator_ColumnPropNameInTable="HoldSizeColumn" msprop:Generator_UserColumnName="HoldSize" type="xs:unsignedInt" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Hardpoints" msprop:Generator_TableClassName="HardpointsDataTable" msprop:Generator_TableVarName="tableHardpoints" msprop:Generator_RowChangedName="HardpointsRowChanged" msprop:Generator_TablePropName="Hardpoints" msprop:Generator_RowDeletingName="HardpointsRowDeleting" msprop:Generator_RowChangingName="HardpointsRowChanging" msprop:Generator_RowEvHandlerName="HardpointsRowChangeEventHandler" msprop:Generator_RowDeletedName="HardpointsRowDeleted" msprop:Generator_RowClassName="HardpointsRow" msprop:Generator_UserTableName="Hardpoints" msprop:Generator_RowEvArgName="HardpointsRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ShipHash" msprop:Generator_ColumnVarNameInTable="columnShipHash" msprop:Generator_ColumnPropNameInRow="ShipHash" msprop:Generator_ColumnPropNameInTable="ShipHashColumn" msprop:Generator_UserColumnName="ShipHash" type="xs:unsignedInt" minOccurs="0" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="EquipType" msprop:Generator_ColumnVarNameInTable="columnEquipType" msprop:Generator_ColumnPropNameInRow="EquipType" msprop:Generator_ColumnPropNameInTable="EquipTypeColumn" msprop:Generator_UserColumnName="EquipType" type="xs:string" minOccurs="0" />
+              <xs:element name="HPType" msprop:Generator_ColumnVarNameInTable="columnHPType" msprop:Generator_ColumnPropNameInRow="HPType" msprop:Generator_ColumnPropNameInTable="HPTypeColumn" msprop:Generator_UserColumnName="HPType" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ShipDefaultInternals" msprop:Generator_TableClassName="ShipDefaultInternalsDataTable" msprop:Generator_TableVarName="tableShipDefaultInternals" msprop:Generator_TablePropName="ShipDefaultInternals" msprop:Generator_RowDeletingName="ShipDefaultInternalsRowDeleting" msprop:Generator_RowChangingName="ShipDefaultInternalsRowChanging" msprop:Generator_RowEvHandlerName="ShipDefaultInternalsRowChangeEventHandler" msprop:Generator_RowDeletedName="ShipDefaultInternalsRowDeleted" msprop:Generator_UserTableName="ShipDefaultInternals" msprop:Generator_RowChangedName="ShipDefaultInternalsRowChanged" msprop:Generator_RowEvArgName="ShipDefaultInternalsRowChangeEvent" msprop:Generator_RowClassName="ShipDefaultInternalsRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ShipHash" msprop:Generator_ColumnVarNameInTable="columnShipHash" msprop:Generator_ColumnPropNameInRow="ShipHash" msprop:Generator_ColumnPropNameInTable="ShipHashColumn" msprop:Generator_UserColumnName="ShipHash" type="xs:unsignedInt" minOccurs="0" />
+              <xs:element name="DEngine" msprop:Generator_ColumnVarNameInTable="columnDEngine" msprop:Generator_ColumnPropNameInRow="DEngine" msprop:Generator_ColumnPropNameInTable="DEngineColumn" msprop:Generator_UserColumnName="DEngine" type="xs:unsignedInt" minOccurs="0" />
+              <xs:element name="DSound" msprop:Generator_ColumnVarNameInTable="columnDSound" msprop:Generator_ColumnPropNameInRow="DSound" msprop:Generator_ColumnPropNameInTable="DSoundColumn" msprop:Generator_UserColumnName="DSound" type="xs:unsignedInt" minOccurs="0" />
+              <xs:element name="DPower" msprop:Generator_ColumnVarNameInTable="columnDPower" msprop:Generator_ColumnPropNameInRow="DPower" msprop:Generator_ColumnPropNameInTable="DPowerColumn" msprop:Generator_UserColumnName="DPower" type="xs:unsignedInt" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="BasesKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:Bases" />
+      <xs:field xpath="mstns:Nickname" />
+    </xs:unique>
+    <xs:unique name="SystemsKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:Systems" />
+      <xs:field xpath="mstns:Nickname" />
+    </xs:unique>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:Equipment" />
+      <xs:field xpath="mstns:Hash" />
+    </xs:unique>
+    <xs:unique name="Factions_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:Factions" />
+      <xs:field xpath="mstns:Hash" />
+    </xs:unique>
+    <xs:unique name="Ships_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:Ships" />
+      <xs:field xpath="mstns:Hash" />
+    </xs:unique>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="Ships_Hardpoints" msdata:parent="Ships" msdata:child="Hardpoints" msdata:parentkey="Hash" msdata:childkey="ShipHash" msprop:Generator_UserChildTable="Hardpoints" msprop:Generator_ChildPropName="GetHardpointsRows" msprop:Generator_UserRelationName="Ships_Hardpoints" msprop:Generator_RelationVarName="relationShips_Hardpoints" msprop:Generator_UserParentTable="Ships" msprop:Generator_ParentPropName="ShipsRow" />
+      <msdata:Relationship name="FK_Ships_ShipDefaultInternals" msdata:parent="Ships" msdata:child="ShipDefaultInternals" msdata:parentkey="Hash" msdata:childkey="ShipHash" msprop:Generator_UserChildTable="ShipDefaultInternals" msprop:Generator_ChildPropName="GetShipDefaultInternalsRows" msprop:Generator_UserRelationName="FK_Ships_ShipDefaultInternals" msprop:Generator_ParentPropName="ShipsRow" msprop:Generator_RelationVarName="relationFK_Ships_ShipDefaultInternals" msprop:Generator_UserParentTable="Ships" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>
