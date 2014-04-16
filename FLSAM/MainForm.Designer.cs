@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveCurrentCharToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,6 +76,10 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.textAccID = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.buttonLocation = new System.Windows.Forms.Button();
             this.textLocation = new System.Windows.Forms.TextBox();
             this.button6 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
@@ -179,15 +184,24 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveCurrentCharToolStripMenuItem,
             this.quitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // saveCurrentCharToolStripMenuItem
+            // 
+            this.saveCurrentCharToolStripMenuItem.Name = "saveCurrentCharToolStripMenuItem";
+            this.saveCurrentCharToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveCurrentCharToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.saveCurrentCharToolStripMenuItem.Text = "Save current char";
+            this.saveCurrentCharToolStripMenuItem.Click += new System.EventHandler(this.saveCurrentCharToolStripMenuItem_Click);
+            // 
             // quitToolStripMenuItem
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -645,6 +659,10 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.textAccID);
+            this.tabPage3.Controls.Add(this.label8);
+            this.tabPage3.Controls.Add(this.buttonSave);
+            this.tabPage3.Controls.Add(this.buttonLocation);
             this.tabPage3.Controls.Add(this.textLocation);
             this.tabPage3.Controls.Add(this.button6);
             this.tabPage3.Controls.Add(this.label7);
@@ -676,16 +694,54 @@
             this.tabPage3.Text = "Main";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // textAccID
+            // 
+            this.textAccID.Location = new System.Drawing.Point(88, 125);
+            this.textAccID.Name = "textAccID";
+            this.textAccID.ReadOnly = true;
+            this.textAccID.Size = new System.Drawing.Size(262, 20);
+            this.textAccID.TabIndex = 29;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(57, 128);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(18, 13);
+            this.label8.TabIndex = 28;
+            this.label8.Text = "ID";
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.Location = new System.Drawing.Point(275, 75);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(164, 23);
+            this.buttonSave.TabIndex = 27;
+            this.buttonSave.Text = "Save changes";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
+            // 
+            // buttonLocation
+            // 
+            this.buttonLocation.Location = new System.Drawing.Point(364, 178);
+            this.buttonLocation.Name = "buttonLocation";
+            this.buttonLocation.Size = new System.Drawing.Size(75, 20);
+            this.buttonLocation.TabIndex = 26;
+            this.buttonLocation.Text = "Move";
+            this.buttonLocation.UseVisualStyleBackColor = true;
+            this.buttonLocation.Click += new System.EventHandler(this.buttonLocation_Click);
+            // 
             // textLocation
             // 
-            this.textLocation.Location = new System.Drawing.Point(88, 147);
+            this.textLocation.Enabled = false;
+            this.textLocation.Location = new System.Drawing.Point(88, 178);
             this.textLocation.Name = "textLocation";
             this.textLocation.Size = new System.Drawing.Size(262, 20);
             this.textLocation.TabIndex = 25;
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(364, 116);
+            this.button6.Location = new System.Drawing.Point(364, 151);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 20);
             this.button6.TabIndex = 24;
@@ -713,7 +769,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(31, 229);
+            this.label6.Location = new System.Drawing.Point(31, 260);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(44, 13);
             this.label6.TabIndex = 21;
@@ -722,14 +778,14 @@
             // textCreatedAt
             // 
             this.textCreatedAt.Enabled = false;
-            this.textCreatedAt.Location = new System.Drawing.Point(88, 226);
+            this.textCreatedAt.Location = new System.Drawing.Point(88, 257);
             this.textCreatedAt.Name = "textCreatedAt";
             this.textCreatedAt.Size = new System.Drawing.Size(262, 20);
             this.textCreatedAt.TabIndex = 20;
             // 
             // buttonLastOReset
             // 
-            this.buttonLastOReset.Location = new System.Drawing.Point(364, 200);
+            this.buttonLastOReset.Location = new System.Drawing.Point(364, 231);
             this.buttonLastOReset.Name = "buttonLastOReset";
             this.buttonLastOReset.Size = new System.Drawing.Size(75, 20);
             this.buttonLastOReset.TabIndex = 19;
@@ -760,7 +816,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(47, 176);
+            this.label5.Location = new System.Drawing.Point(47, 207);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(28, 13);
             this.label5.TabIndex = 16;
@@ -771,7 +827,7 @@
             this.comboBoxShip.DataSource = this.shipsBindingSource;
             this.comboBoxShip.DisplayMember = "Name";
             this.comboBoxShip.FormattingEnabled = true;
-            this.comboBoxShip.Location = new System.Drawing.Point(88, 173);
+            this.comboBoxShip.Location = new System.Drawing.Point(88, 204);
             this.comboBoxShip.Name = "comboBoxShip";
             this.comboBoxShip.Size = new System.Drawing.Size(262, 21);
             this.comboBoxShip.TabIndex = 15;
@@ -779,7 +835,7 @@
             // 
             // dateLastOnline
             // 
-            this.dateLastOnline.Location = new System.Drawing.Point(88, 200);
+            this.dateLastOnline.Location = new System.Drawing.Point(88, 231);
             this.dateLastOnline.Name = "dateLastOnline";
             this.dateLastOnline.Size = new System.Drawing.Size(262, 20);
             this.dateLastOnline.TabIndex = 14;
@@ -787,7 +843,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(15, 204);
+            this.label4.Location = new System.Drawing.Point(15, 235);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(60, 13);
             this.label4.TabIndex = 13;
@@ -795,15 +851,16 @@
             // 
             // textBoxMoney
             // 
-            this.textBoxMoney.Location = new System.Drawing.Point(88, 120);
+            this.textBoxMoney.Location = new System.Drawing.Point(88, 151);
             this.textBoxMoney.Name = "textBoxMoney";
             this.textBoxMoney.Size = new System.Drawing.Size(262, 20);
             this.textBoxMoney.TabIndex = 9;
+            this.textBoxMoney.TextChanged += new System.EventHandler(this.textBoxMoney_TextChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(27, 150);
+            this.label3.Location = new System.Drawing.Point(27, 181);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(48, 13);
             this.label3.TabIndex = 8;
@@ -812,7 +869,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(36, 123);
+            this.label2.Location = new System.Drawing.Point(36, 154);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(39, 13);
             this.label2.TabIndex = 7;
@@ -821,6 +878,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
+            this.checkBox1.Enabled = false;
             this.checkBox1.Location = new System.Drawing.Point(47, 50);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(73, 17);
@@ -933,6 +991,7 @@
             // 
             this.olvColumn11.AspectName = "Nickname";
             this.olvColumn11.CellPadding = null;
+            this.olvColumn11.IsEditable = false;
             this.olvColumn11.Text = "Nickname";
             this.olvColumn11.Width = 80;
             // 
@@ -1211,6 +1270,7 @@
             this.Text = "FLServer Account Manager";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).EndInit();
@@ -1360,6 +1420,11 @@
         private BrightIdeasSoftware.OLVColumn olvColumn19;
         private BrightIdeasSoftware.OLVColumn olvColumn20;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
+        private System.Windows.Forms.Button buttonLocation;
+        private System.Windows.Forms.Button buttonSave;
+        private System.Windows.Forms.ToolStripMenuItem saveCurrentCharToolStripMenuItem;
+        private System.Windows.Forms.TextBox textAccID;
+        private System.Windows.Forms.Label label8;
     }
 }
 

@@ -339,8 +339,8 @@ namespace FLSAM.GD
             //var file = _flDataPath + sec.GetFirstOf("file");
             _log.NewMessage(LogType.Garbage, "Universe: Parsing base {0}", nickname);
             var stIDSName = GetIDSParm(sec.GetAnySetting("ids_name", "strid_name")[0]);
-
-            Gis.Bases.AddBasesRow(nickname, stIDSName,"");
+            var system = sec.GetFirstOf("system")[0];
+            Gis.Bases.AddBasesRow(nickname, stIDSName,system,"");
 
             //TODO: do we rly need room data?
             //FLGameData:Ln 191

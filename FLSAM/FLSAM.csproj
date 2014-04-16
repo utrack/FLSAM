@@ -78,6 +78,12 @@
     <Compile Include="AccountHelper\equipTable.cs" />
     <Compile Include="DBIFace.cs" />
     <Compile Include="FileTypes\UtfFile.cs" />
+    <Compile Include="Forms\CharLocation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CharLocation.Designer.cs">
+      <DependentUpon>CharLocation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\nudFloat.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -112,6 +118,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\CharLocation.resx">
+      <DependentUpon>CharLocation.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
@@ -146,7 +155,6 @@
     <None Include="GD\DB\GameInfoSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>GameInfoSet.Designer.cs</LastGenOutput>
     </None>
     <None Include="GD\DB\GameInfoSet.xss">
       <DependentUpon>GameInfoSet.xsd</DependentUpon>

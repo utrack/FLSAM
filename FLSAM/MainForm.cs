@@ -20,12 +20,21 @@ namespace FLSAM
     public partial class MainForm : Form
     {
         private readonly LogDispatcher.LogDispatcher _log = new LogDispatcher.LogDispatcher();
-        private readonly List<LogDispatcher.LogMessage> _logMessages = new List<LogDispatcher.LogMessage>();
+        private readonly List<LogMessage> _logMessages = new List<LogMessage>();
         private void MainForm_Load(object sender, EventArgs e)
         {
+            if (Properties.Settings.Default.DBPath != "") return;
+            var set = new Settings(_log);
+            set.ShowDialog();
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+
+
             DBiFace.InitiateDB(Properties.Settings.Default.DBType,
                 Properties.Settings.Default.DBPath,
-                Properties.Settings.Default.FLDBPath,_log);
+                Properties.Settings.Default.FLDBPath, _log);
 
             if (!DBiFace.IsDBAvailable()) return;
 
@@ -35,6 +44,8 @@ namespace FLSAM
         public MainForm()
         {
             InitializeComponent();
+
+
 
             olvLog.SetObjects(_logMessages);
             _log.SetLogLevel(LogType.Debug);
@@ -80,7 +91,7 @@ namespace FLSAM
             DBiFace.OnReadyRequest += DBiFace_OnReadyRequest;
         }
 
-        void _log_LogMessage(LogDispatcher.LogMessage message)
+        void _log_LogMessage(LogMessage message)
         {
             _logMessages.Add(message);
             olvLog.AddObject(message);
@@ -122,6 +133,7 @@ namespace FLSAM
                 value =>
                 {
                     if ((string)value == "") return "";
+                    if ((string)value == null) return null;
                     var val = Universe.Gis.Bases.FindByNickname((string)value);
                     return val != null ? val.Name : value.ToString();
                 };
@@ -229,6 +241,17 @@ namespace FLSAM
         {
             DBiFace.RescanDB(Properties.Settings.Default.DBAggressiveScan);
         }
+
+        private void saveCurrentCharToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveChar();
+        }
+
+        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
         #endregion
 
 
@@ -249,6 +272,9 @@ namespace FLSAM
 
             if (radioAccID.Checked)
                 DBiFace.AccDB.GetAccountChars(textBox1.Text);
+
+            if (radioCharCode.Checked)
+                DBiFace.AccDB.GetMetasByCharID(textBox1.Text);
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
@@ -275,6 +301,7 @@ namespace FLSAM
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (DBiFace.AccDB == null) return;
 // ReSharper disable once UnusedVariable
             var v = new WaitWindow.Window(this,
             handler => DBiFace.AccDB.OnGetFinishWindow += handler,
@@ -321,6 +348,7 @@ namespace FLSAM
 
         private void buttonSearchLocation_Click(object sender, EventArgs e)
         {
+            if (DBiFace.AccDB == null) return;
             // ReSharper disable once UnusedVariable
             var v = new WaitWindow.Window(this,
             handler => DBiFace.AccDB.OnGetFinishWindow += handler,
@@ -344,13 +372,22 @@ namespace FLSAM
         private Character _curCharacter;
         private void FillPlayerData(Metadata md)
         {
-            _curCharacter = md.GetCharacter(Properties.Settings.Default.FLDBPath);
+            if (md == null) return;
+            FillPlayerData(
+                md.GetCharacter(Properties.Settings.Default.FLDBPath)
+                );
+            
+        }
+
+        private void FillPlayerData(Character ch)
+        {
+            _curCharacter = ch;
             textBoxName.Text = _curCharacter.Name;
             textBoxMoney.Text = _curCharacter.Money.ToString(CultureInfo.InvariantCulture);
             //comboBoxSystem.SelectedValue = _curCharacter.System.ToLowerInvariant();
             comboBoxShip.SelectedValue = _curCharacter.ShipArch;
 
-
+            textAccID.Text = ch.AccountID;
             var sysRow = Universe.Gis.Systems.FindByNickname(_curCharacter.System);
             var sysName = sysRow != null ? sysRow.Name : _curCharacter.System;
 
@@ -377,7 +414,7 @@ namespace FLSAM
 
 
             var ship = Universe.Gis.Ships.FindByHash(_curCharacter.ShipArch);
-            
+
             if (ship != null)
                 labelHoldSize.Text = String.Format("Hold size: {0}", ship.HoldSize);
             RefreshCargoSpace();
@@ -388,7 +425,7 @@ namespace FLSAM
             olvCargo.SetObjects(_curCharacter.Cargo);
 
 
-            var eqList = EquipTable.GetTable(_curCharacter,_log);
+            var eqList = EquipTable.GetTable(_curCharacter, _log);
             dlvEquipment.DataSource = eqList;
             if (DBiFace.IsHookAvailable())
                 checkIsOnline.Checked = DBiFace.HookTransport.IsOnServer(_curCharacter.Name);
@@ -412,11 +449,30 @@ namespace FLSAM
             labelHoldCurrent.Text = String.Format("Current: {0:0.00}", curHold);
         }
 
+        private void SaveChar()
+        {
+            if (_curCharacter == null) return;
+
+            _curCharacter.SaveCharacter(Properties.Settings.Default.FLDBPath,_log);
+            ((Metadata) fastObjectListView1.SelectedObject).Money = _curCharacter.Money;
+            ((Metadata)fastObjectListView1.SelectedObject).Name = _curCharacter.Name;
+            ((Metadata)fastObjectListView1.SelectedObject).Base = _curCharacter.Base;
+            ((Metadata)fastObjectListView1.SelectedObject).Rank = _curCharacter.Rank;
+            ((Metadata)fastObjectListView1.SelectedObject).ShipArch = _curCharacter.ShipArch;
+            ((Metadata)fastObjectListView1.SelectedObject).LastOnline = _curCharacter.LastOnline;
+            fastObjectListView1.RefreshObject(_curCharacter);
+            DBiFace.AccDB.LoadAccountDirectory(Properties.Settings.Default.FLDBPath + "/" + _curCharacter.AccountID);
+        }
+
         private void buttonLastOReset_Click(object sender, EventArgs e)
         {
+            if (_curCharacter == null) return;
+
             var dt = DateTime.Now;
             dateLastOnline.MaxDate = dt;
             dateLastOnline.Value = dt;
+            
+            _curCharacter.LastOnline = dateLastOnline.Value;
         }
 
         #region "reputation tab"
@@ -532,10 +588,32 @@ namespace FLSAM
 
         #endregion
 
-        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+
+
+        private void buttonLocation_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            if (_curCharacter == null) return;
+            var locDlg = new CharLocation(_curCharacter);
+
+            if (locDlg.ShowDialog(this) != DialogResult.OK) return;
+
+            FillPlayerData(locDlg.Char);
+
         }
+
+        private void textBoxMoney_TextChanged(object sender, EventArgs e)
+        {
+            _curCharacter.Money = uint.Parse(textBoxMoney.Text);
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            SaveChar();
+        }
+
+
+
+
 
     }
 }

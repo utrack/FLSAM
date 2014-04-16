@@ -507,6 +507,8 @@ namespace FLSAM.GD.DB {
             
             private global::System.Data.DataColumn columnName;
             
+            private global::System.Data.DataColumn columnSystem;
+            
             private global::System.Data.DataColumn columnInfocard;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -560,6 +562,14 @@ namespace FLSAM.GD.DB {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn SystemColumn {
+                get {
+                    return this.columnSystem;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn InfocardColumn {
                 get {
                     return this.columnInfocard;
@@ -603,11 +613,12 @@ namespace FLSAM.GD.DB {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public BasesRow AddBasesRow(string Nickname, string Name, string Infocard) {
+            public BasesRow AddBasesRow(string Nickname, string Name, string System, string Infocard) {
                 BasesRow rowBasesRow = ((BasesRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Nickname,
                         Name,
+                        System,
                         Infocard};
                 rowBasesRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowBasesRow);
@@ -640,6 +651,7 @@ namespace FLSAM.GD.DB {
             internal void InitVars() {
                 this.columnNickname = base.Columns["Nickname"];
                 this.columnName = base.Columns["Name"];
+                this.columnSystem = base.Columns["System"];
                 this.columnInfocard = base.Columns["Infocard"];
             }
             
@@ -650,6 +662,8 @@ namespace FLSAM.GD.DB {
                 base.Columns.Add(this.columnNickname);
                 this.columnName = new global::System.Data.DataColumn("Name", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnName);
+                this.columnSystem = new global::System.Data.DataColumn("System", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSystem);
                 this.columnInfocard = new global::System.Data.DataColumn("Infocard", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnInfocard);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("BasesKey1", new global::System.Data.DataColumn[] {
@@ -2665,6 +2679,22 @@ namespace FLSAM.GD.DB {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string System {
+                get {
+                    try {
+                        return ((string)(this[this.tableBases.SystemColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'System\' in table \'Bases\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBases.SystemColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string Infocard {
                 get {
                     if (this.IsInfocardNull()) {
@@ -2689,6 +2719,18 @@ namespace FLSAM.GD.DB {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetNameNull() {
                 this[this.tableBases.NameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsSystemNull() {
+                return this.IsNull(this.tableBases.SystemColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetSystemNull() {
+                this[this.tableBases.SystemColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
