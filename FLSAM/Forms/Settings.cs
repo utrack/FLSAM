@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Windows.Forms;
+using FLSAM.GD;
 
 namespace FLSAM.Forms
 {
     public partial class Settings : Form
     {
-        public Settings()
+        private readonly LogDispatcher.LogDispatcher _log;
+        public Settings(LogDispatcher.LogDispatcher log)
         {
+            _log = log;
             InitializeComponent();
             comboBackendSelector.SelectedIndex = Properties.Settings.Default.DBType;
             panelCleanupBackup.Enabled = (Properties.Settings.Default.CleanupBackup && (Properties.Settings.Default.DBType == 0));
@@ -37,8 +40,8 @@ namespace FLSAM.Forms
 
         private void buttonClearSQL_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to clear playerDB?", 
-                "DB initiation", 
+            if (MessageBox.Show(@"Are you sure you want to clear playerDB?", 
+                @"DB initiation", 
                 MessageBoxButtons.YesNo) ==
                 DialogResult.Yes)
             {
@@ -51,6 +54,7 @@ namespace FLSAM.Forms
             Properties.Settings.Default.DBType = comboBackendSelector.SelectedIndex;
             Properties.Settings.Default.Save();
 
+            DBiFace.ReloadDB(_log);
 
             if (DBiFace.AccDB == null) return;
             DBiFace.AccDB.Queue.SetThreshold((int)numericUpDown3.Value);
@@ -102,11 +106,20 @@ namespace FLSAM.Forms
 
         private void buttonSQOpen_Click(object sender, EventArgs e)
         {
-            DBiFace.ReloadDB();
+            DBiFace.ReloadDB(_log);
 
             if (DBiFace.IsDBAvailable()) return;
             var myToolTip = new ToolTip {IsBalloon = true};
             myToolTip.Show("Please select the Freelancer DB path then open SQL DB again!", buttonSQOpen);
+        }
+
+        private void buttonFLRescan_Click(object sender, EventArgs e)
+        {
+            var v = new WaitWindow.Window(this,
+            handler => Universe.DoneLoading += handler,
+            handler => Universe.DoneLoading += handler,
+            1000);
+            Universe.Parse(Properties.Settings.Default.FLPath, _log,true);
         }
     }
 }

@@ -47,5 +47,8 @@
     <Setting Name="TuneQTimer" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">10000</Value>
     </Setting>
+    <Setting Name="FLDataUseCache" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

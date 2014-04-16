@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -58,7 +59,7 @@ namespace FLSAM.GD
 
         #endregion
 
-
+        private static LogDispatcher.LogDispatcher _log;
 
         private static readonly Dictionary<uint, uint> InfocardMap = new Dictionary<uint, uint>();
 
@@ -71,38 +72,60 @@ namespace FLSAM.GD
         //public readonly GameInfoSet.EquipmentDataTable Equipment = new GameInfoSet.EquipmentDataTable();
         //public readonly GameInfoSet.FactionDataTable Factions = new GameInfoSet.FactionDataTable();
         public static readonly GameInfoSet Gis = new GameInfoSet();
+
+        /// <summary>
+        /// Shows if latest FL file parsing or cache opening was successful.
+        /// </summary>
+        public static bool IsAttached = false;
+
         /// <summary>
         /// Initiates the Universe DB. FLPath is the path to the Freelancer directory, not DATA\EXE etc.
         /// </summary>
         /// <param name="flPath"></param>
-
-        public static void Parse(string flPath)
+        /// <param name="log"></param>
+        /// <param name="forceScan"></param>
+        public static bool Parse(string flPath, LogDispatcher.LogDispatcher log, bool forceScan = false)
         {
-            LogDispatcher.LogDispatcher.NewMessage(LogType.Debug, "Parsing file {0} ...", flPath + @"\DataMaps.ini");
+            IsAttached = false;
+            _log = log;
+            Gis.Clear();
+            if (flPath == "")
+            {
+                _log.NewMessage(LogType.Error, "Universe: Got empty FLPath!");
+                return false;
+            }
+
+            if (StartedLoading != null)
+                StartedLoading(null, null);
+
+
+
+            _log.NewMessage(LogType.Debug, "Universe: Parsing file {0} ...", flPath + @"\DataMaps.ini");
             if (!File.Exists(flPath + @"\DataMaps.ini"))
             {
-                LogDispatcher.LogDispatcher.NewMessage(LogType.Fatal, "Can't find DataMaps.ini!");
-                throw new Exception("Can't load DataMaps.ini!");
+                log.NewMessage(LogType.Error, "Universe: Can't find DataMaps.ini!");
+                return false;
             }
             var dMapIni = new DataFile(flPath + @"\DataMaps.ini");
 
+            HpMap.Clear();
             foreach (var set in dMapIni.GetSettings("HPMap", "map"))
             {
                 EquipTypes eqType;
                 if (!Enum.TryParse(set[1], out eqType))
                 {
-                    LogDispatcher.LogDispatcher.NewMessage(LogType.Error, "Can't parse equipment type in DataMaps.ini: {0} {1}", set[0], set[1]);
+                    log.NewMessage(LogType.Error, "Can't parse equipment type in DataMaps.ini: {0} {1}", set[0], set[1]);
                     continue;
                 }
                 HpMap.Add(set[0], eqType);
             }
 
 
-            LogDispatcher.LogDispatcher.NewMessage(LogType.Debug, "Parsing file {0} ...", flPath + @"\EXE\Freelancer.ini");
+            log.NewMessage(LogType.Debug, "Parsing file {0} ...", flPath + @"\EXE\Freelancer.ini");
             if (!File.Exists(flPath + @"\EXE\Freelancer.ini"))
             {
-                LogDispatcher.LogDispatcher.NewMessage(LogType.Fatal, "Can't find Freelancer.ini!");
-                throw new Exception("Can't load Freelancer.ini!");
+                log.NewMessage(LogType.Error, "Universe: Can't find Freelancer.ini!");
+                return false;
             }
             var flIni = new DataFile(flPath + @"\EXE\Freelancer.ini");
             _flDataPath = Path.GetFullPath(Path.Combine(flPath + @"\EXE", flIni.GetSetting("Freelancer", "data path")[0]));
@@ -114,7 +137,7 @@ namespace FLSAM.GD
                 uint map0, map1;
                 if (!uint.TryParse(set[0], out map0) || !uint.TryParse(set[1], out map1))
                 {
-                    LogDispatcher.LogDispatcher.NewMessage(LogType.Error, "Can't parse infocard map: {0}", set.String());
+                    log.NewMessage(LogType.Error, "Can't parse infocard map: {0}", set.String());
                     continue;
                 }
 
@@ -123,6 +146,46 @@ namespace FLSAM.GD
             }
 
 
+            if (Properties.Settings.Default.FLDataUseCache & !forceScan)
+            {
+                if (File.Exists(flPath + @"/FLSAM_Data.xml"))
+                {
+                    _log.NewMessage(LogType.Info, "Universe: Loading game cache...");
+                    Gis.ReadXml(flPath + @"/FLSAM_Data.xml");
+                    IsAttached = true;
+                    if (DoneLoading != null)
+                        DoneLoading(null, null);
+
+                    _log.NewMessage(LogType.Info, "Universe: Game cache loaded.");
+                    return true;
+                }
+            }
+
+
+            var bgw = new BackgroundWorker();
+            bgw.DoWork += _bgw_DoWork;
+            bgw.RunWorkerCompleted += _bgw_RunWorkerCompleted;
+            bgw.RunWorkerAsync(new object[] { flIni,flPath});
+            
+
+            return true;
+        }
+
+        public static event EventHandler DoneLoading;
+        public static event EventHandler StartedLoading;
+        static void _bgw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            IsAttached = true;
+            if (DoneLoading != null)
+                DoneLoading(null, null);
+        }
+
+        
+
+        static void _bgw_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var flIni = (DataFile)((object[]) e.Argument)[0];
+            var flPath = (string)((object[])e.Argument)[1];
             // Load the string dlls.
             LoadLibrary(flPath + @"\EXE\" + @"resources.dll");
 
@@ -181,14 +244,22 @@ namespace FLSAM.GD
                 }
             }
 
-            LogDispatcher.LogDispatcher.NewMessage(LogType.Debug, "Parsing loadouts...");
+            _log.NewMessage(LogType.Debug, "Universe: Parsing loadouts...");
             var loFile = new DataFile(_flDataPath + @"\equipment\goods.ini");
 
             foreach (var loSection in loFile.GetSections("Good").Where(w => w.GetFirstOf("category")[0] == "ship"))
             {
                 LoadLoadout(loSection, loFile);
             }
+
+            if (!Properties.Settings.Default.FLDataUseCache) return;
+
+            _log.NewMessage(LogType.Info, "Universe: Saving game cache...");
+            Gis.WriteXml(flPath + @"/FLSAM_Data.xml");
+            _log.NewMessage(LogType.Info, "Universe: Game cache saved.");
         }
+
+
 
         private static void LoadLoadout(Section sec, DataFile file)
         {
@@ -204,7 +275,7 @@ namespace FLSAM.GD
 
             if (shSection == null)
             {
-                LogDispatcher.LogDispatcher.NewMessage(LogType.Warning,"Can't find package for shiphull {0}!",hullNickName);
+                _log.NewMessage(LogType.Warning, "Can't find package for shiphull {0}!", hullNickName);
                 return;
             }
 
@@ -219,7 +290,7 @@ namespace FLSAM.GD
                 {
                     if (set.Count != 3)
                     {
-                        LogDispatcher.LogDispatcher.NewMessage(LogType.Warning,
+                        _log.NewMessage(LogType.Warning,
                             "Package for ship {0}: addon {1} has wrong arg count", shipNickname, set[0]);
                         continue;
                     }
@@ -228,7 +299,7 @@ namespace FLSAM.GD
                     var item = Gis.Equipment.FindByHash(CreateID(equipNick));
                     if (item == null)
                     {
-                        LogDispatcher.LogDispatcher.NewMessage(LogType.Warning, @"Can't find {0} in DB: from loadout {1} \ {2}", equipNick,
+                        _log.NewMessage(LogType.Warning, @"Can't find {0} in DB: from loadout {1} \ {2}", equipNick,
                             hullNickName, shipNickname);
                         continue;
                     }
@@ -249,11 +320,11 @@ namespace FLSAM.GD
                             break;
                             case EquipTypes.Light:
                             if (set[1] == "internal")
-                                LogDispatcher.LogDispatcher.NewMessage(LogType.Warning, "Invalid hardpoint for light {0} (internal): {1}",equipNick,hullNickName);
+                                _log.NewMessage(LogType.Warning, "Invalid hardpoint for light {0} (internal): {1}", equipNick, hullNickName);
                             break;
                         case EquipTypes.AttachedFX:
                              if (set[1] == "internal")
-                                LogDispatcher.LogDispatcher.NewMessage(LogType.Warning, "Invalid hardpoint for attachedFX {0} (internal): {1}",equipNick,hullNickName);
+                                 _log.NewMessage(LogType.Warning, "Invalid hardpoint for attachedFX {0} (internal): {1}", equipNick, hullNickName);
                             break;
                     }
 
@@ -266,7 +337,7 @@ namespace FLSAM.GD
         {
             var nickname = sec.GetFirstOf("nickname")[0];
             //var file = _flDataPath + sec.GetFirstOf("file");
-            LogDispatcher.LogDispatcher.NewMessage(LogType.Debug, "Parsing base {0}", nickname);
+            _log.NewMessage(LogType.Garbage, "Universe: Parsing base {0}", nickname);
             var stIDSName = GetIDSParm(sec.GetAnySetting("ids_name", "strid_name")[0]);
 
             Gis.Bases.AddBasesRow(nickname, stIDSName,"");
@@ -278,7 +349,7 @@ namespace FLSAM.GD
         private static void LoadSystem(Section sec)
         {
             var sysNick = sec.GetFirstOf("nickname")[0].ToLowerInvariant();
-            LogDispatcher.LogDispatcher.NewMessage(LogType.Debug, "Parsing system {0}", sysNick);
+            _log.NewMessage(LogType.Garbage, "Universe: Parsing system {0}", sysNick);
 
             var stIDSName = GetIDSParm(sec.GetAnySetting("strid_name")[0]);
 
@@ -310,7 +381,7 @@ namespace FLSAM.GD
                     uint id;
                     if (!uint.TryParse(curset[0], out id))
                     {
-                        LogDispatcher.LogDispatcher.NewMessage(LogType.Warning, "Can't find ID for object: {0}",curset[0]);
+                        _log.NewMessage(LogType.Warning, "Can't find ID for object: {0}", curset[0]);
                     }
 
                     idsInfo = GetIDString(id);
@@ -334,7 +405,7 @@ namespace FLSAM.GD
         private static void LoadEquip(Section sec, EquipTypes equipType)
         {
             var nickname = sec.GetFirstOf("nickname")[0];
-            LogDispatcher.LogDispatcher.NewMessage(LogType.Debug, "Parsing equipment {0}", nickname);
+            _log.NewMessage(LogType.Garbage, "Universe: Parsing equipment {0}", nickname);
             var hash = CreateID(nickname.ToLowerInvariant());
 
             // fail if equip already presents
@@ -401,7 +472,7 @@ namespace FLSAM.GD
                 default:
                     break;
             }
-
+            // ReSharper disable RedundantArgumentName
             Gis.Equipment.AddEquipmentRow(
                 Hash: hash, 
                 Type: equipType.ToString(), 
@@ -410,6 +481,7 @@ namespace FLSAM.GD
                 Name: stIDSName, 
                 Infocard: infocard, 
                 Volume: volume);
+            // ReSharper restore RedundantArgumentName
         }
 
         private static void LoadEquipSection(Section eqSection)
@@ -535,7 +607,7 @@ namespace FLSAM.GD
         private static void LoadFaction(Section sec)
         {
             var nickname = sec.GetFirstOf("nickname")[0];
-            LogDispatcher.LogDispatcher.NewMessage(LogType.Debug, "Parsing faction {0}", nickname);
+            _log.NewMessage(LogType.Garbage, "Universe: Parsing faction {0}", nickname);
             var hash = CreateFactionID(nickname);
 
 
@@ -562,7 +634,7 @@ namespace FLSAM.GD
         private static void LoadShip(Section sec)
         {
             var nickname = sec.GetFirstOf("nickname")[0];
-            LogDispatcher.LogDispatcher.NewMessage(LogType.Debug, "Parsing equipment {0}", nickname);
+            _log.NewMessage(LogType.Garbage, "Universe: Parsing ship {0}", nickname);
             var hash = CreateID(nickname.ToLowerInvariant());
 
             // fail if equip already presents
@@ -627,13 +699,21 @@ namespace FLSAM.GD
 
             uint idsInfo;
 
-            if (!uint.TryParse(idName,out idsInfo)) 
-                throw new Exception("Couldn't parse idName " + idName);
+            if (!uint.TryParse(idName, out idsInfo))
+            {
+                _log.NewMessage(LogType.Error, "Universe: IDS: Couldn't parse idName " + idName);
+                return "";
+            }
+                
+                //throw new Exception("Couldn't parse idName " + idName);
 
             stInfo = GetIDString(idsInfo);
 
             if (stInfo == null)
-                throw new Exception("ids_info not found " + idsInfo);
+            {
+                _log.NewMessage(LogType.Error, "Universe: IDS: ids_info not found " + idsInfo);
+                return "";
+            }
 
             stInfo = stInfo.Trim();
             return stInfo;

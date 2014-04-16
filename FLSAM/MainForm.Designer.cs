@@ -121,8 +121,8 @@
             this.olvColumn17 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.olvLog = new BrightIdeasSoftware.FastObjectListView();
-            this.olvColumn9 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn13 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn19 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn20 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.equipmentListBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.gameInfoSet = new FLSAM.GD.DB.GameInfoSet();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -1128,11 +1128,12 @@
             // 
             // olvLog
             // 
-            this.olvLog.AllColumns.Add(this.olvColumn9);
-            this.olvLog.AllColumns.Add(this.olvColumn13);
+            this.olvLog.AllColumns.Add(this.olvColumn19);
+            this.olvLog.AllColumns.Add(this.olvColumn20);
+            this.olvLog.CellEditActivation = BrightIdeasSoftware.ObjectListView.CellEditActivateMode.SingleClick;
             this.olvLog.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.olvColumn9,
-            this.olvColumn13});
+            this.olvColumn19,
+            this.olvColumn20});
             this.olvLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.olvLog.FullRowSelect = true;
             this.olvLog.Location = new System.Drawing.Point(3, 3);
@@ -1144,18 +1145,21 @@
             this.olvLog.UseCompatibleStateImageBehavior = false;
             this.olvLog.View = System.Windows.Forms.View.Details;
             this.olvLog.VirtualMode = true;
+            this.olvLog.CellEditFinishing += new BrightIdeasSoftware.CellEditEventHandler(this.olvLog_CellEditFinishing);
             // 
-            // olvColumn9
+            // olvColumn19
             // 
-            this.olvColumn9.AspectName = "Type";
-            this.olvColumn9.CellPadding = null;
-            this.olvColumn9.Text = "Type";
+            this.olvColumn19.AspectName = "Type";
+            this.olvColumn19.CellPadding = null;
+            this.olvColumn19.IsEditable = false;
+            this.olvColumn19.Text = "Type";
             // 
-            // olvColumn13
+            // olvColumn20
             // 
-            this.olvColumn13.AspectName = "Message";
-            this.olvColumn13.CellPadding = null;
-            this.olvColumn13.Text = "Message";
+            this.olvColumn20.AspectName = "Message";
+            this.olvColumn20.CellPadding = null;
+            this.olvColumn20.Text = "Message";
+            this.olvColumn20.Width = 6000;
             // 
             // gameInfoSet
             // 
@@ -1323,8 +1327,6 @@
         private BrightIdeasSoftware.OLVColumn olvColumn8;
         private System.Windows.Forms.TabPage tabPage6;
         private BrightIdeasSoftware.FastObjectListView olvLog;
-        private BrightIdeasSoftware.OLVColumn olvColumn9;
-        private BrightIdeasSoftware.OLVColumn olvColumn13;
         private System.Windows.Forms.BindingSource equipmentListBindingSource;
         private FLSAM.GD.DB.GameInfoSet gameInfoSet;
         private System.Windows.Forms.SplitContainer splitContainer1;
@@ -1342,6 +1344,8 @@
         private System.Windows.Forms.TextBox textLocation;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.BindingSource systemsSearchBindingSource;
+        private BrightIdeasSoftware.OLVColumn olvColumn19;
+        private BrightIdeasSoftware.OLVColumn olvColumn20;
     }
 }
 

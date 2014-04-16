@@ -8,7 +8,14 @@ namespace FLHookTransport
     public class Transport
     {
 
+        private readonly LogDispatcher.LogDispatcher _log;
         private Socket _socket;
+
+        public Transport(LogDispatcher.LogDispatcher log)
+        {
+            _log = log;
+        }
+
         public bool OpenSocket(string addr, int port, string password)
         {
             if (port == 0) return false;
@@ -18,7 +25,7 @@ namespace FLHookTransport
             }
             catch (Exception ex)
             {
-                LogDispatcher.LogDispatcher.NewMessage(LogType.Error, "Can't connect to hook: " + ex.Message);
+                _log.NewMessage(LogType.Error, "Can't connect to hook: " + ex.Message);
                 return false;
             }
 
@@ -40,7 +47,7 @@ namespace FLHookTransport
 
             if (!_socket.SendCommand("getplayers"))
             {
-                LogDispatcher.LogDispatcher.NewMessage(LogType.Warning,"Can't get online playerlist! Socket down");
+                _log.NewMessage(LogType.Warning, "Can't get online playerlist! Socket down");
                 return null;
             }
 

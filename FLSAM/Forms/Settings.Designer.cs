@@ -82,6 +82,8 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.openFileSQLPicker = new System.Windows.Forms.OpenFileDialog();
+            this.buttonFLRescan = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabConnection.SuspendLayout();
             this.tabSQLite.SuspendLayout();
@@ -388,7 +390,7 @@
             this.groupBox2.Controls.Add(this.panel1);
             this.groupBox2.Controls.Add(this.checkBoxCleanup);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox2.Location = new System.Drawing.Point(3, 66);
+            this.groupBox2.Location = new System.Drawing.Point(3, 88);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(768, 129);
             this.groupBox2.TabIndex = 1;
@@ -506,6 +508,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.buttonFLRescan);
             this.groupBox1.Controls.Add(this.buttonIonPath);
             this.groupBox1.Controls.Add(this.buttonFLPath);
             this.groupBox1.Controls.Add(this.textIonPath);
@@ -515,7 +519,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(768, 63);
+            this.groupBox1.Size = new System.Drawing.Size(768, 85);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Paths";
@@ -542,19 +546,23 @@
             // 
             // textIonPath
             // 
+            this.textIonPath.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::FLSAM.Properties.Settings.Default, "IonPath", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textIonPath.Enabled = false;
             this.textIonPath.Location = new System.Drawing.Point(117, 34);
             this.textIonPath.Name = "textIonPath";
             this.textIonPath.Size = new System.Drawing.Size(423, 20);
             this.textIonPath.TabIndex = 3;
+            this.textIonPath.Text = global::FLSAM.Properties.Settings.Default.IonPath;
             // 
             // textFLPath
             // 
+            this.textFLPath.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::FLSAM.Properties.Settings.Default, "FLPath", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textFLPath.Enabled = false;
             this.textFLPath.Location = new System.Drawing.Point(117, 13);
             this.textFLPath.Name = "textFLPath";
             this.textFLPath.Size = new System.Drawing.Size(423, 20);
             this.textFLPath.TabIndex = 2;
+            this.textFLPath.Text = global::FLSAM.Properties.Settings.Default.FLPath;
             // 
             // label8
             // 
@@ -689,6 +697,29 @@
             this.openFileSQLPicker.FileName = "openFileDialog1";
             this.openFileSQLPicker.Filter = "SQLite Database (*.db)|*.db|All files|*.*";
             // 
+            // buttonFLRescan
+            // 
+            this.buttonFLRescan.Location = new System.Drawing.Point(627, 13);
+            this.buttonFLRescan.Name = "buttonFLRescan";
+            this.buttonFLRescan.Size = new System.Drawing.Size(75, 20);
+            this.buttonFLRescan.TabIndex = 6;
+            this.buttonFLRescan.Text = "Rescan";
+            this.buttonFLRescan.UseVisualStyleBackColor = true;
+            this.buttonFLRescan.Click += new System.EventHandler(this.buttonFLRescan_Click);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = global::FLSAM.Properties.Settings.Default.FLDataUseCache;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::FLSAM.Properties.Settings.Default, "FLDataUseCache", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkBox1.Location = new System.Drawing.Point(117, 60);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(131, 17);
+            this.checkBox1.TabIndex = 7;
+            this.checkBox1.Text = "Use game data cache";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -787,5 +818,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDown4;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.NumericUpDown numericUpDown3;
+        private System.Windows.Forms.Button buttonFLRescan;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

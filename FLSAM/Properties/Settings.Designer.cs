@@ -202,5 +202,17 @@ namespace FLSAM.Properties {
                 this["TuneQTimer"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FLDataUseCache {
+            get {
+                return ((bool)(this["FLDataUseCache"]));
+            }
+            set {
+                this["FLDataUseCache"] = value;
+            }
+        }
     }
 }

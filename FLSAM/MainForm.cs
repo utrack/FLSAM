@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using FLAccountDB;
@@ -11,20 +10,41 @@ using FLAccountDB.NoSQL;
 using FLSAM.AccountHelper;
 using FLSAM.Forms;
 using FLSAM.GD;
+//using LogDispatcher = LogDispatcher.LogDispatcher;
+using LogDispatcher;
 
 namespace FLSAM
 {
+
+
     public partial class MainForm : Form
     {
+        private readonly LogDispatcher.LogDispatcher _log = new LogDispatcher.LogDispatcher();
+        private readonly List<LogDispatcher.LogMessage> _logMessages = new List<LogDispatcher.LogMessage>();
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            DBiFace.InitiateDB(Properties.Settings.Default.DBType,
+                Properties.Settings.Default.DBPath,
+                Properties.Settings.Default.FLDBPath,_log);
+
+            if (!DBiFace.IsDBAvailable()) return;
+
+            DBiFace.UpdateDB();
+        }
+
         public MainForm()
         {
             InitializeComponent();
 
-            //Universe.Parse(@"g:\Games\freelancer\fl-Disc487\dev");
-            equipmentSearchBindingSource.DataSource = Universe.Gis.Equipment;
-            systemsSearchBindingSource.DataSource = Universe.Gis.Systems;
-            shipsBindingSource.DataSource = Universe.Gis.Ships;
-            equipmentListBindingSource.DataSource = Universe.Gis.Equipment;
+            olvLog.SetObjects(_logMessages);
+            _log.SetLogLevel(LogType.Debug);
+            _log.LogMessage += _log_LogMessage;
+
+            Universe.StartedLoading += Universe_StartedLoading;
+            Universe.DoneLoading += Universe_DoneLoading;
+
+            Universe.Parse(Properties.Settings.Default.FLPath,_log);
+            
             //ObjectListView.EditorRegistry.Register(typeof(float), typeof(NumericUpDown));
 
             ObjectListView.EditorRegistry.Register(typeof(float), delegate(Object model, OLVColumn column, Object value)
@@ -53,11 +73,56 @@ namespace FLSAM
             });
 
 
+            
+
+            DBiFace.DBPercentChanged += DBiFace_DBPercentChanged;
+            DBiFace.DBStateChanged += DBiFace_DBStateChanged;
+            DBiFace.OnReadyRequest += DBiFace_OnReadyRequest;
+        }
+
+        void _log_LogMessage(LogDispatcher.LogMessage message)
+        {
+            _logMessages.Add(message);
+            olvLog.AddObject(message);
+            if (message.Type <= LogType.Error)
+                tabControl1.SelectTab(2);
+        }
+
+        void Universe_StartedLoading(object sender, EventArgs e)
+        {
+            equipmentSearchBindingSource.DataSource = null;
+            systemsSearchBindingSource.DataSource = null;
+            shipsBindingSource.DataSource = null;
+            equipmentListBindingSource.DataSource = null;
+
+            fastObjectListView1.GetColumn("Base").AspectToStringConverter =
+                value => value.ToString();
+
+            olvRep.GetColumn("Faction").AspectToStringConverter =
+                value => value.ToString();
+
+            olvCargo.GetColumn("Item").AspectToStringConverter =
+                value => value.ToString();
+
+
+            fastObjectListView1.GetColumn("Ship").AspectToStringConverter =
+                value => value.ToString();
+
+        }
+
+        void Universe_DoneLoading(object sender, EventArgs e)
+        {
+            equipmentSearchBindingSource.DataSource = Universe.Gis.Equipment;
+            systemsSearchBindingSource.DataSource = Universe.Gis.Systems;
+            shipsBindingSource.DataSource = Universe.Gis.Ships;
+            equipmentListBindingSource.DataSource = Universe.Gis.Equipment;
+
+
             fastObjectListView1.GetColumn("Base").AspectToStringConverter =
                 value =>
                 {
-                    if ((string) value == "") return "";
-                    var val = Universe.Gis.Bases.FindByNickname((string) value);
+                    if ((string)value == "") return "";
+                    var val = Universe.Gis.Bases.FindByNickname((string)value);
                     return val != null ? val.Name : value.ToString();
                 };
 
@@ -65,14 +130,14 @@ namespace FLSAM
                 value =>
                 {
                     if ((string)value == "") return "";
-                    var tmp = Universe.Gis.Factions.FirstOrDefault(w => w.Nickname == (string) value);
+                    var tmp = Universe.Gis.Factions.FirstOrDefault(w => w.Nickname == (string)value);
                     if (tmp != null)
                         return tmp.FactionName;
-                    return (string) value;
+                    return (string)value;
                 };
 
             olvCargo.GetColumn("Item").AspectToStringConverter =
-    
+
                 value =>
                 {
                     if (value.ToString() == "") return "";
@@ -86,28 +151,16 @@ namespace FLSAM
                 {
                     if (value == null) return "";
                     //TODO: dropped once?
-                    var val = Universe.Gis.Ships.FindByHash((uint) value);
+                    var val = Universe.Gis.Ships.FindByHash((uint)value);
                     return val != null ? val.Name : value.ToString();
                     //return val.Name ?? ;
                 };
 
-            DBiFace.DBPercentChanged += DBiFace_DBPercentChanged;
-            DBiFace.DBStateChanged += DBiFace_DBStateChanged;
-            DBiFace.OnReadyRequest += DBiFace_OnReadyRequest;
         }
 
 
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            DBiFace.InitiateDB(Properties.Settings.Default.DBType,
-                Properties.Settings.Default.DBPath,
-                Properties.Settings.Default.FLDBPath);
 
-            if (!DBiFace.IsDBAvailable()) return;
-
-            DBiFace.UpdateDB();
-        }
 
         #region "dbiface events"
         void DBiFace_DBStateChanged(DBStates state)
@@ -167,13 +220,13 @@ namespace FLSAM
         {
             if (DBiFace.IsDBAvailable())
                 DBiFace.GetOnlineTable();
-            var set = new Settings();
+            var set = new Settings(_log);
             set.ShowDialog();
         }
 
         private void rescanDBToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DBiFace.InitDB(Properties.Settings.Default.DBAggressiveScan);
+            DBiFace.RescanDB(Properties.Settings.Default.DBAggressiveScan);
         }
         #endregion
 
@@ -334,7 +387,7 @@ namespace FLSAM
             olvCargo.SetObjects(_curCharacter.Cargo);
 
 
-            var eqList = EquipTable.GetTable(_curCharacter);
+            var eqList = EquipTable.GetTable(_curCharacter,_log);
             dlvEquipment.DataSource = eqList;
             if (DBiFace.IsHookAvailable())
                 checkIsOnline.Checked = DBiFace.HookTransport.IsOnServer(_curCharacter.Name);
@@ -466,6 +519,11 @@ namespace FLSAM
         }
 
         #endregion
+
+        private void olvLog_CellEditFinishing(object sender, CellEditEventArgs e)
+        {
+            e.Cancel = true;
+        }
 
 
 

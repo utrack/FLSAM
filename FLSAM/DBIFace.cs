@@ -24,7 +24,7 @@ namespace FLSAM
             return AccDB.IsReady();
         }
         //TODO: select between FOS and NoSQL
-        public static void InitiateDB(decimal dbType, string path1, string path2)
+        public static void InitiateDB(decimal dbType, string path1, string path2,LogDispatcher.LogDispatcher log)
         {
             if (path1 == "" || path2 == "") return;
 
@@ -35,7 +35,7 @@ namespace FLSAM
             }
                 
 
-            AccDB = new NoSQLDB(path1, path2);
+            AccDB = new NoSQLDB(path1, path2,log);
             AccDB.ProgressChanged += _accDB_ProgressChanged;
             AccDB.StateChanged += _accDB_StateChanged;
             AccDB.OnGetFinish += AccDB_OnGetFinish;
@@ -47,7 +47,7 @@ namespace FLSAM
             if (!IsDBAvailable())
             {
                 //Database not found/set up
-                var set = new Settings();
+                var set = new Settings(log);
                 set.ShowDialog();
                 return;
             }
@@ -58,7 +58,7 @@ namespace FLSAM
                 @"Database is empty",
                 MessageBoxButtons.YesNo) != DialogResult.Yes) return;
             //Database is empty
-            InitDB(Properties.Settings.Default.DBAggressiveScan);
+            RescanDB(Properties.Settings.Default.DBAggressiveScan);
         }
 
         
@@ -77,17 +77,17 @@ namespace FLSAM
         /// </summary>
         /// <param name="path1"></param>
         /// <param name="path2"></param>
-        public static void ReloadDB(string path1,string path2)
+        public static void ReloadDB(string path1,string path2,LogDispatcher.LogDispatcher log)
         {
             //var path = _accDB.AccPath;
             if (IsDBAvailable())
                 AccDB.CloseDB();
 
-            InitiateDB(0,path1,path2);
+            InitiateDB(0,path1,path2,log);
         }
-        public static void ReloadDB()
+        public static void ReloadDB(LogDispatcher.LogDispatcher log)
         {
-            ReloadDB(Properties.Settings.Default.DBPath,Properties.Settings.Default.FLDBPath);
+            ReloadDB(Properties.Settings.Default.DBPath,Properties.Settings.Default.FLDBPath,log);
         }
 
         public static void CloseDB()
@@ -107,7 +107,7 @@ namespace FLSAM
         /// Recreates the database's contents.
         /// </summary>
         /// <param name="aggro"></param>
-        public static void InitDB(bool aggro)
+        public static void RescanDB(bool aggro)
         {
             if (!IsDBAvailable()) return;
             AccDB.LoadDB(aggro);
@@ -188,9 +188,9 @@ namespace FLSAM
         /// <param name="addr"></param>
         /// <param name="port"></param>
         /// <param name="password"></param>
-        public static void InitiateHook(string addr, int port, string password)
+        public static void InitiateHook(string addr, int port, string password,LogDispatcher.LogDispatcher log)
         {
-            HookTransport = new Transport();
+            HookTransport = new Transport(log);
             HookTransport.OpenSocket(addr, port, password);
         }
         #endregion

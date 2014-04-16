@@ -13,8 +13,6 @@ namespace FLSAM
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //TODO: dis here for debug only!
-            
             //Stopwatch sw = new Stopwatch();
             //sw.Start();
             //db.LoadDB();
