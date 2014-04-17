@@ -453,6 +453,20 @@ namespace FLSAM
         {
             if (_curCharacter == null) return;
 
+            _curCharacter.Cargo = new List<WTuple<uint, uint>>();
+            _curCharacter.Cargo.AddRange((IEnumerable<WTuple<uint,uint>>)olvCargo.Objects);
+
+
+            _curCharacter.EquipmentList = new List<Tuple<uint, string, float>>();
+            foreach (var row in (uiTables.ShipEquipDataTable) dlvEquipment.DataSource)
+            {
+                
+                if (row.Equipment == "")
+                    continue;
+                _curCharacter.EquipmentList.Add(
+                    new Tuple<uint, string, float>(Universe.CreateID(row.Equipment),row.HPName,1f));
+            }
+
             _curCharacter.SaveCharacter(Properties.Settings.Default.FLDBPath,_log);
             ((Metadata) fastObjectListView1.SelectedObject).Money = _curCharacter.Money;
             ((Metadata)fastObjectListView1.SelectedObject).Name = _curCharacter.Name;

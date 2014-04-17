@@ -32,6 +32,7 @@ namespace FLSAM
             {
                 AccDB.ProgressChanged -= _accDB_ProgressChanged;
                 AccDB.StateChanged -= _accDB_StateChanged;
+                AccDB.CloseDB();
             }
                 
 
