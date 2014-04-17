@@ -6,7 +6,8 @@ using System.Linq;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using FLAccountDB;
-using FLAccountDB.NoSQL;
+using FLAccountDB.Data;
+using FLAccountDB.LoginDB;
 using FLSAM.AccountHelper;
 using FLSAM.Forms;
 using FLSAM.GD;
@@ -89,6 +90,12 @@ namespace FLSAM
             DBiFace.DBPercentChanged += DBiFace_DBPercentChanged;
             DBiFace.DBStateChanged += DBiFace_DBStateChanged;
             DBiFace.OnReadyRequest += DBiFace_OnReadyRequest;
+            DBiFace.PlayerDBCommitted += DBiFace_PlayerDBCommitted;
+        }
+
+        void DBiFace_PlayerDBCommitted(object sender, EventArgs e)
+        {
+            toolDBQueue.Text = @"0";
         }
 
         void _log_LogMessage(LogMessage message)
@@ -263,18 +270,20 @@ namespace FLSAM
             if (!DBiFace.IsDBAvailable()) return;
 // ReSharper disable once UnusedVariable
             var v = new WaitWindow.Window(this,
-            handler => DBiFace.AccDB.OnGetFinishWindow += handler,
-            handler => DBiFace.AccDB.OnGetFinishWindow += handler,
+            handler => DBiFace.AccDB.Retriever.GetFinishWindow += handler,
+            handler => DBiFace.AccDB.Retriever.GetFinishWindow += handler,
             700);
 
             if (radioCharname.Checked)
-                DBiFace.AccDB.GetMetasByName(textBox1.Text);
+                DBiFace.AccDB.Retriever.GetMetasByName(textBox1.Text);
 
             if (radioAccID.Checked)
-                DBiFace.AccDB.GetAccountChars(textBox1.Text);
+                DBiFace.AccDB.Retriever.GetAccountChars(textBox1.Text);
 
             if (radioCharCode.Checked)
-                DBiFace.AccDB.GetMetasByCharID(textBox1.Text);
+                DBiFace.AccDB.Retriever.GetMetasByCharID(textBox1.Text);
+            if (radioIP.Checked)
+                DBiFace.AccDB.Retriever.GetAccountsByIP(textBox1.Text);
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
@@ -304,10 +313,10 @@ namespace FLSAM
             if (DBiFace.AccDB == null) return;
 // ReSharper disable once UnusedVariable
             var v = new WaitWindow.Window(this,
-            handler => DBiFace.AccDB.OnGetFinishWindow += handler,
-            handler => DBiFace.AccDB.OnGetFinishWindow += handler,
+            handler => DBiFace.AccDB.Retriever.GetFinishWindow += handler,
+            handler => DBiFace.AccDB.Retriever.GetFinishWindow += handler,
             1200);
-            DBiFace.AccDB.GetMetasByItem((uint)comboSearchItem.SelectedValue);
+            DBiFace.AccDB.Retriever.GetMetasByItem((uint)comboSearchItem.SelectedValue);
         }
         #endregion
 
@@ -351,12 +360,12 @@ namespace FLSAM
             if (DBiFace.AccDB == null) return;
             // ReSharper disable once UnusedVariable
             var v = new WaitWindow.Window(this,
-            handler => DBiFace.AccDB.OnGetFinishWindow += handler,
-            handler => DBiFace.AccDB.OnGetFinishWindow += handler,
+            handler => DBiFace.AccDB.Retriever.GetFinishWindow += handler,
+            handler => DBiFace.AccDB.Retriever.GetFinishWindow += handler,
             1200);
 
             if (radioSearchSystem.Checked)
-                DBiFace.AccDB.GetMetasBySystem((string)comboSearchLocation.SelectedValue);
+                DBiFace.AccDB.Retriever.GetMetasBySystem((string)comboSearchLocation.SelectedValue);
         }
         #endregion
 
@@ -368,6 +377,9 @@ namespace FLSAM
         {
             FillPlayerData((Metadata)fastObjectListView1.SelectedObject);
         }
+
+
+
 
         private Character _curCharacter;
         private void FillPlayerData(Metadata md)
@@ -382,6 +394,10 @@ namespace FLSAM
         private void FillPlayerData(Character ch)
         {
             _curCharacter = ch;
+            //TODO: background
+            DBiFace.AccDB.LoginDB.IPDataReady.Add((sender, e) => olvIP.SetObjects((List<IPData>)sender));
+            DBiFace.AccDB.LoginDB.GetIPByAccID(_curCharacter.AccountID);
+            //olvIP.SetObjects();
             textBoxName.Text = _curCharacter.Name;
             textBoxMoney.Text = _curCharacter.Money.ToString(CultureInfo.InvariantCulture);
             //comboBoxSystem.SelectedValue = _curCharacter.System.ToLowerInvariant();
@@ -453,6 +469,7 @@ namespace FLSAM
         {
             if (_curCharacter == null) return;
 
+            
             _curCharacter.Cargo = new List<WTuple<uint, uint>>();
             _curCharacter.Cargo.AddRange((IEnumerable<WTuple<uint,uint>>)olvCargo.Objects);
 
@@ -475,7 +492,28 @@ namespace FLSAM
             ((Metadata)fastObjectListView1.SelectedObject).ShipArch = _curCharacter.ShipArch;
             ((Metadata)fastObjectListView1.SelectedObject).LastOnline = _curCharacter.LastOnline;
             fastObjectListView1.RefreshObject(_curCharacter);
-            DBiFace.AccDB.LoadAccountDirectory(Properties.Settings.Default.FLDBPath + "/" + _curCharacter.AccountID);
+            DBiFace.AccDB.Scan.LoadAccountDirectory(Properties.Settings.Default.FLDBPath + "/" + _curCharacter.AccountID);
+        }
+
+
+
+
+        #region "main tab"
+
+        private void buttonLocation_Click(object sender, EventArgs e)
+        {
+            if (_curCharacter == null) return;
+            var locDlg = new CharLocation(_curCharacter);
+
+            if (locDlg.ShowDialog(this) != DialogResult.OK) return;
+
+            FillPlayerData(locDlg.Char);
+
+        }
+
+        private void textBoxMoney_TextChanged(object sender, EventArgs e)
+        {
+            _curCharacter.Money = uint.Parse(textBoxMoney.Text);
         }
 
         private void buttonLastOReset_Click(object sender, EventArgs e)
@@ -485,9 +523,19 @@ namespace FLSAM
             var dt = DateTime.Now;
             dateLastOnline.MaxDate = dt;
             dateLastOnline.Value = dt;
-            
+
             _curCharacter.LastOnline = dateLastOnline.Value;
         }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            SaveChar();
+        }
+
+
+        #endregion
+
+
 
         #region "reputation tab"
         private void numericRep_ValueChanged(object sender, EventArgs e)
@@ -604,26 +652,7 @@ namespace FLSAM
 
 
 
-        private void buttonLocation_Click(object sender, EventArgs e)
-        {
-            if (_curCharacter == null) return;
-            var locDlg = new CharLocation(_curCharacter);
 
-            if (locDlg.ShowDialog(this) != DialogResult.OK) return;
-
-            FillPlayerData(locDlg.Char);
-
-        }
-
-        private void textBoxMoney_TextChanged(object sender, EventArgs e)
-        {
-            _curCharacter.Money = uint.Parse(textBoxMoney.Text);
-        }
-
-        private void buttonSave_Click(object sender, EventArgs e)
-        {
-            SaveChar();
-        }
 
 
 

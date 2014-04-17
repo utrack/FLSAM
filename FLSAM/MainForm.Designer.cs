@@ -82,8 +82,6 @@
             this.buttonLocation = new System.Windows.Forms.Button();
             this.textLocation = new System.Windows.Forms.TextBox();
             this.button6 = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.objectListView1 = new BrightIdeasSoftware.ObjectListView();
             this.label6 = new System.Windows.Forms.Label();
             this.textCreatedAt = new System.Windows.Forms.TextBox();
             this.buttonLastOReset = new System.Windows.Forms.Button();
@@ -125,6 +123,12 @@
             this.olvColumn16 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn18 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn17 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
+            this.olvIP = new BrightIdeasSoftware.ObjectListView();
+            this.olvColumn21 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn9 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn13 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.olvLog = new BrightIdeasSoftware.FastObjectListView();
             this.olvColumn19 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -133,6 +137,7 @@
             this.gameInfoSet = new FLSAM.GD.DB.GameInfoSet();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.systemsSearchBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.radioIP = new System.Windows.Forms.RadioButton();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
             this.statusStrip1.SuspendLayout();
@@ -149,7 +154,6 @@
             this.tabPage2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.objectListView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.shipsBindingSource)).BeginInit();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.olvRep)).BeginInit();
@@ -158,6 +162,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dlvEquipment)).BeginInit();
             this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.olvCargo)).BeginInit();
+            this.tabPage8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.olvIP)).BeginInit();
             this.tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.olvLog)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.equipmentListBindingSource)).BeginInit();
@@ -595,6 +601,7 @@
             this.flowLayoutPanel1.Controls.Add(this.radioCharname);
             this.flowLayoutPanel1.Controls.Add(this.radioAccID);
             this.flowLayoutPanel1.Controls.Add(this.radioCharCode);
+            this.flowLayoutPanel1.Controls.Add(this.radioIP);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 16);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -650,6 +657,7 @@
             this.tabControl2.Controls.Add(this.tabPage4);
             this.tabControl2.Controls.Add(this.tabPage5);
             this.tabControl2.Controls.Add(this.tabPage7);
+            this.tabControl2.Controls.Add(this.tabPage8);
             this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl2.Location = new System.Drawing.Point(3, 3);
             this.tabControl2.Name = "tabControl2";
@@ -665,8 +673,6 @@
             this.tabPage3.Controls.Add(this.buttonLocation);
             this.tabPage3.Controls.Add(this.textLocation);
             this.tabPage3.Controls.Add(this.button6);
-            this.tabPage3.Controls.Add(this.label7);
-            this.tabPage3.Controls.Add(this.objectListView1);
             this.tabPage3.Controls.Add(this.label6);
             this.tabPage3.Controls.Add(this.textCreatedAt);
             this.tabPage3.Controls.Add(this.buttonLastOReset);
@@ -747,24 +753,6 @@
             this.button6.TabIndex = 24;
             this.button6.Text = "Open Map";
             this.button6.UseVisualStyleBackColor = true;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(31, 280);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(114, 13);
-            this.label7.TabIndex = 23;
-            this.label7.Text = "Known Login IDs \\ IPs";
-            // 
-            // objectListView1
-            // 
-            this.objectListView1.Location = new System.Drawing.Point(34, 296);
-            this.objectListView1.Name = "objectListView1";
-            this.objectListView1.Size = new System.Drawing.Size(316, 160);
-            this.objectListView1.TabIndex = 22;
-            this.objectListView1.UseCompatibleStateImageBehavior = false;
-            this.objectListView1.View = System.Windows.Forms.View.Details;
             // 
             // label6
             // 
@@ -926,7 +914,6 @@
             // 
             // textBoxName
             // 
-            this.textBoxName.Enabled = false;
             this.textBoxName.Location = new System.Drawing.Point(47, 19);
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(222, 20);
@@ -1187,6 +1174,65 @@
             this.olvColumn17.Text = "Qty";
             this.olvColumn17.Width = 120;
             // 
+            // tabPage8
+            // 
+            this.tabPage8.Controls.Add(this.label7);
+            this.tabPage8.Controls.Add(this.olvIP);
+            this.tabPage8.Location = new System.Drawing.Point(4, 22);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Size = new System.Drawing.Size(450, 462);
+            this.tabPage8.TabIndex = 4;
+            this.tabPage8.Text = "Login Data";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(3, 9);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(87, 13);
+            this.label7.TabIndex = 25;
+            this.label7.Text = "Known Login IPs";
+            // 
+            // olvIP
+            // 
+            this.olvIP.AllColumns.Add(this.olvColumn21);
+            this.olvIP.AllColumns.Add(this.olvColumn9);
+            this.olvIP.AllColumns.Add(this.olvColumn13);
+            this.olvIP.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.olvColumn21,
+            this.olvColumn9,
+            this.olvColumn13});
+            this.olvIP.Location = new System.Drawing.Point(6, 25);
+            this.olvIP.Name = "olvIP";
+            this.olvIP.ShowGroups = false;
+            this.olvIP.Size = new System.Drawing.Size(430, 160);
+            this.olvIP.TabIndex = 24;
+            this.olvIP.UseCompatibleStateImageBehavior = false;
+            this.olvIP.View = System.Windows.Forms.View.Details;
+            // 
+            // olvColumn21
+            // 
+            this.olvColumn21.AspectName = "AccID";
+            this.olvColumn21.CellPadding = null;
+            this.olvColumn21.IsVisible = false;
+            this.olvColumn21.Text = "AccID";
+            this.olvColumn21.Width = 0;
+            // 
+            // olvColumn9
+            // 
+            this.olvColumn9.AspectName = "IP";
+            this.olvColumn9.CellPadding = null;
+            this.olvColumn9.Text = "IP";
+            this.olvColumn9.Width = 120;
+            // 
+            // olvColumn13
+            // 
+            this.olvColumn13.AspectName = "Date";
+            this.olvColumn13.CellPadding = null;
+            this.olvColumn13.Text = "Date";
+            this.olvColumn13.Width = 150;
+            // 
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.olvLog);
@@ -1257,6 +1303,16 @@
             this.splitContainer1.SplitterDistance = 605;
             this.splitContainer1.TabIndex = 4;
             // 
+            // radioIP
+            // 
+            this.radioIP.AutoSize = true;
+            this.radioIP.Location = new System.Drawing.Point(271, 3);
+            this.radioIP.Name = "radioIP";
+            this.radioIP.Size = new System.Drawing.Size(35, 17);
+            this.radioIP.TabIndex = 3;
+            this.radioIP.Text = "IP";
+            this.radioIP.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1295,7 +1351,6 @@
             this.tabControl2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.objectListView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.shipsBindingSource)).EndInit();
             this.tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.olvRep)).EndInit();
@@ -1305,6 +1360,9 @@
             this.tabPage7.ResumeLayout(false);
             this.tabPage7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.olvCargo)).EndInit();
+            this.tabPage8.ResumeLayout(false);
+            this.tabPage8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.olvIP)).EndInit();
             this.tabPage6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.olvLog)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.equipmentListBindingSource)).EndInit();
@@ -1386,8 +1444,6 @@
         private System.Windows.Forms.Button buttonLastOReset;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textCreatedAt;
-        private System.Windows.Forms.Label label7;
-        private BrightIdeasSoftware.ObjectListView objectListView1;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.NumericUpDown numericRep;
@@ -1425,6 +1481,13 @@
         private System.Windows.Forms.ToolStripMenuItem saveCurrentCharToolStripMenuItem;
         private System.Windows.Forms.TextBox textAccID;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TabPage tabPage8;
+        private System.Windows.Forms.Label label7;
+        private BrightIdeasSoftware.ObjectListView olvIP;
+        private BrightIdeasSoftware.OLVColumn olvColumn9;
+        private BrightIdeasSoftware.OLVColumn olvColumn13;
+        private BrightIdeasSoftware.OLVColumn olvColumn21;
+        private System.Windows.Forms.RadioButton radioIP;
     }
 }
 

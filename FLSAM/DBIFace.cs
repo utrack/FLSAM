@@ -2,6 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using FLAccountDB;
+using FLAccountDB.Data;
 using FLAccountDB.NoSQL;
 using FLHookTransport;
 using FLSAM.Forms;
@@ -30,16 +32,17 @@ namespace FLSAM
 
             if (AccDB != null)
             {
-                AccDB.ProgressChanged -= _accDB_ProgressChanged;
+                AccDB.Scan.ProgressChanged -= _accDB_ProgressChanged;
                 AccDB.StateChanged -= _accDB_StateChanged;
                 AccDB.CloseDB();
             }
                 
 
             AccDB = new NoSQLDB(path1, path2,log);
-            AccDB.ProgressChanged += _accDB_ProgressChanged;
+            AccDB.Scan.ProgressChanged += _accDB_ProgressChanged;
             AccDB.StateChanged += _accDB_StateChanged;
-            AccDB.OnGetFinish += AccDB_OnGetFinish;
+            AccDB.Retriever.GetFinish += AccDB_OnGetFinish;
+            AccDB.Queue.Committed += Queue_Committed;
             AccDB.Queue.SetThreshold((int)Properties.Settings.Default.TuneQThreshold);
             AccDB.Queue.SetTimeout((int)Properties.Settings.Default.TuneQTimer);
             _path1 = path1;
@@ -63,6 +66,16 @@ namespace FLSAM
         }
 
         
+
+
+        public static event EventHandler PlayerDBCommitted;
+        static void Queue_Committed(object sender, EventArgs e)
+        {
+            if (PlayerDBCommitted != null)
+                PlayerDBCommitted(null, null);
+        }
+
+        
         public static void PurgeDB()
         {
 
@@ -78,6 +91,7 @@ namespace FLSAM
         /// </summary>
         /// <param name="path1"></param>
         /// <param name="path2"></param>
+        /// <param name="log"></param>
         public static void ReloadDB(string path1,string path2,LogDispatcher.LogDispatcher log)
         {
             //var path = _accDB.AccPath;
@@ -101,7 +115,7 @@ namespace FLSAM
 
         public static int DBCountRows(string table)
         {
-            return IsDBAvailable() ? AccDB.CountRows(table) : 0;
+            return IsDBAvailable() ? AccDB.Retriever.CountRows(table) : 0;
         }
 
         /// <summary>
@@ -111,7 +125,7 @@ namespace FLSAM
         public static void RescanDB(bool aggro)
         {
             if (!IsDBAvailable()) return;
-            AccDB.LoadDB(aggro);
+            AccDB.Scan.LoadDB(aggro);
             Properties.Settings.Default.LastDBUpdate = DateTime.Now;
             Properties.Settings.Default.Save();
         }
@@ -121,9 +135,8 @@ namespace FLSAM
         /// </summary>
         public static void UpdateDB()
         {
-            AccDB.Update(Properties.Settings.Default.LastDBUpdate);
-            Properties.Settings.Default.LastDBUpdate = DateTime.Now;
-            Properties.Settings.Default.Save();
+            AccDB.Scan.Update(Properties.Settings.Default.LastDBUpdate);
+            
         }
 
         #endregion
@@ -131,7 +144,7 @@ namespace FLSAM
 
         #region "DB events"
 
-        public static event NoSQLDB.PercentageChanged DBPercentChanged;
+        public static event Scanner.PercentageChanged DBPercentChanged;
         //public delegate void ProgressChanged(int percent, int qCount);
         private static void _accDB_ProgressChanged(int percent, int qcount)
         {
@@ -149,13 +162,18 @@ namespace FLSAM
         {
             if (DBStateChanged != null)
                 DBStateChanged(state);
-            if (state != DBStates.Ready) return;
+            if (state == DBStates.Ready)
+            {
+                Properties.Settings.Default.LastDBUpdate = DateTime.Now;
+                Properties.Settings.Default.Save();
+                return;
+            }
             if (DBRenew != null)
                 DBRenew(null,null);
         }
 
-        public static event NoSQLDB.RequestReady OnReadyRequest;
-        static void AccDB_OnGetFinish(System.Collections.Generic.List<FLAccountDB.Metadata> meta)
+        public static event DBCrawler.RequestReady OnReadyRequest;
+        static void AccDB_OnGetFinish(System.Collections.Generic.List<Metadata> meta)
         {
             if (OnReadyRequest != null)
                 OnReadyRequest(meta);
@@ -168,7 +186,7 @@ namespace FLSAM
             if (AccDB == null || HookTransport == null) return;
 
             if (HookTransport.IsSocketOpen())
-                AccDB.GetMetasByNames(
+                AccDB.Retriever.GetMetasByNames(
                     HookTransport.GetPlayersOnline()
                         .Select(w => w.CharName)
                         .ToList()
@@ -183,12 +201,14 @@ namespace FLSAM
         }
 
         #region "Hook jobs"
+
         /// <summary>
         /// Connects Hook's transport.
         /// </summary>
         /// <param name="addr"></param>
         /// <param name="port"></param>
         /// <param name="password"></param>
+        /// <param name="log"></param>
         public static void InitiateHook(string addr, int port, string password,LogDispatcher.LogDispatcher log)
         {
             HookTransport = new Transport(log);

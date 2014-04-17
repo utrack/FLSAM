@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using FLAccountDB;
+using FLAccountDB.Data;
 using FLSAM.GD;
 
 namespace FLSAM.Forms
