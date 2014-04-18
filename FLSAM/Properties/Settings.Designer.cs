@@ -214,5 +214,29 @@ namespace FLSAM.Properties {
                 this["FLDataUseCache"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FLDBCheckIncompatibleHardpoints {
+            get {
+                return ((bool)(this["FLDBCheckIncompatibleHardpoints"]));
+            }
+            set {
+                this["FLDBCheckIncompatibleHardpoints"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FLDBGoForDefaultPPlant {
+            get {
+                return ((bool)(this["FLDBGoForDefaultPPlant"]));
+            }
+            set {
+                this["FLDBGoForDefaultPPlant"] = value;
+            }
+        }
     }
 }

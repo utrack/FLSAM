@@ -435,6 +435,7 @@ namespace FLSAM.Forms {
                 base.Columns.Add(this.columnEquipment);
                 this.columnHPNickname = new global::System.Data.DataColumn("HPNickname", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnHPNickname);
+                this.columnEquipment.DefaultValue = ((string)(""));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -611,11 +612,11 @@ namespace FLSAM.Forms {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string Equipment {
                 get {
-                    try {
-                        return ((string)(this[this.tableShipEquip.EquipmentColumn]));
+                    if (this.IsEquipmentNull()) {
+                        return string.Empty;
                     }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Equipment\' in table \'ShipEquip\' is DBNull.", e);
+                    else {
+                        return ((string)(this[this.tableShipEquip.EquipmentColumn]));
                     }
                 }
                 set {

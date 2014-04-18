@@ -156,6 +156,7 @@
     <None Include="GD\DB\GameInfoSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GameInfoSet1.Designer.cs</LastGenOutput>
     </None>
     <None Include="GD\DB\GameInfoSet.xss">
       <DependentUpon>GameInfoSet.xsd</DependentUpon>

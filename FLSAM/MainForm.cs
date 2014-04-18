@@ -100,6 +100,12 @@ namespace FLSAM
 
         void _log_LogMessage(LogMessage message)
         {
+            if (InvokeRequired)
+            {
+                Action<LogMessage> action = _log_LogMessage;
+                Invoke(action, message);
+                return;
+            }
             _logMessages.Add(message);
             olvLog.AddObject(message);
             if (message.Type <= LogType.Error)
@@ -223,8 +229,8 @@ namespace FLSAM
                 toolProgress.Value = percent;
                 toolDBQueue.Text = qcount.ToString(CultureInfo.InvariantCulture);
             };
-            //if (toolProgress.Control.InvokeRequired)
-            toolProgress.Control.Invoke(action);
+            if (toolProgress.Control != null)
+                toolProgress.Control.Invoke(action);
         }
 
         #endregion
@@ -385,9 +391,14 @@ namespace FLSAM
         private void FillPlayerData(Metadata md)
         {
             if (md == null) return;
-            FillPlayerData(
-                md.GetCharacter(Properties.Settings.Default.FLDBPath)
-                );
+            var ch = md.GetCharacter(Properties.Settings.Default.FLDBPath,_log);
+
+            if (ch == null)
+            {
+                _log.NewMessage(LogType.Error,"Problem reading account {0}",md.Name);
+                return;
+            }
+            FillPlayerData(ch);
             
         }
 

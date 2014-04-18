@@ -79,16 +79,6 @@ namespace FLSAM.Forms
                 textFLPath.Text = br.SelectedPath;
         }
 
-        private void buttonIonPath_Click(object sender, EventArgs e)
-        {
-            var br = new FolderBrowserDialog
-            {
-                ShowNewFolderButton = false
-            };
-            if (br.ShowDialog() == DialogResult.OK)
-                textIonPath.Text = br.SelectedPath;
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             var br = new FolderBrowserDialog

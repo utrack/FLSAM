@@ -92,6 +92,8 @@ namespace FLSAM.GD
             if (flPath == "")
             {
                 _log.NewMessage(LogType.Error, "Universe: Got empty FLPath!");
+                if (DoneLoading != null)
+                    DoneLoading(null, null);
                 return false;
             }
 
@@ -104,6 +106,8 @@ namespace FLSAM.GD
             if (!File.Exists(flPath + @"\DataMaps.ini"))
             {
                 log.NewMessage(LogType.Error, "Universe: Can't find DataMaps.ini!");
+                if (DoneLoading != null)
+                    DoneLoading(null, null);
                 return false;
             }
             var dMapIni = new DataFile(flPath + @"\DataMaps.ini");
@@ -125,6 +129,8 @@ namespace FLSAM.GD
             if (!File.Exists(flPath + @"\EXE\Freelancer.ini"))
             {
                 log.NewMessage(LogType.Error, "Universe: Can't find Freelancer.ini!");
+                if (DoneLoading != null)
+                    DoneLoading(null, null);
                 return false;
             }
             var flIni = new DataFile(flPath + @"\EXE\Freelancer.ini");

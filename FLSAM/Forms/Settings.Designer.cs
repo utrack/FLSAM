@@ -52,7 +52,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonFLRescan = new System.Windows.Forms.Button();
-            this.buttonIonPath = new System.Windows.Forms.Button();
             this.buttonFLPath = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -64,6 +63,9 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.openFileSQLPicker = new System.Windows.Forms.OpenFileDialog();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.checkScanHPs = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panelCleanupBackup = new System.Windows.Forms.Panel();
             this.textCleanupBackup = new System.Windows.Forms.TextBox();
@@ -74,7 +76,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.checkBoxCleanup = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.textIonPath = new System.Windows.Forms.TextBox();
             this.textFLPath = new System.Windows.Forms.TextBox();
             this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
@@ -84,6 +85,7 @@
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabConnection.SuspendLayout();
             this.tabSQLite.SuspendLayout();
@@ -95,6 +97,7 @@
             this.groupBox1.SuspendLayout();
             this.tabTuning.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelCleanupBackup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -110,10 +113,10 @@
             this.tabControl1.Controls.Add(this.tabFLDB);
             this.tabControl1.Controls.Add(this.tabHook);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tabControl1.Location = new System.Drawing.Point(0, 423);
+            this.tabControl1.Location = new System.Drawing.Point(0, 402);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(782, 69);
+            this.tabControl1.Size = new System.Drawing.Size(782, 90);
             this.tabControl1.TabIndex = 0;
             // 
             // tabConnection
@@ -123,7 +126,7 @@
             this.tabConnection.Location = new System.Drawing.Point(4, 22);
             this.tabConnection.Name = "tabConnection";
             this.tabConnection.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConnection.Size = new System.Drawing.Size(774, 43);
+            this.tabConnection.Size = new System.Drawing.Size(774, 64);
             this.tabConnection.TabIndex = 0;
             this.tabConnection.Text = "General connection";
             this.tabConnection.UseVisualStyleBackColor = true;
@@ -135,7 +138,7 @@
             this.comboBackendSelector.Items.AddRange(new object[] {
             "NoSQL + SQLite for metadata (Legacy)",
             "FOS SQLite"});
-            this.comboBackendSelector.Location = new System.Drawing.Point(63, 9);
+            this.comboBackendSelector.Location = new System.Drawing.Point(63, 14);
             this.comboBackendSelector.Name = "comboBackendSelector";
             this.comboBackendSelector.Size = new System.Drawing.Size(132, 21);
             this.comboBackendSelector.TabIndex = 1;
@@ -144,7 +147,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 12);
+            this.label4.Location = new System.Drawing.Point(8, 17);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(49, 13);
             this.label4.TabIndex = 0;
@@ -160,14 +163,14 @@
             this.tabSQLite.Controls.Add(this.textBoxSQLPath);
             this.tabSQLite.Location = new System.Drawing.Point(4, 22);
             this.tabSQLite.Name = "tabSQLite";
-            this.tabSQLite.Size = new System.Drawing.Size(774, 43);
+            this.tabSQLite.Size = new System.Drawing.Size(774, 64);
             this.tabSQLite.TabIndex = 2;
             this.tabSQLite.Text = "SQLite";
             this.tabSQLite.UseVisualStyleBackColor = true;
             // 
             // buttonSQOpen
             // 
-            this.buttonSQOpen.Location = new System.Drawing.Point(479, 10);
+            this.buttonSQOpen.Location = new System.Drawing.Point(107, 36);
             this.buttonSQOpen.Name = "buttonSQOpen";
             this.buttonSQOpen.Size = new System.Drawing.Size(75, 20);
             this.buttonSQOpen.TabIndex = 5;
@@ -177,7 +180,7 @@
             // 
             // buttonClearSQL
             // 
-            this.buttonClearSQL.Location = new System.Drawing.Point(560, 10);
+            this.buttonClearSQL.Location = new System.Drawing.Point(188, 36);
             this.buttonClearSQL.Name = "buttonClearSQL";
             this.buttonClearSQL.Size = new System.Drawing.Size(75, 20);
             this.buttonClearSQL.TabIndex = 3;
@@ -187,7 +190,7 @@
             // 
             // buttonSQLPathSelector
             // 
-            this.buttonSQLPathSelector.Location = new System.Drawing.Point(306, 10);
+            this.buttonSQLPathSelector.Location = new System.Drawing.Point(412, 10);
             this.buttonSQLPathSelector.Name = "buttonSQLPathSelector";
             this.buttonSQLPathSelector.Size = new System.Drawing.Size(89, 20);
             this.buttonSQLPathSelector.TabIndex = 2;
@@ -211,14 +214,14 @@
             this.tabFLDB.Controls.Add(this.textBoxFLDBPath);
             this.tabFLDB.Location = new System.Drawing.Point(4, 22);
             this.tabFLDB.Name = "tabFLDB";
-            this.tabFLDB.Size = new System.Drawing.Size(774, 43);
+            this.tabFLDB.Size = new System.Drawing.Size(774, 64);
             this.tabFLDB.TabIndex = 3;
             this.tabFLDB.Text = "Freelancer DB";
             this.tabFLDB.UseVisualStyleBackColor = true;
             // 
             // buttonFLDBPathSelector
             // 
-            this.buttonFLDBPathSelector.Location = new System.Drawing.Point(504, 13);
+            this.buttonFLDBPathSelector.Location = new System.Drawing.Point(504, 23);
             this.buttonFLDBPathSelector.Name = "buttonFLDBPathSelector";
             this.buttonFLDBPathSelector.Size = new System.Drawing.Size(89, 20);
             this.buttonFLDBPathSelector.TabIndex = 3;
@@ -229,7 +232,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 16);
+            this.label6.Location = new System.Drawing.Point(8, 26);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(101, 13);
             this.label6.TabIndex = 0;
@@ -246,7 +249,7 @@
             this.tabHook.Location = new System.Drawing.Point(4, 22);
             this.tabHook.Name = "tabHook";
             this.tabHook.Padding = new System.Windows.Forms.Padding(3);
-            this.tabHook.Size = new System.Drawing.Size(774, 43);
+            this.tabHook.Size = new System.Drawing.Size(774, 64);
             this.tabHook.TabIndex = 1;
             this.tabHook.Text = "FLHook";
             this.tabHook.UseVisualStyleBackColor = true;
@@ -254,7 +257,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(216, 20);
+            this.label3.Location = new System.Drawing.Point(213, 28);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 13);
             this.label3.TabIndex = 2;
@@ -263,7 +266,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(424, 17);
+            this.label2.Location = new System.Drawing.Point(421, 25);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(89, 13);
             this.label2.TabIndex = 1;
@@ -272,7 +275,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 18);
+            this.label1.Location = new System.Drawing.Point(14, 26);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(45, 13);
             this.label1.TabIndex = 0;
@@ -286,9 +289,9 @@
             // 
             // buttonApply
             // 
-            this.buttonApply.Location = new System.Drawing.Point(645, 423);
+            this.buttonApply.Location = new System.Drawing.Point(645, 402);
             this.buttonApply.Name = "buttonApply";
-            this.buttonApply.Size = new System.Drawing.Size(137, 69);
+            this.buttonApply.Size = new System.Drawing.Size(137, 90);
             this.buttonApply.TabIndex = 1;
             this.buttonApply.Text = "Apply";
             this.buttonApply.UseVisualStyleBackColor = true;
@@ -307,17 +310,18 @@
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(782, 423);
+            this.tabControl2.Size = new System.Drawing.Size(782, 402);
             this.tabControl2.TabIndex = 2;
             // 
             // tabGeneral
             // 
+            this.tabGeneral.Controls.Add(this.groupBox4);
             this.tabGeneral.Controls.Add(this.groupBox2);
             this.tabGeneral.Controls.Add(this.groupBox1);
             this.tabGeneral.Location = new System.Drawing.Point(4, 22);
             this.tabGeneral.Name = "tabGeneral";
             this.tabGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGeneral.Size = new System.Drawing.Size(774, 397);
+            this.tabGeneral.Size = new System.Drawing.Size(774, 376);
             this.tabGeneral.TabIndex = 0;
             this.tabGeneral.Text = "General";
             this.tabGeneral.UseVisualStyleBackColor = true;
@@ -338,9 +342,7 @@
             // 
             this.groupBox1.Controls.Add(this.checkBox1);
             this.groupBox1.Controls.Add(this.buttonFLRescan);
-            this.groupBox1.Controls.Add(this.buttonIonPath);
             this.groupBox1.Controls.Add(this.buttonFLPath);
-            this.groupBox1.Controls.Add(this.textIonPath);
             this.groupBox1.Controls.Add(this.textFLPath);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label7);
@@ -361,16 +363,6 @@
             this.buttonFLRescan.Text = "Rescan";
             this.buttonFLRescan.UseVisualStyleBackColor = true;
             this.buttonFLRescan.Click += new System.EventHandler(this.buttonFLRescan_Click);
-            // 
-            // buttonIonPath
-            // 
-            this.buttonIonPath.Location = new System.Drawing.Point(546, 34);
-            this.buttonIonPath.Name = "buttonIonPath";
-            this.buttonIonPath.Size = new System.Drawing.Size(75, 20);
-            this.buttonIonPath.TabIndex = 5;
-            this.buttonIonPath.Text = "Browse";
-            this.buttonIonPath.UseVisualStyleBackColor = true;
-            this.buttonIonPath.Click += new System.EventHandler(this.buttonIonPath_Click);
             // 
             // buttonFLPath
             // 
@@ -405,7 +397,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(774, 397);
+            this.tabPage2.Size = new System.Drawing.Size(774, 376);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -416,7 +408,7 @@
             this.tabTuning.Controls.Add(this.label11);
             this.tabTuning.Location = new System.Drawing.Point(4, 22);
             this.tabTuning.Name = "tabTuning";
-            this.tabTuning.Size = new System.Drawing.Size(774, 397);
+            this.tabTuning.Size = new System.Drawing.Size(774, 376);
             this.tabTuning.TabIndex = 2;
             this.tabTuning.Text = "Fine-tuning";
             this.tabTuning.UseVisualStyleBackColor = true;
@@ -476,6 +468,29 @@
             this.openFileSQLPicker.DefaultExt = "db";
             this.openFileSQLPicker.FileName = "openFileDialog1";
             this.openFileSQLPicker.Filter = "SQLite Database (*.db)|*.db|All files|*.*";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.checkBox2);
+            this.groupBox4.Controls.Add(this.checkScanHPs);
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox4.Location = new System.Drawing.Point(3, 217);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(768, 100);
+            this.groupBox4.TabIndex = 2;
+            this.groupBox4.TabStop = false;
+            // 
+            // checkScanHPs
+            // 
+            this.checkScanHPs.AutoSize = true;
+            this.checkScanHPs.Checked = global::FLSAM.Properties.Settings.Default.FLDBCheckIncompatibleHardpoints;
+            this.checkScanHPs.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::FLSAM.Properties.Settings.Default, "FLDBCheckIncompatibleHardpoints", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkScanHPs.Location = new System.Drawing.Point(6, 19);
+            this.checkScanHPs.Name = "checkScanHPs";
+            this.checkScanHPs.Size = new System.Drawing.Size(213, 17);
+            this.checkScanHPs.TabIndex = 4;
+            this.checkScanHPs.Text = "Scan and fix wrong mounted equipment";
+            this.checkScanHPs.UseVisualStyleBackColor = true;
             // 
             // panel1
             // 
@@ -599,16 +614,6 @@
             this.checkBox1.Text = "Use game data cache";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // textIonPath
-            // 
-            this.textIonPath.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::FLSAM.Properties.Settings.Default, "IonPath", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.textIonPath.Enabled = false;
-            this.textIonPath.Location = new System.Drawing.Point(117, 34);
-            this.textIonPath.Name = "textIonPath";
-            this.textIonPath.Size = new System.Drawing.Size(423, 20);
-            this.textIonPath.TabIndex = 3;
-            this.textIonPath.Text = global::FLSAM.Properties.Settings.Default.IonPath;
-            // 
             // textFLPath
             // 
             this.textFLPath.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::FLSAM.Properties.Settings.Default, "FLPath", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
@@ -662,7 +667,7 @@
             this.checkBoxSQAggressive.AutoSize = true;
             this.checkBoxSQAggressive.Checked = global::FLSAM.Properties.Settings.Default.DBAggressiveScan;
             this.checkBoxSQAggressive.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::FLSAM.Properties.Settings.Default, "DBAggressiveScan", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBoxSQAggressive.Location = new System.Drawing.Point(401, 12);
+            this.checkBoxSQAggressive.Location = new System.Drawing.Point(507, 12);
             this.checkBoxSQAggressive.Name = "checkBoxSQAggressive";
             this.checkBoxSQAggressive.Size = new System.Drawing.Size(78, 17);
             this.checkBoxSQAggressive.TabIndex = 4;
@@ -674,7 +679,7 @@
             this.textBoxSQLPath.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::FLSAM.Properties.Settings.Default, "DBPath", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textBoxSQLPath.Location = new System.Drawing.Point(76, 10);
             this.textBoxSQLPath.Name = "textBoxSQLPath";
-            this.textBoxSQLPath.Size = new System.Drawing.Size(224, 20);
+            this.textBoxSQLPath.Size = new System.Drawing.Size(330, 20);
             this.textBoxSQLPath.TabIndex = 1;
             this.textBoxSQLPath.Text = global::FLSAM.Properties.Settings.Default.DBPath;
             // 
@@ -682,7 +687,7 @@
             // 
             this.textBoxFLDBPath.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::FLSAM.Properties.Settings.Default, "FLDBPath", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textBoxFLDBPath.Enabled = false;
-            this.textBoxFLDBPath.Location = new System.Drawing.Point(115, 13);
+            this.textBoxFLDBPath.Location = new System.Drawing.Point(115, 23);
             this.textBoxFLDBPath.Name = "textBoxFLDBPath";
             this.textBoxFLDBPath.Size = new System.Drawing.Size(383, 20);
             this.textBoxFLDBPath.TabIndex = 1;
@@ -691,7 +696,7 @@
             // numericUpDown1
             // 
             this.numericUpDown1.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::FLSAM.Properties.Settings.Default, "HookPort", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.numericUpDown1.Location = new System.Drawing.Point(519, 15);
+            this.numericUpDown1.Location = new System.Drawing.Point(516, 23);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -705,7 +710,7 @@
             // textBox2
             // 
             this.textBox2.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::FLSAM.Properties.Settings.Default, "HookPassword", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.textBox2.Location = new System.Drawing.Point(276, 15);
+            this.textBox2.Location = new System.Drawing.Point(273, 23);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(142, 20);
             this.textBox2.TabIndex = 4;
@@ -714,11 +719,23 @@
             // textBox1
             // 
             this.textBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::FLSAM.Properties.Settings.Default, "HookAddr", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.textBox1.Location = new System.Drawing.Point(68, 15);
+            this.textBox1.Location = new System.Drawing.Point(65, 23);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(142, 20);
             this.textBox1.TabIndex = 3;
             this.textBox1.Text = global::FLSAM.Properties.Settings.Default.HookAddr;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Checked = global::FLSAM.Properties.Settings.Default.FLDBGoForDefaultPPlant;
+            this.checkBox2.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::FLSAM.Properties.Settings.Default, "FLDBGoForDefaultPPlant", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkBox2.Location = new System.Drawing.Point(6, 42);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(143, 17);
+            this.checkBox2.TabIndex = 5;
+            this.checkBox2.Text = "Force default powerplant";
+            this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // Settings
             // 
@@ -750,6 +767,8 @@
             this.tabTuning.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panelCleanupBackup.ResumeLayout(false);
@@ -790,9 +809,7 @@
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabGeneral;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button buttonIonPath;
         private System.Windows.Forms.Button buttonFLPath;
-        private System.Windows.Forms.TextBox textIonPath;
         private System.Windows.Forms.TextBox textFLPath;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
@@ -820,5 +837,9 @@
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.Button buttonFLRescan;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.CheckBox checkScanHPs;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }

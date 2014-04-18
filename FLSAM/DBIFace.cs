@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -7,6 +8,9 @@ using FLAccountDB.Data;
 using FLAccountDB.NoSQL;
 using FLHookTransport;
 using FLSAM.Forms;
+using FLSAM.GD;
+using FLSAM.GD.DB;
+using LogDispatcher;
 
 namespace FLSAM
 {
@@ -22,12 +26,15 @@ namespace FLSAM
 
         public static bool IsDBAvailable()
         {
-            if (AccDB == null) return false;
-            return AccDB.IsReady();
+            return AccDB != null && AccDB.IsReady();
         }
+
+        private static LogDispatcher.LogDispatcher _log;
+
         //TODO: select between FOS and NoSQL
         public static void InitiateDB(decimal dbType, string path1, string path2,LogDispatcher.LogDispatcher log)
         {
+            _log = log;
             if (path1 == "" || path2 == "") return;
 
             if (AccDB != null)
@@ -45,6 +52,7 @@ namespace FLSAM
             AccDB.Queue.Committed += Queue_Committed;
             AccDB.Queue.SetThreshold((int)Properties.Settings.Default.TuneQThreshold);
             AccDB.Queue.SetTimeout((int)Properties.Settings.Default.TuneQTimer);
+            AccDB.Scan.AccountScanned += Scan_AccountScanned;
             _path1 = path1;
 
 
@@ -63,6 +71,137 @@ namespace FLSAM
                 MessageBoxButtons.YesNo) != DialogResult.Yes) return;
             //Database is empty
             RescanDB(Properties.Settings.Default.DBAggressiveScan);
+        }
+
+
+        /// <summary>
+        /// Handles account checking.
+        /// </summary>
+        /// <param name="meta"></param>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        static Metadata Scan_AccountScanned(Metadata meta, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!Universe.IsAttached)
+            {
+                e.Cancel = true;
+                return meta;
+            }
+
+
+            var changedAcc = false;
+            var shipdata = Universe.Gis.Ships.FindByHash(
+                meta.ShipArch
+                );
+
+            if (shipdata == null)
+            {
+                _log.NewMessage(LogType.Warning, "Unknown shiparch: {0} for {1}",
+                    meta.ShipArch,
+                meta.Name);
+                e.Cancel = true;
+                //TODO: add to non-parsed userlist
+                return meta;
+            }
+
+            var acc = meta.GetCharacter(Properties.Settings.Default.FLDBPath,_log);
+            var defaults = shipdata.GetShipDefaultInternalsRows();
+
+            GameInfoSet.HardpointsRow[] hpData = null;
+            if (Properties.Settings.Default.FLDBCheckIncompatibleHardpoints)
+                hpData = Universe.Gis.Ships.FindByHash(acc.ShipArch).GetHardpointsRows();
+                
+
+            var foundEngine = false;
+            var foundPower = false;
+            Tuple<uint, string, float> powerToReplace = null;
+            var equipToRemove = new List<Tuple<uint, string, float>>();
+
+            foreach (var equip in acc.EquipmentList)
+            {
+                var eqItem = Universe.Gis.Equipment.FindByHash(equip.Item1);
+
+                if (eqItem == null)
+                {
+                    _log.NewMessage(LogType.Error, "Unknown equipment: {0} {1} on {2}", acc.Name, equip.Item1, equip.Item2);
+                    return meta;
+                }
+                    
+
+                if (eqItem.Type == EquipTypes.Engine.ToString())
+                    foundEngine = true;
+                else if (eqItem.Type == EquipTypes.Powerplant.ToString())
+                {
+                    foundPower = true;
+                    if (eqItem.Hash != defaults[0].DPower)
+                    {
+                        _log.NewMessage(LogType.Warning,
+                        "Non-standard powerplant for {0}: {1}, should be {2}",
+                        acc.Name,
+                        Universe.Gis.Equipment.FindByHash(equip.Item1).Nickname,
+                        Universe.Gis.Equipment.FindByHash(defaults[0].DPower).Nickname
+                        );
+                        if (Properties.Settings.Default.FLDBGoForDefaultPPlant)
+                            powerToReplace = equip;
+
+                    }
+                }
+
+                if (!Properties.Settings.Default.FLDBCheckIncompatibleHardpoints) continue;
+
+                if (equip.Item2 == "") continue;
+                //var tmp = ;
+                var firstOrDefault = hpData.FirstOrDefault(row => row.Name == equip.Item2);
+                if (firstOrDefault == null) continue;
+                if (firstOrDefault.HPType.Contains(eqItem.Hardpoint)) continue;
+
+                //Unmount incompatible equip
+                var tmp1 = equip;
+                equipToRemove.Add(equip);
+                acc.Cargo.Add(new WTuple<uint, uint>(tmp1.Item1,1));
+                changedAcc = true;
+            }
+
+            if (!foundEngine)
+            {
+                _log.NewMessage(LogType.Warning,"No engine for char {0}! Adding default...",acc.Name);
+                // Get first engine HP available
+                var engineHp = shipdata.GetHardpointsRows().FirstOrDefault(w => w.EquipType == EquipTypes.Engine.ToString());
+
+                //fallback to internal if none found
+                var hp = "";
+
+                if (engineHp != null)
+                    hp = engineHp.Name;
+                acc.EquipmentList.Add(new Tuple<uint, string, float>(defaults[0].DEngine,hp,1));
+                changedAcc = true;
+            }
+
+            if (!foundPower | (powerToReplace != null))
+            {
+                if (powerToReplace != null)
+                    acc.EquipmentList.Remove(powerToReplace);
+
+                _log.NewMessage(LogType.Warning, "Adding default powerplant for char {0}...", acc.Name);
+
+                var powerHp =
+                    shipdata.GetHardpointsRows().FirstOrDefault(w => w.EquipType == EquipTypes.Powerplant.ToString());
+                var hp = "";
+
+                if (powerHp != null)
+                    hp = powerHp.Name;
+                acc.EquipmentList.Add(new Tuple<uint, string, float>(defaults[0].DPower, hp, 1));
+                changedAcc = true;
+            }
+
+
+            if (!changedAcc) return meta;
+
+            foreach (var rEq in equipToRemove)
+                acc.EquipmentList.Remove(rEq);
+
+            acc.SaveCharacter(Properties.Settings.Default.FLDBPath, _log);
+            return null;
         }
 
         
@@ -124,7 +263,14 @@ namespace FLSAM
         /// <param name="aggro"></param>
         public static void RescanDB(bool aggro)
         {
-            if (!IsDBAvailable()) return;
+            if (!IsDBAvailable())
+            {
+                _log.NewMessage(LogType.Info, "Tried to initiate playerDB when none present.");
+            }
+
+            if (!Universe.IsAttached)
+                _log.NewMessage(LogType.Warning, "Not checking playeraccs on player scanning! Universe not loaded.");
+            
             AccDB.Scan.LoadDB(aggro);
             Properties.Settings.Default.LastDBUpdate = DateTime.Now;
             Properties.Settings.Default.Save();
@@ -135,6 +281,8 @@ namespace FLSAM
         /// </summary>
         public static void UpdateDB()
         {
+            if (!Universe.IsAttached)
+                _log.NewMessage(LogType.Warning,"Not checking playeraccs on DBUpdate! Universe not loaded.");
             AccDB.Scan.Update(Properties.Settings.Default.LastDBUpdate);
             
         }
@@ -157,6 +305,9 @@ namespace FLSAM
         //public delegate void StateChange(DBStates state);
 
         //TODO if you see me wipe dis
+        //wait, huh... what did i meant when i wrote it.
+        //past me, yer really,really unhelpful
+        //TODO: figure this out
         public static event EventHandler DBRenew;
         static void _accDB_StateChanged(DBStates state)
         {
@@ -173,11 +324,14 @@ namespace FLSAM
         }
 
         public static event DBCrawler.RequestReady OnReadyRequest;
-        static void AccDB_OnGetFinish(System.Collections.Generic.List<Metadata> meta)
+        static void AccDB_OnGetFinish(List<Metadata> meta)
         {
             if (OnReadyRequest != null)
                 OnReadyRequest(meta);
         }
+
+
+
 
         #endregion
 
