@@ -1,6 +1,6 @@
 [submodule "FLDataFile"]
 	path = FLDataFile
-	url = git@github.com:utrack/FLDataFile.git
+	url = https://github.com/utrack/FLDataFile.git
 [submodule "FLAccountDB"]
 	path = FLAccountDB
-	url = git@github.com:utrack/FLAccountDB.git
+	url = https://github.com/utrack/FLAccountDB.git
