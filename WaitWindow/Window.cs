@@ -43,6 +43,14 @@ namespace WaitWindow
 
         public void EventFinished(object o,EventArgs e)
         {
+            if (InvokeRequired)
+            {
+                Action<object, EventArgs> ac = EventFinished;
+                Invoke(ac);
+                return;
+            }
+            
+
             Close();
             Dispose();
         }

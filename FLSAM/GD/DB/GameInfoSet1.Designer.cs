@@ -2218,6 +2218,7 @@ namespace FLSAM.GD.DB {
                 base.Columns.Add(this.columnEquipType);
                 this.columnHPType = new global::System.Data.DataColumn("HPType", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnHPType);
+                this.columnName.AllowDBNull = false;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3354,12 +3355,7 @@ namespace FLSAM.GD.DB {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string Name {
                 get {
-                    try {
-                        return ((string)(this[this.tableHardpoints.NameColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Name\' in table \'Hardpoints\' is DBNull.", e);
-                    }
+                    return ((string)(this[this.tableHardpoints.NameColumn]));
                 }
                 set {
                     this[this.tableHardpoints.NameColumn] = value;
@@ -3419,18 +3415,6 @@ namespace FLSAM.GD.DB {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetShipHashNull() {
                 this[this.tableHardpoints.ShipHashColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsNameNull() {
-                return this.IsNull(this.tableHardpoints.NameColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetNameNull() {
-                this[this.tableHardpoints.NameColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

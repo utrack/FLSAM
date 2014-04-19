@@ -103,7 +103,7 @@
       <DependentUpon>GameInfoSet.xsd</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GD\DB\GameInfoSet.Designer.cs">
+    <Compile Include="GD\DB\GameInfoSet1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GameInfoSet.xsd</DependentUpon>

@@ -95,6 +95,12 @@ namespace FLSAM
 
         void DBiFace_PlayerDBCommitted(object sender, EventArgs e)
         {
+            if (InvokeRequired)
+            {
+                Action<object, EventArgs> action = DBiFace_PlayerDBCommitted;
+                Invoke(action, null,null);
+                return;
+            }
             toolDBQueue.Text = @"0";
         }
 

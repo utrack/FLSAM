@@ -77,54 +77,61 @@ namespace FLSAM
         /// <summary>
         /// Handles account checking.
         /// </summary>
-        /// <param name="meta"></param>
+        /// <param name="ch"></param>
         /// <param name="e"></param>
         /// <returns></returns>
-        static Metadata Scan_AccountScanned(Metadata meta, System.ComponentModel.CancelEventArgs e)
+        static Character Scan_AccountScanned(Character ch, System.ComponentModel.CancelEventArgs e)
         {
             if (!Universe.IsAttached)
             {
                 e.Cancel = true;
-                return meta;
+                return ch;
             }
 
 
             var changedAcc = false;
             var shipdata = Universe.Gis.Ships.FindByHash(
-                meta.ShipArch
+                ch.ShipArch
                 );
 
             if (shipdata == null)
             {
                 _log.NewMessage(LogType.Warning, "Unknown shiparch: {0} for {1}",
-                    meta.ShipArch,
-                meta.Name);
+                    ch.ShipArch,
+                ch.Name);
                 e.Cancel = true;
                 //TODO: add to non-parsed userlist
-                return meta;
+                return ch;
             }
 
-            var acc = meta.GetCharacter(Properties.Settings.Default.FLDBPath,_log);
+            //var acc = meta.GetCharacter(Properties.Settings.Default.FLDBPath,_log);
             var defaults = shipdata.GetShipDefaultInternalsRows();
+
+            if (defaults.Length == 0)
+            {
+                _log.NewMessage(LogType.Error,"No default loadout for {0} {1} ({2})",ch.Name,shipdata.Nickname,shipdata.Name);
+                return ch;
+            }
 
             GameInfoSet.HardpointsRow[] hpData = null;
             if (Properties.Settings.Default.FLDBCheckIncompatibleHardpoints)
-                hpData = Universe.Gis.Ships.FindByHash(acc.ShipArch).GetHardpointsRows();
+                hpData = Universe.Gis.Ships.FindByHash(ch.ShipArch).GetHardpointsRows();
                 
+            
 
             var foundEngine = false;
             var foundPower = false;
             Tuple<uint, string, float> powerToReplace = null;
             var equipToRemove = new List<Tuple<uint, string, float>>();
 
-            foreach (var equip in acc.EquipmentList)
+            foreach (var equip in ch.EquipmentList)
             {
                 var eqItem = Universe.Gis.Equipment.FindByHash(equip.Item1);
 
                 if (eqItem == null)
                 {
-                    _log.NewMessage(LogType.Error, "Unknown equipment: {0} {1} on {2}", acc.Name, equip.Item1, equip.Item2);
-                    return meta;
+                    _log.NewMessage(LogType.Error, "Unknown equipment: {0} {1} on {2}", ch.Name, equip.Item1, equip.Item2);
+                    return ch;
                 }
                     
 
@@ -137,7 +144,8 @@ namespace FLSAM
                     {
                         _log.NewMessage(LogType.Warning,
                         "Non-standard powerplant for {0}: {1}, should be {2}",
-                        acc.Name,
+                        ch.Name,
+                        //TODO:change to eqItem
                         Universe.Gis.Equipment.FindByHash(equip.Item1).Nickname,
                         Universe.Gis.Equipment.FindByHash(defaults[0].DPower).Nickname
                         );
@@ -158,13 +166,14 @@ namespace FLSAM
                 //Unmount incompatible equip
                 var tmp1 = equip;
                 equipToRemove.Add(equip);
-                acc.Cargo.Add(new WTuple<uint, uint>(tmp1.Item1,1));
+                _log.NewMessage(LogType.Info, "Unmounting {0} on {1} ({2})...",eqItem.Nickname,equip.Item2,ch.Name);
+                ch.Cargo.Add(new WTuple<uint, uint>(tmp1.Item1,1));
                 changedAcc = true;
             }
 
             if (!foundEngine)
             {
-                _log.NewMessage(LogType.Warning,"No engine for char {0}! Adding default...",acc.Name);
+                _log.NewMessage(LogType.Warning,"No engine for char {0}! Adding default...",ch.Name);
                 // Get first engine HP available
                 var engineHp = shipdata.GetHardpointsRows().FirstOrDefault(w => w.EquipType == EquipTypes.Engine.ToString());
 
@@ -173,16 +182,16 @@ namespace FLSAM
 
                 if (engineHp != null)
                     hp = engineHp.Name;
-                acc.EquipmentList.Add(new Tuple<uint, string, float>(defaults[0].DEngine,hp,1));
+                ch.EquipmentList.Add(new Tuple<uint, string, float>(defaults[0].DEngine,hp,1));
                 changedAcc = true;
             }
 
             if (!foundPower | (powerToReplace != null))
             {
                 if (powerToReplace != null)
-                    acc.EquipmentList.Remove(powerToReplace);
+                    ch.EquipmentList.Remove(powerToReplace);
 
-                _log.NewMessage(LogType.Warning, "Adding default powerplant for char {0}...", acc.Name);
+                _log.NewMessage(LogType.Warning, "Adding default powerplant for char {0}...", ch.Name);
 
                 var powerHp =
                     shipdata.GetHardpointsRows().FirstOrDefault(w => w.EquipType == EquipTypes.Powerplant.ToString());
@@ -190,18 +199,18 @@ namespace FLSAM
 
                 if (powerHp != null)
                     hp = powerHp.Name;
-                acc.EquipmentList.Add(new Tuple<uint, string, float>(defaults[0].DPower, hp, 1));
+                ch.EquipmentList.Add(new Tuple<uint, string, float>(defaults[0].DPower, hp, 1));
                 changedAcc = true;
             }
 
 
-            if (!changedAcc) return meta;
+            if (!changedAcc) return ch;
 
             foreach (var rEq in equipToRemove)
-                acc.EquipmentList.Remove(rEq);
+                ch.EquipmentList.Remove(rEq);
 
-            acc.SaveCharacter(Properties.Settings.Default.FLDBPath, _log);
-            return null;
+            ch.SaveCharacter(Properties.Settings.Default.FLDBPath, _log);
+            return ch;
         }
 
         

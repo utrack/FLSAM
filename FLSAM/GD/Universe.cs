@@ -459,8 +459,7 @@ namespace FLSAM.GD
                         hpType = sec.GetFirstOf("hp_type")[0];
                     break;
                 case EquipTypes.Gun:
-
-                        hpType = sec.GetFirstOf("hp_gun_type")[0];
+                    hpType = sec.GetFirstOf("hp_gun_type")[0];
                     equipType = HpMap[hpType];
                     break;
                case EquipTypes.ShieldGen:
