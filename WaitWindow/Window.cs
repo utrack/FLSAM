@@ -46,7 +46,7 @@ namespace WaitWindow
             if (InvokeRequired)
             {
                 Action<object, EventArgs> ac = EventFinished;
-                Invoke(ac);
+                Invoke(ac,o,e);
                 return;
             }
             

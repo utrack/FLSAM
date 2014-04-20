@@ -238,5 +238,17 @@ namespace FLSAM.Properties {
                 this["FLDBGoForDefaultPPlant"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FLDBReadOnlyChecks {
+            get {
+                return ((bool)(this["FLDBReadOnlyChecks"]));
+            }
+            set {
+                this["FLDBReadOnlyChecks"] = value;
+            }
+        }
     }
 }

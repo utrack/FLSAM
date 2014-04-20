@@ -49,11 +49,11 @@
             this.folderBrowserFLDBPath = new System.Windows.Forms.FolderBrowserDialog();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonFLRescan = new System.Windows.Forms.Button();
             this.buttonFLPath = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabTuning = new System.Windows.Forms.TabPage();
@@ -64,7 +64,8 @@
             this.label11 = new System.Windows.Forms.Label();
             this.openFileSQLPicker = new System.Windows.Forms.OpenFileDialog();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.checkRdOnly = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkScanHPs = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panelCleanupBackup = new System.Windows.Forms.Panel();
@@ -85,7 +86,6 @@
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabConnection.SuspendLayout();
             this.tabSQLite.SuspendLayout();
@@ -93,11 +93,11 @@
             this.tabHook.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabGeneral.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabTuning.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelCleanupBackup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -221,7 +221,7 @@
             // 
             // buttonFLDBPathSelector
             // 
-            this.buttonFLDBPathSelector.Location = new System.Drawing.Point(504, 23);
+            this.buttonFLDBPathSelector.Location = new System.Drawing.Point(504, 13);
             this.buttonFLDBPathSelector.Name = "buttonFLDBPathSelector";
             this.buttonFLDBPathSelector.Size = new System.Drawing.Size(89, 20);
             this.buttonFLDBPathSelector.TabIndex = 3;
@@ -232,7 +232,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 26);
+            this.label6.Location = new System.Drawing.Point(8, 17);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(101, 13);
             this.label6.TabIndex = 0;
@@ -326,12 +326,24 @@
             this.tabGeneral.Text = "General";
             this.tabGeneral.UseVisualStyleBackColor = true;
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.checkRdOnly);
+            this.groupBox4.Controls.Add(this.checkBox2);
+            this.groupBox4.Controls.Add(this.checkScanHPs);
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox4.Location = new System.Drawing.Point(3, 197);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(768, 69);
+            this.groupBox4.TabIndex = 2;
+            this.groupBox4.TabStop = false;
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.panel1);
             this.groupBox2.Controls.Add(this.checkBoxCleanup);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox2.Location = new System.Drawing.Point(3, 88);
+            this.groupBox2.Location = new System.Drawing.Point(3, 68);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(768, 129);
             this.groupBox2.TabIndex = 1;
@@ -344,19 +356,18 @@
             this.groupBox1.Controls.Add(this.buttonFLRescan);
             this.groupBox1.Controls.Add(this.buttonFLPath);
             this.groupBox1.Controls.Add(this.textFLPath);
-            this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(768, 85);
+            this.groupBox1.Size = new System.Drawing.Size(768, 65);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Paths";
             // 
             // buttonFLRescan
             // 
-            this.buttonFLRescan.Location = new System.Drawing.Point(627, 13);
+            this.buttonFLRescan.Location = new System.Drawing.Point(546, 36);
             this.buttonFLRescan.Name = "buttonFLRescan";
             this.buttonFLRescan.Size = new System.Drawing.Size(75, 20);
             this.buttonFLRescan.TabIndex = 6;
@@ -373,15 +384,6 @@
             this.buttonFLPath.Text = "Browse";
             this.buttonFLPath.UseVisualStyleBackColor = true;
             this.buttonFLPath.Click += new System.EventHandler(this.buttonFLPath_Click);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(11, 37);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(106, 13);
-            this.label8.TabIndex = 1;
-            this.label8.Text = "IONCROSS directory";
             // 
             // label7
             // 
@@ -469,16 +471,30 @@
             this.openFileSQLPicker.FileName = "openFileDialog1";
             this.openFileSQLPicker.Filter = "SQLite Database (*.db)|*.db|All files|*.*";
             // 
-            // groupBox4
+            // checkRdOnly
             // 
-            this.groupBox4.Controls.Add(this.checkBox2);
-            this.groupBox4.Controls.Add(this.checkScanHPs);
-            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox4.Location = new System.Drawing.Point(3, 217);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(768, 100);
-            this.groupBox4.TabIndex = 2;
-            this.groupBox4.TabStop = false;
+            this.checkRdOnly.AutoSize = true;
+            this.checkRdOnly.Checked = global::FLSAM.Properties.Settings.Default.FLDBReadOnlyChecks;
+            this.checkRdOnly.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkRdOnly.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::FLSAM.Properties.Settings.Default, "FLDBReadOnlyChecks", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkRdOnly.Location = new System.Drawing.Point(380, 19);
+            this.checkRdOnly.Name = "checkRdOnly";
+            this.checkRdOnly.Size = new System.Drawing.Size(160, 17);
+            this.checkRdOnly.TabIndex = 4;
+            this.checkRdOnly.Text = "Readonly account checking";
+            this.checkRdOnly.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Checked = global::FLSAM.Properties.Settings.Default.FLDBGoForDefaultPPlant;
+            this.checkBox2.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::FLSAM.Properties.Settings.Default, "FLDBGoForDefaultPPlant", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkBox2.Location = new System.Drawing.Point(6, 42);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(143, 17);
+            this.checkBox2.TabIndex = 5;
+            this.checkBox2.Text = "Force default powerplant";
+            this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // checkScanHPs
             // 
@@ -594,6 +610,7 @@
             this.checkBoxCleanup.AutoSize = true;
             this.checkBoxCleanup.Checked = global::FLSAM.Properties.Settings.Default.CleanupEnabled;
             this.checkBoxCleanup.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::FLSAM.Properties.Settings.Default, "CleanupEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkBoxCleanup.Enabled = false;
             this.checkBoxCleanup.Location = new System.Drawing.Point(14, 20);
             this.checkBoxCleanup.Name = "checkBoxCleanup";
             this.checkBoxCleanup.Size = new System.Drawing.Size(65, 17);
@@ -607,7 +624,7 @@
             this.checkBox1.Checked = global::FLSAM.Properties.Settings.Default.FLDataUseCache;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox1.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::FLSAM.Properties.Settings.Default, "FLDataUseCache", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBox1.Location = new System.Drawing.Point(117, 60);
+            this.checkBox1.Location = new System.Drawing.Point(117, 39);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(131, 17);
             this.checkBox1.TabIndex = 7;
@@ -687,7 +704,7 @@
             // 
             this.textBoxFLDBPath.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::FLSAM.Properties.Settings.Default, "FLDBPath", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textBoxFLDBPath.Enabled = false;
-            this.textBoxFLDBPath.Location = new System.Drawing.Point(115, 23);
+            this.textBoxFLDBPath.Location = new System.Drawing.Point(115, 14);
             this.textBoxFLDBPath.Name = "textBoxFLDBPath";
             this.textBoxFLDBPath.Size = new System.Drawing.Size(383, 20);
             this.textBoxFLDBPath.TabIndex = 1;
@@ -725,18 +742,6 @@
             this.textBox1.TabIndex = 3;
             this.textBox1.Text = global::FLSAM.Properties.Settings.Default.HookAddr;
             // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Checked = global::FLSAM.Properties.Settings.Default.FLDBGoForDefaultPPlant;
-            this.checkBox2.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::FLSAM.Properties.Settings.Default, "FLDBGoForDefaultPPlant", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBox2.Location = new System.Drawing.Point(6, 42);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(143, 17);
-            this.checkBox2.TabIndex = 5;
-            this.checkBox2.Text = "Force default powerplant";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -759,6 +764,8 @@
             this.tabHook.PerformLayout();
             this.tabControl2.ResumeLayout(false);
             this.tabGeneral.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -767,8 +774,6 @@
             this.tabTuning.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panelCleanupBackup.ResumeLayout(false);
@@ -811,7 +816,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button buttonFLPath;
         private System.Windows.Forms.TextBox textFLPath;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -841,5 +845,6 @@
         private System.Windows.Forms.CheckBox checkScanHPs;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkRdOnly;
     }
 }

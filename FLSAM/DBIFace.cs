@@ -89,6 +89,7 @@ namespace FLSAM
             }
 
 
+
             var changedAcc = false;
             var shipdata = Universe.Gis.Ships.FindByHash(
                 ch.ShipArch
@@ -131,7 +132,7 @@ namespace FLSAM
                 if (eqItem == null)
                 {
                     _log.NewMessage(LogType.Error, "Unknown equipment: {0} {1} on {2}", ch.Name, equip.Item1, equip.Item2);
-                    return ch;
+                    continue;
                 }
                     
 
@@ -166,7 +167,7 @@ namespace FLSAM
                 //Unmount incompatible equip
                 var tmp1 = equip;
                 equipToRemove.Add(equip);
-                _log.NewMessage(LogType.Info, "Unmounting {0} on {1} ({2})...",eqItem.Nickname,equip.Item2,ch.Name);
+                _log.NewMessage(LogType.Info, "Unmounting {0} on {1} ({2}), ship {3} ({4})...",eqItem.Nickname,equip.Item2,ch.Name,shipdata.Nickname,shipdata.Name);
                 ch.Cargo.Add(new WTuple<uint, uint>(tmp1.Item1,1));
                 changedAcc = true;
             }
@@ -204,7 +205,7 @@ namespace FLSAM
             }
 
 
-            if (!changedAcc) return ch;
+            if (!changedAcc | Properties.Settings.Default.FLDBReadOnlyChecks) return ch;
 
             foreach (var rEq in equipToRemove)
                 ch.EquipmentList.Remove(rEq);
@@ -278,7 +279,11 @@ namespace FLSAM
             }
 
             if (!Universe.IsAttached)
-                _log.NewMessage(LogType.Warning, "Not checking playeraccs on player scanning! Universe not loaded.");
+            {
+                _log.NewMessage(LogType.Warning, "Scanning aborted! Universe not loaded.");
+                return;
+            }
+                
             
             AccDB.Scan.LoadDB(aggro);
             Properties.Settings.Default.LastDBUpdate = DateTime.Now;
@@ -291,7 +296,10 @@ namespace FLSAM
         public static void UpdateDB()
         {
             if (!Universe.IsAttached)
-                _log.NewMessage(LogType.Warning,"Not checking playeraccs on DBUpdate! Universe not loaded.");
+            {
+                _log.NewMessage(LogType.Warning, "Update aborted! Universe not loaded.");
+                return;
+            }
             AccDB.Scan.Update(Properties.Settings.Default.LastDBUpdate);
             
         }

@@ -668,6 +668,7 @@ namespace FLSAM.GD
                 foreach (var hp in utf.Hardpoints.Where(hp => hp.ToLowerInvariant().Contains("cloak")))
                 {
                     var ghr = Gis.Ships.FindByHash(hash).GetHardpointsRows();
+                    
                     if (ghr.Any(hpS => hpS.Name == hp)) continue;
                     //TODO cloak names
                     Gis.Hardpoints.AddHardpointsRow(Gis.Ships.FindByHash(hash), hp, EquipTypes.Cloak.ToString(),"cloak");
@@ -682,10 +683,14 @@ namespace FLSAM.GD
                 foreach (var hp in hpSet.Skip(1))
                 {
                     var hp1 = hp;
+                    var q = 0;
                     var ghr = Gis.Ships.FindByHash(hash).GetHardpointsRows().FirstOrDefault(hpS => hpS.Name == hp1);
+                    if (nickname == "dsy_no_elite")
+                        q++;
                     if (ghr != null)
                     {
                         ghr.HPType += String.Format(" {0}", hpSet[0]);
+                        continue;
                     }
                     Gis.Hardpoints.AddHardpointsRow(Gis.Ships.FindByHash(hash), hp, type.ToString(),hpSet[0]);
                 }

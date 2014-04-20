@@ -322,6 +322,9 @@ namespace FLSAM
 
         private void button2_Click(object sender, EventArgs e)
         {
+
+            if (comboSearchItem.SelectedValue == null) return;
+
             if (DBiFace.AccDB == null) return;
 // ReSharper disable once UnusedVariable
             var v = new WaitWindow.Window(this,
@@ -666,6 +669,28 @@ namespace FLSAM
 
 
         #endregion
+
+        private void updateDBToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DBiFace.UpdateDB();
+        }
+
+        private void stopScannerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (DBiFace.IsDBAvailable())
+                DBiFace.AccDB.Scan.Cancel();
+        }
+
+        private void buttonAddHP_Click(object sender, EventArgs e)
+        {
+            ((uiTables.ShipEquipDataTable) dlvEquipment.DataSource).AddShipEquipRow("", EquipTypes.Engine.ToString(), "", "");
+        }
+
+        private void buttonAddCargo_Click(object sender, EventArgs e)
+        {
+            _curCharacter.Cargo.Add(new WTuple<uint, uint>(0,1));
+            olvCargo.SetObjects(_curCharacter.Cargo);
+        }
 
 
 

@@ -36,7 +36,9 @@
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updateDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rescanDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopScannerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fastObjectListView1 = new BrightIdeasSoftware.FastObjectListView();
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -73,6 +75,7 @@
             this.radioCharname = new System.Windows.Forms.RadioButton();
             this.radioAccID = new System.Windows.Forms.RadioButton();
             this.radioCharCode = new System.Windows.Forms.RadioButton();
+            this.radioIP = new System.Windows.Forms.RadioButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -109,14 +112,14 @@
             this.olvColumn12 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.numericRep = new System.Windows.Forms.NumericUpDown();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
+            this.buttonAddHP = new System.Windows.Forms.Button();
             this.dlvEquipment = new BrightIdeasSoftware.DataListView();
             this.olvColumn7 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn8 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn14 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn15 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.buttonAddCargo = new System.Windows.Forms.Button();
             this.labelHoldCurrent = new System.Windows.Forms.Label();
             this.labelHoldSize = new System.Windows.Forms.Label();
             this.olvCargo = new BrightIdeasSoftware.ObjectListView();
@@ -137,7 +140,7 @@
             this.gameInfoSet = new FLSAM.GD.DB.GameInfoSet();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.systemsSearchBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.radioIP = new System.Windows.Forms.RadioButton();
+            this.label9 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
             this.statusStrip1.SuspendLayout();
@@ -229,17 +232,33 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.rescanDBToolStripMenuItem});
+            this.updateDBToolStripMenuItem,
+            this.rescanDBToolStripMenuItem,
+            this.stopScannerToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
+            // updateDBToolStripMenuItem
+            // 
+            this.updateDBToolStripMenuItem.Name = "updateDBToolStripMenuItem";
+            this.updateDBToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.updateDBToolStripMenuItem.Text = "Update DB";
+            this.updateDBToolStripMenuItem.Click += new System.EventHandler(this.updateDBToolStripMenuItem_Click);
+            // 
             // rescanDBToolStripMenuItem
             // 
             this.rescanDBToolStripMenuItem.Name = "rescanDBToolStripMenuItem";
-            this.rescanDBToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.rescanDBToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.rescanDBToolStripMenuItem.Text = "Rescan DB";
             this.rescanDBToolStripMenuItem.Click += new System.EventHandler(this.rescanDBToolStripMenuItem_Click);
+            // 
+            // stopScannerToolStripMenuItem
+            // 
+            this.stopScannerToolStripMenuItem.Name = "stopScannerToolStripMenuItem";
+            this.stopScannerToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.stopScannerToolStripMenuItem.Text = "Stop scanner";
+            this.stopScannerToolStripMenuItem.Click += new System.EventHandler(this.stopScannerToolStripMenuItem_Click);
             // 
             // fastObjectListView1
             // 
@@ -640,6 +659,16 @@
             this.radioCharCode.Text = "Character code";
             this.radioCharCode.UseVisualStyleBackColor = true;
             // 
+            // radioIP
+            // 
+            this.radioIP.AutoSize = true;
+            this.radioIP.Location = new System.Drawing.Point(271, 3);
+            this.radioIP.Name = "radioIP";
+            this.radioIP.Size = new System.Drawing.Size(35, 17);
+            this.radioIP.TabIndex = 3;
+            this.radioIP.Text = "IP";
+            this.radioIP.UseVisualStyleBackColor = true;
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.tabControl2);
@@ -1017,8 +1046,8 @@
             // 
             // tabPage5
             // 
-            this.tabPage5.Controls.Add(this.button8);
-            this.tabPage5.Controls.Add(this.button7);
+            this.tabPage5.Controls.Add(this.label9);
+            this.tabPage5.Controls.Add(this.buttonAddHP);
             this.tabPage5.Controls.Add(this.dlvEquipment);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
@@ -1027,25 +1056,16 @@
             this.tabPage5.Text = "Equipment";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
-            // button8
+            // buttonAddHP
             // 
-            this.button8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button8.Location = new System.Drawing.Point(222, 414);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(119, 23);
-            this.button8.TabIndex = 2;
-            this.button8.Text = "Remove internal HP";
-            this.button8.UseVisualStyleBackColor = true;
-            // 
-            // button7
-            // 
-            this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button7.Location = new System.Drawing.Point(347, 414);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(98, 23);
-            this.button7.TabIndex = 1;
-            this.button7.Text = "Add internal HP";
-            this.button7.UseVisualStyleBackColor = true;
+            this.buttonAddHP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonAddHP.Location = new System.Drawing.Point(322, 436);
+            this.buttonAddHP.Name = "buttonAddHP";
+            this.buttonAddHP.Size = new System.Drawing.Size(123, 23);
+            this.buttonAddHP.TabIndex = 1;
+            this.buttonAddHP.Text = "Add internal HP";
+            this.buttonAddHP.UseVisualStyleBackColor = true;
+            this.buttonAddHP.Click += new System.EventHandler(this.buttonAddHP_Click);
             // 
             // dlvEquipment
             // 
@@ -1053,9 +1073,8 @@
             this.dlvEquipment.AllColumns.Add(this.olvColumn8);
             this.dlvEquipment.AllColumns.Add(this.olvColumn14);
             this.dlvEquipment.AllColumns.Add(this.olvColumn15);
-            this.dlvEquipment.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dlvEquipment.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.dlvEquipment.CellEditActivation = BrightIdeasSoftware.ObjectListView.CellEditActivateMode.SingleClick;
             this.dlvEquipment.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumn7,
@@ -1065,7 +1084,7 @@
             this.dlvEquipment.Location = new System.Drawing.Point(0, 0);
             this.dlvEquipment.Name = "dlvEquipment";
             this.dlvEquipment.ShowGroups = false;
-            this.dlvEquipment.Size = new System.Drawing.Size(445, 408);
+            this.dlvEquipment.Size = new System.Drawing.Size(445, 430);
             this.dlvEquipment.TabIndex = 0;
             this.dlvEquipment.UseCompatibleStateImageBehavior = false;
             this.dlvEquipment.View = System.Windows.Forms.View.Details;
@@ -1105,6 +1124,7 @@
             // 
             // tabPage7
             // 
+            this.tabPage7.Controls.Add(this.buttonAddCargo);
             this.tabPage7.Controls.Add(this.labelHoldCurrent);
             this.tabPage7.Controls.Add(this.labelHoldSize);
             this.tabPage7.Controls.Add(this.olvCargo);
@@ -1114,6 +1134,17 @@
             this.tabPage7.TabIndex = 3;
             this.tabPage7.Text = "Cargo";
             this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // buttonAddCargo
+            // 
+            this.buttonAddCargo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonAddCargo.Location = new System.Drawing.Point(362, 403);
+            this.buttonAddCargo.Name = "buttonAddCargo";
+            this.buttonAddCargo.Size = new System.Drawing.Size(85, 27);
+            this.buttonAddCargo.TabIndex = 3;
+            this.buttonAddCargo.Text = "Add Cargo";
+            this.buttonAddCargo.UseVisualStyleBackColor = true;
+            this.buttonAddCargo.Click += new System.EventHandler(this.buttonAddCargo_Click);
             // 
             // labelHoldCurrent
             // 
@@ -1303,15 +1334,14 @@
             this.splitContainer1.SplitterDistance = 605;
             this.splitContainer1.TabIndex = 4;
             // 
-            // radioIP
+            // label9
             // 
-            this.radioIP.AutoSize = true;
-            this.radioIP.Location = new System.Drawing.Point(271, 3);
-            this.radioIP.Name = "radioIP";
-            this.radioIP.Size = new System.Drawing.Size(35, 17);
-            this.radioIP.TabIndex = 3;
-            this.radioIP.Text = "IP";
-            this.radioIP.UseVisualStyleBackColor = true;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(3, 436);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(208, 13);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "Tip: clear the nickname to remove an item.";
             // 
             // MainForm
             // 
@@ -1356,6 +1386,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.olvRep)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericRep)).EndInit();
             this.tabPage5.ResumeLayout(false);
+            this.tabPage5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dlvEquipment)).EndInit();
             this.tabPage7.ResumeLayout(false);
             this.tabPage7.PerformLayout();
@@ -1461,8 +1492,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private BrightIdeasSoftware.OLVColumn olvColumn14;
         private BrightIdeasSoftware.OLVColumn olvColumn15;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button buttonAddHP;
         private System.Windows.Forms.TabPage tabPage7;
         private BrightIdeasSoftware.ObjectListView olvCargo;
         private BrightIdeasSoftware.OLVColumn olvColumn17;
@@ -1488,6 +1518,10 @@
         private BrightIdeasSoftware.OLVColumn olvColumn13;
         private BrightIdeasSoftware.OLVColumn olvColumn21;
         private System.Windows.Forms.RadioButton radioIP;
+        private System.Windows.Forms.ToolStripMenuItem updateDBToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stopScannerToolStripMenuItem;
+        private System.Windows.Forms.Button buttonAddCargo;
+        private System.Windows.Forms.Label label9;
     }
 }
 
