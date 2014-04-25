@@ -46,7 +46,7 @@ namespace FLSAM
         {
             InitializeComponent();
 
-
+            comboSearchLocation.DisplayMember = "Name";
 
             olvLog.SetObjects(_logMessages);
             _log.SetLogLevel(LogType.Debug);
@@ -217,7 +217,6 @@ namespace FLSAM
             }
 
             Action action = () => toolStatus.Text = str;
-            //TODO: update the main grid
             //if (toolProgress.Control.InvokeRequired)
             Invoke(action);
         }
@@ -243,6 +242,7 @@ namespace FLSAM
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            DBiFace.PlayerDBCommitted -= DBiFace_PlayerDBCommitted;
             DBiFace.CloseDB();
         }
 
@@ -259,6 +259,17 @@ namespace FLSAM
         private void rescanDBToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DBiFace.RescanDB(Properties.Settings.Default.DBAggressiveScan);
+        }
+
+        private void updateDBToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DBiFace.UpdateDB();
+        }
+
+        private void stopScannerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (DBiFace.IsDBAvailable())
+                DBiFace.AccDB.Scan.Cancel();
         }
 
         private void saveCurrentCharToolStripMenuItem_Click(object sender, EventArgs e)
@@ -381,6 +392,9 @@ namespace FLSAM
 
             if (radioSearchSystem.Checked)
                 DBiFace.AccDB.Retriever.GetMetasBySystem((string)comboSearchLocation.SelectedValue);
+
+            if (radioSearchBase.Checked)
+                DBiFace.AccDB.Retriever.GetMetasByBase((string)comboSearchLocation.SelectedValue);
         }
         #endregion
 
@@ -424,9 +438,9 @@ namespace FLSAM
             comboBoxShip.SelectedValue = _curCharacter.ShipArch;
 
             textAccID.Text = ch.AccountID;
+            textAdminRights.Text = ch.AdminRights;
             var sysRow = Universe.Gis.Systems.FindByNickname(_curCharacter.System);
             var sysName = sysRow != null ? sysRow.Name : _curCharacter.System;
-
 
             if (_curCharacter.Base != null)
             {
@@ -633,6 +647,11 @@ namespace FLSAM
             }
         }
 
+        private void buttonAddHP_Click(object sender, EventArgs e)
+        {
+            ((uiTables.ShipEquipDataTable) dlvEquipment.DataSource).AddShipEquipRow("", EquipTypes.Engine.ToString(), "", "");
+        }
+
 
         #endregion
 
@@ -657,6 +676,18 @@ namespace FLSAM
             RefreshCargoSpace();
         }
 
+        private void buttonAddCargo_Click(object sender, EventArgs e)
+        {
+            _curCharacter.Cargo.Add(new WTuple<uint, uint>(0,1));
+            olvCargo.SetObjects(_curCharacter.Cargo);
+        }
+
+        #endregion
+
+
+
+
+
         #endregion
 
         private void olvLog_CellEditFinishing(object sender, CellEditEventArgs e)
@@ -664,32 +695,43 @@ namespace FLSAM
             e.Cancel = true;
         }
 
-
-
-
-
-        #endregion
-
-        private void updateDBToolStripMenuItem_Click(object sender, EventArgs e)
+        private void buttonGetAdmins_Click(object sender, EventArgs e)
         {
-            DBiFace.UpdateDB();
+            DBiFace.AccDB.Retriever.GetMetasOfAdmins();
         }
 
-        private void stopScannerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void radioCharname_CheckedChanged(object sender, EventArgs e)
         {
-            if (DBiFace.IsDBAvailable())
-                DBiFace.AccDB.Scan.Cancel();
+            labelWildcards.Visible = radioCharname.Checked;
         }
 
-        private void buttonAddHP_Click(object sender, EventArgs e)
+        private void radioIP_CheckedChanged(object sender, EventArgs e)
         {
-            ((uiTables.ShipEquipDataTable) dlvEquipment.DataSource).AddShipEquipRow("", EquipTypes.Engine.ToString(), "", "");
+            labelWildcards.Visible = radioIP.Checked;
         }
 
-        private void buttonAddCargo_Click(object sender, EventArgs e)
+        private void olvIP_CellRightClick(object sender, CellRightClickEventArgs e)
         {
-            _curCharacter.Cargo.Add(new WTuple<uint, uint>(0,1));
-            olvCargo.SetObjects(_curCharacter.Cargo);
+
+            if (e.Model != null)
+            {
+                olvIP.SelectedIndex = e.RowIndex;
+                e.MenuStrip = cmsOlvIP;
+            }
+                
+        }
+
+        private void searchThisIPToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectTab(0);
+            radioIP.Checked = true;
+            textBox1.Text = ((IPData) olvIP.SelectedObject).IP;
+            button1_Click_1(null,null);
+        }
+
+        private void buttonGetBanned_Click(object sender, EventArgs e)
+        {
+            DBiFace.AccDB.Retriever.GetBanned();
         }
 
 

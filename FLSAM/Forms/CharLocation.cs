@@ -16,14 +16,18 @@ namespace FLSAM.Forms
             InitializeComponent();
             systemsBindingSource.DataSource = Universe.Gis.Systems;
             basesBindingSource.DataSource = Universe.Gis.Bases;
+
             Char = ch;
             textNick.Text = Char.Name;
+            comboSystem.SelectedValue = ch.System;
+
+
 
             var formheight = Height - ClientSize.Height;
             Height = groupBox1.Height + groupDocked.Height + formheight;
 
-            if (ch.Base == null) checkSpace.Checked = true;
-
+            if (ch.Base != null) return;
+            checkSpace.Checked = true;
             numX.Value = (decimal)ch.Position[0];
             numY.Value = (decimal)ch.Position[1];
             numZ.Value = (decimal)ch.Position[2];
@@ -45,6 +49,7 @@ namespace FLSAM.Forms
 
         private void CharLocation_Shown(object sender, EventArgs e)
         {
+
             comboBase.SelectedValue = Char.Base ?? Char.LastBase;
             comboSystem.SelectedValue = Char.System;
             basesBindingSource.Filter = String.Format("System LIKE '{0}' And System <> ''", comboSystem.SelectedValue);

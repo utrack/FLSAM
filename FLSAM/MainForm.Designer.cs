@@ -52,6 +52,10 @@
             this.toolDBQueue = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+            this.buttonGetAdmins = new System.Windows.Forms.Button();
+            this.buttonGetBanned = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.radioSearchLocName = new System.Windows.Forms.RadioButton();
@@ -61,6 +65,7 @@
             this.radioSearchSystem = new System.Windows.Forms.RadioButton();
             this.radioSearchBase = new System.Windows.Forms.RadioButton();
             this.comboSearchLocation = new System.Windows.Forms.ComboBox();
+            this.systemsSearchBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button2 = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
@@ -69,6 +74,7 @@
             this.comboSearchItem = new System.Windows.Forms.ComboBox();
             this.equipmentSearchBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.labelWildcards = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -99,7 +105,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBoxAdmin = new System.Windows.Forms.CheckBox();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -112,6 +117,7 @@
             this.olvColumn12 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.numericRep = new System.Windows.Forms.NumericUpDown();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.label9 = new System.Windows.Forms.Label();
             this.buttonAddHP = new System.Windows.Forms.Button();
             this.dlvEquipment = new BrightIdeasSoftware.DataListView();
             this.olvColumn7 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -139,16 +145,20 @@
             this.equipmentListBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.gameInfoSet = new FLSAM.GD.DB.GameInfoSet();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.systemsSearchBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.label9 = new System.Windows.Forms.Label();
+            this.cmsOlvIP = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.searchThisIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textAdminRights = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.flowLayoutPanel5.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.systemsSearchBindingSource)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.equipmentSearchBindingSource)).BeginInit();
@@ -175,7 +185,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.systemsSearchBindingSource)).BeginInit();
+            this.cmsOlvIP.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -398,6 +408,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.groupBox4);
             this.tabPage1.Controls.Add(this.groupBox3);
             this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Controls.Add(this.groupBox1);
@@ -409,6 +420,47 @@
             this.tabPage1.Text = "Filter";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.flowLayoutPanel5);
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox4.Location = new System.Drawing.Point(3, 299);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(458, 100);
+            this.groupBox4.TabIndex = 8;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Various";
+            // 
+            // flowLayoutPanel5
+            // 
+            this.flowLayoutPanel5.Controls.Add(this.buttonGetAdmins);
+            this.flowLayoutPanel5.Controls.Add(this.buttonGetBanned);
+            this.flowLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 16);
+            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(452, 81);
+            this.flowLayoutPanel5.TabIndex = 0;
+            // 
+            // buttonGetAdmins
+            // 
+            this.buttonGetAdmins.Location = new System.Drawing.Point(3, 3);
+            this.buttonGetAdmins.Name = "buttonGetAdmins";
+            this.buttonGetAdmins.Size = new System.Drawing.Size(100, 24);
+            this.buttonGetAdmins.TabIndex = 0;
+            this.buttonGetAdmins.Text = "Admins";
+            this.buttonGetAdmins.UseVisualStyleBackColor = true;
+            this.buttonGetAdmins.Click += new System.EventHandler(this.buttonGetAdmins_Click);
+            // 
+            // buttonGetBanned
+            // 
+            this.buttonGetBanned.Location = new System.Drawing.Point(109, 3);
+            this.buttonGetBanned.Name = "buttonGetBanned";
+            this.buttonGetBanned.Size = new System.Drawing.Size(100, 24);
+            this.buttonGetBanned.TabIndex = 1;
+            this.buttonGetBanned.Text = "Banned";
+            this.buttonGetBanned.UseVisualStyleBackColor = true;
+            this.buttonGetBanned.Click += new System.EventHandler(this.buttonGetBanned_Click);
+            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.flowLayoutPanel4);
@@ -416,7 +468,7 @@
             this.groupBox3.Controls.Add(this.flowLayoutPanel3);
             this.groupBox3.Controls.Add(this.comboSearchLocation);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox3.Location = new System.Drawing.Point(3, 161);
+            this.groupBox3.Location = new System.Drawing.Point(3, 174);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(458, 125);
             this.groupBox3.TabIndex = 7;
@@ -505,6 +557,7 @@
             // 
             this.comboSearchLocation.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.comboSearchLocation.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboSearchLocation.DataSource = this.systemsSearchBindingSource;
             this.comboSearchLocation.DisplayMember = "Nickname";
             this.comboSearchLocation.FormattingEnabled = true;
             this.comboSearchLocation.Location = new System.Drawing.Point(3, 80);
@@ -520,7 +573,7 @@
             this.groupBox2.Controls.Add(this.flowLayoutPanel2);
             this.groupBox2.Controls.Add(this.comboSearchItem);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox2.Location = new System.Drawing.Point(3, 77);
+            this.groupBox2.Location = new System.Drawing.Point(3, 90);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(458, 84);
             this.groupBox2.TabIndex = 6;
@@ -586,16 +639,26 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.labelWildcards);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.flowLayoutPanel1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(458, 74);
+            this.groupBox1.Size = new System.Drawing.Size(458, 87);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "String Search";
+            // 
+            // labelWildcards
+            // 
+            this.labelWildcards.AutoSize = true;
+            this.labelWildcards.Location = new System.Drawing.Point(3, 68);
+            this.labelWildcards.Name = "labelWildcards";
+            this.labelWildcards.Size = new System.Drawing.Size(231, 13);
+            this.labelWildcards.TabIndex = 3;
+            this.labelWildcards.Text = "Wildcards: % = any substring, _ = any character";
             // 
             // button1
             // 
@@ -638,6 +701,7 @@
             this.radioCharname.TabStop = true;
             this.radioCharname.Text = "Charname";
             this.radioCharname.UseVisualStyleBackColor = true;
+            this.radioCharname.CheckedChanged += new System.EventHandler(this.radioCharname_CheckedChanged);
             // 
             // radioAccID
             // 
@@ -668,6 +732,7 @@
             this.radioIP.TabIndex = 3;
             this.radioIP.Text = "IP";
             this.radioIP.UseVisualStyleBackColor = true;
+            this.radioIP.CheckedChanged += new System.EventHandler(this.radioIP_CheckedChanged);
             // 
             // tabPage2
             // 
@@ -696,6 +761,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.textAdminRights);
             this.tabPage3.Controls.Add(this.textAccID);
             this.tabPage3.Controls.Add(this.label8);
             this.tabPage3.Controls.Add(this.buttonSave);
@@ -715,7 +781,6 @@
             this.tabPage3.Controls.Add(this.label3);
             this.tabPage3.Controls.Add(this.label2);
             this.tabPage3.Controls.Add(this.checkBox1);
-            this.tabPage3.Controls.Add(this.checkBoxAdmin);
             this.tabPage3.Controls.Add(this.button5);
             this.tabPage3.Controls.Add(this.button4);
             this.tabPage3.Controls.Add(this.button3);
@@ -731,7 +796,7 @@
             // 
             // textAccID
             // 
-            this.textAccID.Location = new System.Drawing.Point(88, 125);
+            this.textAccID.Location = new System.Drawing.Point(88, 194);
             this.textAccID.Name = "textAccID";
             this.textAccID.ReadOnly = true;
             this.textAccID.Size = new System.Drawing.Size(262, 20);
@@ -740,11 +805,11 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(57, 128);
+            this.label8.Location = new System.Drawing.Point(14, 197);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(18, 13);
+            this.label8.Size = new System.Drawing.Size(61, 13);
             this.label8.TabIndex = 28;
-            this.label8.Text = "ID";
+            this.label8.Text = "Account ID";
             // 
             // buttonSave
             // 
@@ -758,7 +823,7 @@
             // 
             // buttonLocation
             // 
-            this.buttonLocation.Location = new System.Drawing.Point(364, 178);
+            this.buttonLocation.Location = new System.Drawing.Point(364, 247);
             this.buttonLocation.Name = "buttonLocation";
             this.buttonLocation.Size = new System.Drawing.Size(75, 20);
             this.buttonLocation.TabIndex = 26;
@@ -769,16 +834,16 @@
             // textLocation
             // 
             this.textLocation.Enabled = false;
-            this.textLocation.Location = new System.Drawing.Point(88, 178);
+            this.textLocation.Location = new System.Drawing.Point(88, 247);
             this.textLocation.Name = "textLocation";
             this.textLocation.Size = new System.Drawing.Size(262, 20);
             this.textLocation.TabIndex = 25;
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(364, 151);
+            this.button6.Location = new System.Drawing.Point(364, 326);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 20);
+            this.button6.Size = new System.Drawing.Size(75, 48);
             this.button6.TabIndex = 24;
             this.button6.Text = "Open Map";
             this.button6.UseVisualStyleBackColor = true;
@@ -786,7 +851,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(31, 260);
+            this.label6.Location = new System.Drawing.Point(31, 329);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(44, 13);
             this.label6.TabIndex = 21;
@@ -795,14 +860,14 @@
             // textCreatedAt
             // 
             this.textCreatedAt.Enabled = false;
-            this.textCreatedAt.Location = new System.Drawing.Point(88, 257);
+            this.textCreatedAt.Location = new System.Drawing.Point(88, 326);
             this.textCreatedAt.Name = "textCreatedAt";
             this.textCreatedAt.Size = new System.Drawing.Size(262, 20);
             this.textCreatedAt.TabIndex = 20;
             // 
             // buttonLastOReset
             // 
-            this.buttonLastOReset.Location = new System.Drawing.Point(364, 231);
+            this.buttonLastOReset.Location = new System.Drawing.Point(364, 300);
             this.buttonLastOReset.Name = "buttonLastOReset";
             this.buttonLastOReset.Size = new System.Drawing.Size(75, 20);
             this.buttonLastOReset.TabIndex = 19;
@@ -833,7 +898,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(47, 207);
+            this.label5.Location = new System.Drawing.Point(47, 276);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(28, 13);
             this.label5.TabIndex = 16;
@@ -844,7 +909,7 @@
             this.comboBoxShip.DataSource = this.shipsBindingSource;
             this.comboBoxShip.DisplayMember = "Name";
             this.comboBoxShip.FormattingEnabled = true;
-            this.comboBoxShip.Location = new System.Drawing.Point(88, 204);
+            this.comboBoxShip.Location = new System.Drawing.Point(88, 273);
             this.comboBoxShip.Name = "comboBoxShip";
             this.comboBoxShip.Size = new System.Drawing.Size(262, 21);
             this.comboBoxShip.TabIndex = 15;
@@ -852,7 +917,7 @@
             // 
             // dateLastOnline
             // 
-            this.dateLastOnline.Location = new System.Drawing.Point(88, 231);
+            this.dateLastOnline.Location = new System.Drawing.Point(88, 300);
             this.dateLastOnline.Name = "dateLastOnline";
             this.dateLastOnline.Size = new System.Drawing.Size(262, 20);
             this.dateLastOnline.TabIndex = 14;
@@ -860,7 +925,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(15, 235);
+            this.label4.Location = new System.Drawing.Point(15, 304);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(60, 13);
             this.label4.TabIndex = 13;
@@ -868,7 +933,7 @@
             // 
             // textBoxMoney
             // 
-            this.textBoxMoney.Location = new System.Drawing.Point(88, 151);
+            this.textBoxMoney.Location = new System.Drawing.Point(88, 220);
             this.textBoxMoney.Name = "textBoxMoney";
             this.textBoxMoney.Size = new System.Drawing.Size(262, 20);
             this.textBoxMoney.TabIndex = 9;
@@ -877,7 +942,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(27, 181);
+            this.label3.Location = new System.Drawing.Point(27, 250);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(48, 13);
             this.label3.TabIndex = 8;
@@ -886,7 +951,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(36, 154);
+            this.label2.Location = new System.Drawing.Point(36, 223);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(39, 13);
             this.label2.TabIndex = 7;
@@ -902,17 +967,6 @@
             this.checkBox1.TabIndex = 6;
             this.checkBox1.Text = "is Banned";
             this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxAdmin
-            // 
-            this.checkBoxAdmin.AutoSize = true;
-            this.checkBoxAdmin.BackColor = System.Drawing.Color.Transparent;
-            this.checkBoxAdmin.Location = new System.Drawing.Point(47, 73);
-            this.checkBoxAdmin.Name = "checkBoxAdmin";
-            this.checkBoxAdmin.Size = new System.Drawing.Size(65, 17);
-            this.checkBoxAdmin.TabIndex = 5;
-            this.checkBoxAdmin.Text = "is Admin";
-            this.checkBoxAdmin.UseVisualStyleBackColor = false;
             // 
             // button5
             // 
@@ -1055,6 +1109,15 @@
             this.tabPage5.TabIndex = 2;
             this.tabPage5.Text = "Equipment";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(3, 436);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(208, 13);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "Tip: clear the nickname to remove an item.";
             // 
             // buttonAddHP
             // 
@@ -1234,6 +1297,7 @@
             this.olvColumn21,
             this.olvColumn9,
             this.olvColumn13});
+            this.olvIP.FullRowSelect = true;
             this.olvIP.Location = new System.Drawing.Point(6, 25);
             this.olvIP.Name = "olvIP";
             this.olvIP.ShowGroups = false;
@@ -1241,6 +1305,7 @@
             this.olvIP.TabIndex = 24;
             this.olvIP.UseCompatibleStateImageBehavior = false;
             this.olvIP.View = System.Windows.Forms.View.Details;
+            this.olvIP.CellRightClick += new System.EventHandler<BrightIdeasSoftware.CellRightClickEventArgs>(this.olvIP_CellRightClick);
             // 
             // olvColumn21
             // 
@@ -1334,14 +1399,27 @@
             this.splitContainer1.SplitterDistance = 605;
             this.splitContainer1.TabIndex = 4;
             // 
-            // label9
+            // cmsOlvIP
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 436);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(208, 13);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "Tip: clear the nickname to remove an item.";
+            this.cmsOlvIP.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.searchThisIPToolStripMenuItem});
+            this.cmsOlvIP.Name = "cmsOlvIP";
+            this.cmsOlvIP.Size = new System.Drawing.Size(154, 26);
+            // 
+            // searchThisIPToolStripMenuItem
+            // 
+            this.searchThisIPToolStripMenuItem.Name = "searchThisIPToolStripMenuItem";
+            this.searchThisIPToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.searchThisIPToolStripMenuItem.Text = "Search this IP...";
+            this.searchThisIPToolStripMenuItem.Click += new System.EventHandler(this.searchThisIPToolStripMenuItem_Click);
+            // 
+            // textAdminRights
+            // 
+            this.textAdminRights.Enabled = false;
+            this.textAdminRights.Location = new System.Drawing.Point(47, 75);
+            this.textAdminRights.Name = "textAdminRights";
+            this.textAdminRights.Size = new System.Drawing.Size(100, 20);
+            this.textAdminRights.TabIndex = 30;
             // 
             // MainForm
             // 
@@ -1364,11 +1442,14 @@
             this.statusStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.flowLayoutPanel5.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel4.PerformLayout();
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.systemsSearchBindingSource)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
@@ -1402,7 +1483,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.systemsSearchBindingSource)).EndInit();
+            this.cmsOlvIP.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1448,7 +1529,6 @@
         private System.Windows.Forms.TextBox textBoxMoney;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBoxAdmin;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
@@ -1522,6 +1602,14 @@
         private System.Windows.Forms.ToolStripMenuItem stopScannerToolStripMenuItem;
         private System.Windows.Forms.Button buttonAddCargo;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
+        private System.Windows.Forms.Button buttonGetAdmins;
+        private System.Windows.Forms.Label labelWildcards;
+        private System.Windows.Forms.ContextMenuStrip cmsOlvIP;
+        private System.Windows.Forms.ToolStripMenuItem searchThisIPToolStripMenuItem;
+        private System.Windows.Forms.Button buttonGetBanned;
+        private System.Windows.Forms.TextBox textAdminRights;
     }
 }
 

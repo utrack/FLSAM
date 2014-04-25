@@ -20,6 +20,18 @@ namespace FLSAM
         public static NoSQLDB AccDB;
         public static Transport HookTransport;
 
+        public static void GetOnlineTable()
+        {
+            if (AccDB == null || HookTransport == null) return;
+
+            if (HookTransport.IsSocketOpen())
+                AccDB.Retriever.GetMetasByNames(
+                    HookTransport.GetPlayersOnline()
+                        .Select(w => w.CharName)
+                        .ToList()
+                    );
+        }
+
         private static string _path1;
 
         #region "DB jobs"
@@ -352,24 +364,9 @@ namespace FLSAM
 
         #endregion
 
-        public static void GetOnlineTable()
-        {
-            if (AccDB == null || HookTransport == null) return;
-
-            if (HookTransport.IsSocketOpen())
-                AccDB.Retriever.GetMetasByNames(
-                    HookTransport.GetPlayersOnline()
-                        .Select(w => w.CharName)
-                        .ToList()
-                    );
-        }
 
 
-
-        public static bool IsHookAvailable()
-        {
-            return HookTransport != null && HookTransport.IsSocketOpen();
-        }
+       
 
         #region "Hook jobs"
 
@@ -385,6 +382,12 @@ namespace FLSAM
             HookTransport = new Transport(log);
             HookTransport.OpenSocket(addr, port, password);
         }
+
+        public static bool IsHookAvailable()
+        {
+            return HookTransport != null && HookTransport.IsSocketOpen();
+        }
+
         #endregion
 
     }
