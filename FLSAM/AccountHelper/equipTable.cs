@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using FLAccountDB;
 using FLAccountDB.Data;
 using FLSAM.Forms;
 using FLSAM.GD;
@@ -26,56 +26,78 @@ namespace FLSAM.AccountHelper
 
             foreach (var equip in curCharacter.EquipmentList)
             {
+                var eq = Universe.Gis.Equipment.FindByHash(equip.Item1);
+                string eqNick;
+                var eqType = "";
+                if (eq == null)
+                {
+                    eqNick = equip.Item1.ToString(CultureInfo.InvariantCulture);
+                    if (!Universe.IsAttached)
+                        log.NewMessage(LogType.Warning, "Equip {0} not found while reading character {1}!", equip.Item1,
+                            curCharacter.Name);
+                }
+                else
+                {
+                    eqNick = eq.Nickname;
+                    eqType = eq.Type;
+                }
+                    
+                
+                //ID,HP,health
+
+                //internal HP
                 if (equip.Item2 == "")
                 {
-                    var eq = Universe.Gis.Equipment.FindByHash(equip.Item1);
-                    if (eq != null)
-                        eqList.AddShipEquipRow(equip.Item2, eq.Type, eq.Nickname, eq.Hardpoint);
-                    else
-                    {
-                        eqList.AddShipEquipRow(equip.Item2, "", equip.Item1.ToString(CultureInfo.InvariantCulture), "");
-                        if (!Universe.IsAttached)
-                            log.NewMessage(LogType.Warning, "Equip {0} not found while reading character {1}!", equip.Item1, curCharacter.Name);
-                    }
-                    //eqList.AddShipEquipRow("", "Internal", _uni.Gis.Equipment.FindByHash(equip.Item1).Nickname);
+                    eqList.AddShipEquipRow("", eqType, eqNick, "");
                     continue;
                 }
 
-
-
                 var firstOrDefault = eqList.FirstOrDefault(w => w.HPName == equip.Item2);
                 if (firstOrDefault != null)
-                    firstOrDefault[2] = Universe.Gis.Equipment.FindByHash(equip.Item1).Nickname;
+                    firstOrDefault[2] = eqNick;
                 else
                 {
-                    var eq = Universe.Gis.Equipment.FindByHash(equip.Item1);
-                    if (eq != null)
-                        eqList.AddShipEquipRow(equip.Item2, eq.Type, eq.Nickname, eq.Hardpoint);
-                    else
-                    {
-                        eqList.AddShipEquipRow(equip.Item2, "Internal", equip.Item1.ToString(CultureInfo.InvariantCulture), "");
-                        if (!Universe.IsAttached)
-                            log.NewMessage(LogType.Warning, "Equip {0} not found while reading character {1}!", equip.Item1, curCharacter.Name);
-                    }
-                        
-                    
+                    eqList.AddShipEquipRow(equip.Item2, eqType, eqNick, "");
                 }
             }
 
             return eqList;
         }
 
-        public static void RetEquipment(Character ch,uiTables.ShipEquipDataTable eqTable)
+        /// <summary>
+        /// Generate new EquipmentList based on ShipEquipDataTable
+        /// </summary>
+        /// <param name="eqTable">Source EquipTable.</param>
+        /// <returns>List of equipment; can be assigned to Character's EquipmentList.</returns>
+        public static List<Tuple<uint, string, float>> GetEquipmentList(uiTables.ShipEquipDataTable eqTable)
         {
-            ch.EquipmentList.Clear();
-
-            foreach (uiTables.ShipEquipRow row in eqTable.Rows)
-            {
-                ch.EquipmentList.Add(
-                    new Tuple<uint, string, float>(Universe.CreateID(row.Equipment), row.HPName, 1f)
-                    );
-            }
+            return (from uiTables.ShipEquipRow row in eqTable.Rows 
+                    where row.Equipment != "" 
+                    select 
+                    new Tuple<uint, string, float>(Universe.CreateID(row.Equipment), row.HPName, 1f))
+                    .ToList();
         }
 
+        /// <summary>
+        /// Returns cargo list for those archived accounts.
+        /// </summary>
+        /// <param name="equip"></param>
+        /// <returns></returns>
+        public static List<WTuple<uint, uint>> GetTableFallback(string equip)
+        {
+            var ret = new List<WTuple<uint, uint>>();
+
+            foreach (var eqItem in equip.Split(' '))
+            {
+                var equipHash = uint.Parse(eqItem);
+                var prevItem = ret.FirstOrDefault(w => w.Item1 == equipHash);
+                if (prevItem == null)
+                    ret.Add(new WTuple<uint, uint>(equipHash, 1));
+                else
+                    prevItem.Item2++;
+            }
+            return ret;
+
+        }
     }
 }

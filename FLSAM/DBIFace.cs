@@ -113,7 +113,7 @@ namespace FLSAM
                     ch.ShipArch,
                 ch.Name);
                 e.Cancel = true;
-                //TODO: add to non-parsed userlist
+                //TODO: add to non-parsed charlist
                 return ch;
             }
 
@@ -158,8 +158,7 @@ namespace FLSAM
                         _log.NewMessage(LogType.Warning,
                         "Non-standard powerplant for {0}: {1}, should be {2}",
                         ch.Name,
-                        //TODO:change to eqItem
-                        Universe.Gis.Equipment.FindByHash(equip.Item1).Nickname,
+                        eqItem.Nickname,
                         Universe.Gis.Equipment.FindByHash(defaults[0].DPower).Nickname
                         );
                         if (Properties.Settings.Default.FLDBGoForDefaultPPlant)

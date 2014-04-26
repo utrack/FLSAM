@@ -74,6 +74,7 @@
             this.comboSearchItem = new System.Windows.Forms.ComboBox();
             this.equipmentSearchBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkSearchDeleted = new System.Windows.Forms.CheckBox();
             this.labelWildcards = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -85,6 +86,9 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label10 = new System.Windows.Forms.Label();
+            this.buttonGetAccChars = new System.Windows.Forms.Button();
+            this.textAdminRights = new System.Windows.Forms.TextBox();
             this.textAccID = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.buttonSave = new System.Windows.Forms.Button();
@@ -104,9 +108,7 @@
             this.textBoxMoney = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.checkBanned = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -138,6 +140,13 @@
             this.olvColumn21 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn9 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn13 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.buttonUnban = new System.Windows.Forms.Button();
+            this.buttonBan = new System.Windows.Forms.Button();
+            this.rtbBanReason = new System.Windows.Forms.RichTextBox();
+            this.checkBanned2 = new System.Windows.Forms.CheckBox();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.olvLog = new BrightIdeasSoftware.FastObjectListView();
             this.olvColumn19 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -147,7 +156,6 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.cmsOlvIP = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.searchThisIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.textAdminRights = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
             this.statusStrip1.SuspendLayout();
@@ -177,6 +185,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.olvCargo)).BeginInit();
             this.tabPage8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.olvIP)).BeginInit();
+            this.tabPage9.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.olvLog)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.equipmentListBindingSource)).BeginInit();
@@ -639,6 +649,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkSearchDeleted);
             this.groupBox1.Controls.Add(this.labelWildcards);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.textBox1);
@@ -650,6 +661,16 @@
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "String Search";
+            // 
+            // checkSearchDeleted
+            // 
+            this.checkSearchDeleted.AutoSize = true;
+            this.checkSearchDeleted.Location = new System.Drawing.Point(236, 67);
+            this.checkSearchDeleted.Name = "checkSearchDeleted";
+            this.checkSearchDeleted.Size = new System.Drawing.Size(127, 17);
+            this.checkSearchDeleted.TabIndex = 4;
+            this.checkSearchDeleted.Text = "Search deleted chars";
+            this.checkSearchDeleted.UseVisualStyleBackColor = true;
             // 
             // labelWildcards
             // 
@@ -752,6 +773,7 @@
             this.tabControl2.Controls.Add(this.tabPage5);
             this.tabControl2.Controls.Add(this.tabPage7);
             this.tabControl2.Controls.Add(this.tabPage8);
+            this.tabControl2.Controls.Add(this.tabPage9);
             this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl2.Location = new System.Drawing.Point(3, 3);
             this.tabControl2.Name = "tabControl2";
@@ -761,6 +783,8 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.label10);
+            this.tabPage3.Controls.Add(this.buttonGetAccChars);
             this.tabPage3.Controls.Add(this.textAdminRights);
             this.tabPage3.Controls.Add(this.textAccID);
             this.tabPage3.Controls.Add(this.label8);
@@ -780,9 +804,7 @@
             this.tabPage3.Controls.Add(this.textBoxMoney);
             this.tabPage3.Controls.Add(this.label3);
             this.tabPage3.Controls.Add(this.label2);
-            this.tabPage3.Controls.Add(this.checkBox1);
-            this.tabPage3.Controls.Add(this.button5);
-            this.tabPage3.Controls.Add(this.button4);
+            this.tabPage3.Controls.Add(this.checkBanned);
             this.tabPage3.Controls.Add(this.button3);
             this.tabPage3.Controls.Add(this.textBoxName);
             this.tabPage3.Controls.Add(this.label1);
@@ -793,6 +815,33 @@
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "Main";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(4, 78);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(37, 13);
+            this.label10.TabIndex = 32;
+            this.label10.Text = "Rights";
+            // 
+            // buttonGetAccChars
+            // 
+            this.buttonGetAccChars.Location = new System.Drawing.Point(364, 194);
+            this.buttonGetAccChars.Name = "buttonGetAccChars";
+            this.buttonGetAccChars.Size = new System.Drawing.Size(75, 20);
+            this.buttonGetAccChars.TabIndex = 31;
+            this.buttonGetAccChars.Text = "Get Chars";
+            this.buttonGetAccChars.UseVisualStyleBackColor = true;
+            this.buttonGetAccChars.Click += new System.EventHandler(this.buttonGetAccChars_Click);
+            // 
+            // textAdminRights
+            // 
+            this.textAdminRights.Enabled = false;
+            this.textAdminRights.Location = new System.Drawing.Point(47, 75);
+            this.textAdminRights.Name = "textAdminRights";
+            this.textAdminRights.Size = new System.Drawing.Size(222, 20);
+            this.textAdminRights.TabIndex = 30;
             // 
             // textAccID
             // 
@@ -841,9 +890,9 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(364, 326);
+            this.button6.Location = new System.Drawing.Point(88, 352);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 48);
+            this.button6.Size = new System.Drawing.Size(75, 53);
             this.button6.TabIndex = 24;
             this.button6.Text = "Open Map";
             this.button6.UseVisualStyleBackColor = true;
@@ -877,7 +926,7 @@
             // 
             // buttonKick
             // 
-            this.buttonKick.Location = new System.Drawing.Point(275, 46);
+            this.buttonKick.Location = new System.Drawing.Point(275, 44);
             this.buttonKick.Name = "buttonKick";
             this.buttonKick.Size = new System.Drawing.Size(75, 23);
             this.buttonKick.TabIndex = 18;
@@ -957,49 +1006,32 @@
             this.label2.TabIndex = 7;
             this.label2.Text = "Money";
             // 
-            // checkBox1
+            // checkBanned
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Enabled = false;
-            this.checkBox1.Location = new System.Drawing.Point(47, 50);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(73, 17);
-            this.checkBox1.TabIndex = 6;
-            this.checkBox1.Text = "is Banned";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(364, 46);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "Unban";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(364, 17);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Ban";
-            this.button4.UseVisualStyleBackColor = true;
+            this.checkBanned.AutoSize = true;
+            this.checkBanned.Enabled = false;
+            this.checkBanned.Location = new System.Drawing.Point(47, 50);
+            this.checkBanned.Name = "checkBanned";
+            this.checkBanned.Size = new System.Drawing.Size(73, 17);
+            this.checkBanned.TabIndex = 6;
+            this.checkBanned.Text = "is Banned";
+            this.checkBanned.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(275, 17);
+            this.button3.Location = new System.Drawing.Point(364, 44);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 2;
             this.button3.Text = "Delete";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // textBoxName
             // 
             this.textBoxName.Location = new System.Drawing.Point(47, 19);
             this.textBoxName.Name = "textBoxName";
-            this.textBoxName.Size = new System.Drawing.Size(222, 20);
+            this.textBoxName.Size = new System.Drawing.Size(392, 20);
             this.textBoxName.TabIndex = 1;
             // 
             // label1
@@ -1329,6 +1361,78 @@
             this.olvColumn13.Text = "Date";
             this.olvColumn13.Width = 150;
             // 
+            // tabPage9
+            // 
+            this.tabPage9.Controls.Add(this.groupBox5);
+            this.tabPage9.Location = new System.Drawing.Point(4, 22);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Size = new System.Drawing.Size(450, 462);
+            this.tabPage9.TabIndex = 5;
+            this.tabPage9.Text = "Ban";
+            this.tabPage9.UseVisualStyleBackColor = true;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.label11);
+            this.groupBox5.Controls.Add(this.buttonUnban);
+            this.groupBox5.Controls.Add(this.buttonBan);
+            this.groupBox5.Controls.Add(this.rtbBanReason);
+            this.groupBox5.Controls.Add(this.checkBanned2);
+            this.groupBox5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox5.Location = new System.Drawing.Point(0, 0);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(450, 255);
+            this.groupBox5.TabIndex = 0;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Account";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 55);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(44, 13);
+            this.label11.TabIndex = 4;
+            this.label11.Text = "Reason";
+            // 
+            // buttonUnban
+            // 
+            this.buttonUnban.Location = new System.Drawing.Point(369, 45);
+            this.buttonUnban.Name = "buttonUnban";
+            this.buttonUnban.Size = new System.Drawing.Size(75, 23);
+            this.buttonUnban.TabIndex = 3;
+            this.buttonUnban.Text = "Unban";
+            this.buttonUnban.UseVisualStyleBackColor = true;
+            this.buttonUnban.Click += new System.EventHandler(this.buttonUnban_Click);
+            // 
+            // buttonBan
+            // 
+            this.buttonBan.Location = new System.Drawing.Point(288, 45);
+            this.buttonBan.Name = "buttonBan";
+            this.buttonBan.Size = new System.Drawing.Size(75, 23);
+            this.buttonBan.TabIndex = 2;
+            this.buttonBan.Text = "Ban";
+            this.buttonBan.UseVisualStyleBackColor = true;
+            this.buttonBan.Click += new System.EventHandler(this.buttonBan_Click);
+            // 
+            // rtbBanReason
+            // 
+            this.rtbBanReason.Location = new System.Drawing.Point(7, 74);
+            this.rtbBanReason.Name = "rtbBanReason";
+            this.rtbBanReason.Size = new System.Drawing.Size(437, 175);
+            this.rtbBanReason.TabIndex = 1;
+            this.rtbBanReason.Text = "";
+            // 
+            // checkBanned2
+            // 
+            this.checkBanned2.AutoSize = true;
+            this.checkBanned2.Location = new System.Drawing.Point(7, 20);
+            this.checkBanned2.Name = "checkBanned2";
+            this.checkBanned2.Size = new System.Drawing.Size(63, 17);
+            this.checkBanned2.TabIndex = 0;
+            this.checkBanned2.Text = "Banned";
+            this.checkBanned2.UseVisualStyleBackColor = true;
+            // 
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.olvLog);
@@ -1413,14 +1517,6 @@
             this.searchThisIPToolStripMenuItem.Text = "Search this IP...";
             this.searchThisIPToolStripMenuItem.Click += new System.EventHandler(this.searchThisIPToolStripMenuItem_Click);
             // 
-            // textAdminRights
-            // 
-            this.textAdminRights.Enabled = false;
-            this.textAdminRights.Location = new System.Drawing.Point(47, 75);
-            this.textAdminRights.Name = "textAdminRights";
-            this.textAdminRights.Size = new System.Drawing.Size(100, 20);
-            this.textAdminRights.TabIndex = 30;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1475,6 +1571,9 @@
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.olvIP)).EndInit();
+            this.tabPage9.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.tabPage6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.olvLog)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.equipmentListBindingSource)).EndInit();
@@ -1528,9 +1627,7 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TextBox textBoxMoney;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.CheckBox checkBanned;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.Label label1;
@@ -1610,6 +1707,16 @@
         private System.Windows.Forms.ToolStripMenuItem searchThisIPToolStripMenuItem;
         private System.Windows.Forms.Button buttonGetBanned;
         private System.Windows.Forms.TextBox textAdminRights;
+        private System.Windows.Forms.Button buttonGetAccChars;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button buttonUnban;
+        private System.Windows.Forms.Button buttonBan;
+        private System.Windows.Forms.RichTextBox rtbBanReason;
+        private System.Windows.Forms.CheckBox checkBanned2;
+        private System.Windows.Forms.CheckBox checkSearchDeleted;
     }
 }
 

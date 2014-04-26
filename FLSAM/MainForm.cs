@@ -11,8 +11,11 @@ using FLAccountDB.LoginDB;
 using FLSAM.AccountHelper;
 using FLSAM.Forms;
 using FLSAM.GD;
+
 //using LogDispatcher = LogDispatcher.LogDispatcher;
+using FLSAM.Properties;
 using LogDispatcher;
+using Settings = FLSAM.Forms.Settings;
 
 namespace FLSAM
 {
@@ -301,7 +304,7 @@ namespace FLSAM
                 DBiFace.AccDB.Retriever.GetMetasByName(textBox1.Text);
 
             if (radioAccID.Checked)
-                DBiFace.AccDB.Retriever.GetAccountChars(textBox1.Text);
+                DBiFace.AccDB.Retriever.GetAccountChars(textBox1.Text,checkSearchDeleted.Checked);
 
             if (radioCharCode.Checked)
                 DBiFace.AccDB.Retriever.GetMetasByCharID(textBox1.Text);
@@ -415,37 +418,73 @@ namespace FLSAM
         {
             if (md == null) return;
             var ch = md.GetCharacter(Properties.Settings.Default.FLDBPath,_log);
-
-            if (ch == null)
+            
+            if (ch != null)
             {
-                _log.NewMessage(LogType.Error,"Problem reading account {0}",md.Name);
+                //TODO: that's a breach mate
+                ch.AdminRights = DBiFace.AccDB.Scan.IsAdmin(ch.AccountID);
+                FillPlayerData(ch);
                 return;
             }
-            FillPlayerData(ch);
-            
+
+
+            // Fill what we can from metadata
+            _log.NewMessage(LogType.Info, "Problem reading account {0} (archived?)", md.Name);
+
+            FillArchivedPlayerData(md);
+
+
         }
 
-        private void FillPlayerData(Character ch)
+        private void FillArchivedPlayerData(Metadata md)
         {
-            _curCharacter = ch;
-            //TODO: background
-            DBiFace.AccDB.LoginDB.IPDataReady.Add((sender, e) => olvIP.SetObjects((List<IPData>)sender));
-            DBiFace.AccDB.LoginDB.GetIPByAccID(_curCharacter.AccountID);
-            //olvIP.SetObjects();
-            textBoxName.Text = _curCharacter.Name;
-            textBoxMoney.Text = _curCharacter.Money.ToString(CultureInfo.InvariantCulture);
-            //comboBoxSystem.SelectedValue = _curCharacter.System.ToLowerInvariant();
-            comboBoxShip.SelectedValue = _curCharacter.ShipArch;
 
-            textAccID.Text = ch.AccountID;
-            textAdminRights.Text = ch.AdminRights;
-            var sysRow = Universe.Gis.Systems.FindByNickname(_curCharacter.System);
-            var sysName = sysRow != null ? sysRow.Name : _curCharacter.System;
-
-            if (_curCharacter.Base != null)
+            foreach (var b in GetAll(tabPage2,typeof(Button)))
             {
-                var baseRow = Universe.Gis.Bases.FindByNickname(_curCharacter.Base);
-                var baseName = baseRow != null ? baseRow.Name : _curCharacter.Base;
+                b.Enabled = false;
+            }
+            buttonGetAccChars.Enabled = true;
+            tabPage5.Enabled = false;
+
+            DBiFace.AccDB.LoginDB.IPDataReady.Add((sender, e) => olvIP.SetObjects((List<IPData>)sender));
+            DBiFace.AccDB.LoginDB.GetIPByAccID(md.AccountID);
+
+            textBoxName.Text = md.Name;
+            textBoxMoney.Text = md.Money.ToString(CultureInfo.InvariantCulture);
+
+            comboBoxShip.SelectedValue = md.ShipArch;
+            checkBanned.Checked = md.IsBanned;
+            checkBanned2.Checked = checkBanned.Checked;
+            rtbBanReason.Text = Resources.MainForm_Archived_account;
+
+            textAccID.Text = md.AccountID;
+            textAdminRights.Text = Resources.MainForm_Archived_account;
+            
+
+            FillLocationBox(md.System,md.Base);
+
+            labelHoldSize.Text = "";
+            labelHoldCurrent.Text = Resources.MainForm_Archived_account;
+
+            dateLastOnline.MaxDate = md.LastOnline;
+            dateLastOnline.Value = md.LastOnline;
+            olvRep.Clear();
+            dlvEquipment.Clear();
+            olvCargo.SetObjects(EquipTable.GetTableFallback(md.Equipment));
+
+            checkIsOnline.Checked = false;
+
+        }
+
+        private void FillLocationBox(string sysNick,string baseNick)
+        {
+            var sysRow = Universe.Gis.Systems.FindByNickname(sysNick);
+            var sysName = sysRow != null ? sysRow.Name : sysNick;
+
+            if (baseNick != null)
+            {
+                var baseRow = Universe.Gis.Bases.FindByNickname(baseNick);
+                var baseName = baseRow != null ? baseRow.Name : baseNick;
                 textLocation.Text = String.Format("{0} ({1}), docked at {2}",
                     sysName,
                     _curCharacter.System,
@@ -456,9 +495,38 @@ namespace FLSAM
             {
                 textLocation.Text = String.Format("{0} ({1}), in space",
                     sysName,
-                    _curCharacter.System
+                    sysNick
                     );
             }
+        }
+
+        private void FillPlayerData(Character ch)
+        {
+
+
+            _curCharacter = ch;
+
+            foreach (var b in GetAll(tabPage2, typeof(Button)))
+            {
+                b.Enabled = true;
+            }
+            tabPage5.Enabled = true;
+            //TODO: background
+            DBiFace.AccDB.LoginDB.IPDataReady.Add((sender, e) => olvIP.SetObjects((List<IPData>)sender));
+            DBiFace.AccDB.LoginDB.GetIPByAccID(_curCharacter.AccountID);
+            //olvIP.SetObjects();
+            textBoxName.Text = _curCharacter.Name;
+            textBoxMoney.Text = _curCharacter.Money.ToString(CultureInfo.InvariantCulture);
+            //comboBoxSystem.SelectedValue = _curCharacter.System.ToLowerInvariant();
+            comboBoxShip.SelectedValue = _curCharacter.ShipArch;
+            checkBanned.Checked = ch.IsBanned;
+            checkBanned2.Checked = checkBanned.Checked;
+            rtbBanReason.Text = DBiFace.AccDB.Bans.GetAccBanReason(_curCharacter.AccountID);
+
+            textAccID.Text = ch.AccountID;
+            textAdminRights.Text = ch.AdminRights;
+
+            FillLocationBox(ch.System, ch.Base);
 
 
 
@@ -472,6 +540,7 @@ namespace FLSAM
             dateLastOnline.MaxDate = DateTime.Now;
             dateLastOnline.Value = _curCharacter.LastOnline;
             olvRep.SetObjects(_curCharacter.Reputation.ToList());
+            olvCargo.SetObjects(null);
             olvCargo.SetObjects(_curCharacter.Cargo);
 
 
@@ -508,15 +577,7 @@ namespace FLSAM
             _curCharacter.Cargo.AddRange((IEnumerable<WTuple<uint,uint>>)olvCargo.Objects);
 
 
-            _curCharacter.EquipmentList = new List<Tuple<uint, string, float>>();
-            foreach (var row in (uiTables.ShipEquipDataTable) dlvEquipment.DataSource)
-            {
-                
-                if (row.Equipment == "")
-                    continue;
-                _curCharacter.EquipmentList.Add(
-                    new Tuple<uint, string, float>(Universe.CreateID(row.Equipment),row.HPName,1f));
-            }
+            _curCharacter.EquipmentList = EquipTable.GetEquipmentList((uiTables.ShipEquipDataTable)dlvEquipment.DataSource);
 
             _curCharacter.SaveCharacter(Properties.Settings.Default.FLDBPath,_log);
             ((Metadata) fastObjectListView1.SelectedObject).Money = _curCharacter.Money;
@@ -734,11 +795,50 @@ namespace FLSAM
             DBiFace.AccDB.Retriever.GetBanned();
         }
 
+        private void buttonGetAccChars_Click(object sender, EventArgs e)
+        {
+            if (textAccID.Text == "") return;
+            tabControl1.SelectTab(0);
+            radioAccID.Checked = true;
+            textBox1.Text = textAccID.Text;
+            button1_Click_1(null, null);
+        }
+
+        private void buttonBan_Click(object sender, EventArgs e)
+        {
+            if (_curCharacter == null) return;
+            DBiFace.AccDB.Bans.AccountBan(_curCharacter.AccountID,rtbBanReason.Text);
+        }
+
+        private void buttonUnban_Click(object sender, EventArgs e)
+        {
+            if (_curCharacter == null) return;
+            DBiFace.AccDB.Bans.AccountUnban(_curCharacter.AccountID);
+        }
 
 
 
 
 
+        private IEnumerable<Control> GetAll(Control control, Type type)
+        {
+            var controls = control.Controls.Cast<Control>();
+
+            var enumerable = controls as IList<Control> ?? controls.ToList();
+            return enumerable.SelectMany(ctrl => GetAll(ctrl, type))
+                                      .Concat(enumerable)
+                                      .Where(c => c.GetType() == type);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (DBiFace.AccDB == null) return;
+            DBiFace.AccDB.RemoveAccount(_curCharacter.CharPath,_curCharacter.AccountID,_curCharacter.CharID);
+            fastObjectListView1.RemoveObject(_curCharacter);
+            
+        }
+
+        
 
 
 

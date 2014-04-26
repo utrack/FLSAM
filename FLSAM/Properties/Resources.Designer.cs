@@ -59,5 +59,14 @@ namespace FLSAM.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Archived account.
+        /// </summary>
+        internal static string MainForm_Archived_account {
+            get {
+                return ResourceManager.GetString("MainForm_Archived_account", resourceCulture);
+            }
+        }
     }
 }

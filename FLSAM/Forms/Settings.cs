@@ -105,6 +105,7 @@ namespace FLSAM.Forms
 
         private void buttonFLRescan_Click(object sender, EventArgs e)
         {
+// ReSharper disable once UnusedVariable
             var v = new WaitWindow.Window(this,
             handler => Universe.DoneLoading += handler,
             handler => Universe.DoneLoading += handler,
