@@ -94,6 +94,7 @@ namespace FLSAM
         /// <returns></returns>
         static Character Scan_AccountScanned(Character ch, System.ComponentModel.CancelEventArgs e)
         {
+            //nothing to scan against
             if (!Universe.IsAttached)
             {
                 e.Cancel = true;
@@ -101,8 +102,10 @@ namespace FLSAM
             }
 
 
-
+            //indicates if character was altered in any way
             var changedAcc = false;
+
+            //get the ship of character
             var shipdata = Universe.Gis.Ships.FindByHash(
                 ch.ShipArch
                 );
@@ -120,17 +123,20 @@ namespace FLSAM
             //var acc = meta.GetCharacter(Properties.Settings.Default.FLDBPath,_log);
             var defaults = shipdata.GetShipDefaultInternalsRows();
 
+            //probably shouldn't fire at all in stable mod builds
             if (defaults.Length == 0)
             {
                 _log.NewMessage(LogType.Error,"No default loadout for {0} {1} ({2})",ch.Name,shipdata.Nickname,shipdata.Name);
                 return ch;
             }
 
-            GameInfoSet.HardpointsRow[] hpData = null;
-            if (Properties.Settings.Default.FLDBCheckIncompatibleHardpoints)
-                hpData = Universe.Gis.Ships.FindByHash(ch.ShipArch).GetHardpointsRows();
-                
-            
+            var hpData = Universe.Gis.Ships.FindByHash(ch.ShipArch).GetHardpointsRows();
+
+            if (hpData == null)
+            {
+                _log.NewMessage(LogType.Error, "No hardpoint data for {0} {1} ({2})", ch.Name, shipdata.Nickname, shipdata.Name);
+                return ch;
+            }
 
             var foundEngine = false;
             var foundPower = false;
@@ -146,10 +152,19 @@ namespace FLSAM
                     _log.NewMessage(LogType.Error, "Unknown equipment: {0} {1} on {2}", ch.Name, equip.Item1, equip.Item2);
                     continue;
                 }
-                    
+
 
                 if (eqItem.Type == EquipTypes.Engine.ToString())
+                {
+                    //remove engine on standard hardpoint if
+                    if (equip.Item2 == "")
+                        if (hpData.FirstOrDefault(w => w.HPType == EquipTypes.Engine.ToString()) != null)
+                        {
+                            equipToRemove.Add(equip);
+                            continue;
+                        }
                     foundEngine = true;
+                }
                 else if (eqItem.Type == EquipTypes.Powerplant.ToString())
                 {
                     foundPower = true;
@@ -170,16 +185,14 @@ namespace FLSAM
                 if (!Properties.Settings.Default.FLDBCheckIncompatibleHardpoints) continue;
 
                 if (equip.Item2 == "") continue;
-                //var tmp = ;
                 var firstOrDefault = hpData.FirstOrDefault(row => row.Name == equip.Item2);
                 if (firstOrDefault == null) continue;
                 if (firstOrDefault.HPType.Contains(eqItem.Hardpoint)) continue;
 
                 //Unmount incompatible equip
-                var tmp1 = equip;
                 equipToRemove.Add(equip);
                 _log.NewMessage(LogType.Info, "Unmounting {0} on {1} ({2}), ship {3} ({4})...",eqItem.Nickname,equip.Item2,ch.Name,shipdata.Nickname,shipdata.Name);
-                ch.Cargo.Add(new WTuple<uint, uint>(tmp1.Item1,1));
+                ch.Cargo.Add(new WTuple<uint, uint>(equip.Item1,1));
                 changedAcc = true;
             }
 
@@ -216,8 +229,9 @@ namespace FLSAM
             }
 
 
-            if (!changedAcc | Properties.Settings.Default.FLDBReadOnlyChecks) return ch;
+            if ((!changedAcc) | Properties.Settings.Default.FLDBReadOnlyChecks) return ch;
 
+            //remove everything we marked
             foreach (var rEq in equipToRemove)
                 ch.EquipmentList.Remove(rEq);
 
