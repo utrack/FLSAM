@@ -135,6 +135,11 @@
             this.olvColumn18 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn17 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.label12 = new System.Windows.Forms.Label();
+            this.olvID = new BrightIdeasSoftware.ObjectListView();
+            this.olvColumn22 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn23 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn24 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.label7 = new System.Windows.Forms.Label();
             this.olvIP = new BrightIdeasSoftware.ObjectListView();
             this.olvColumn21 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -184,6 +189,7 @@
             this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.olvCargo)).BeginInit();
             this.tabPage8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.olvID)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.olvIP)).BeginInit();
             this.tabPage9.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -1302,6 +1308,8 @@
             // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.label12);
+            this.tabPage8.Controls.Add(this.olvID);
             this.tabPage8.Controls.Add(this.label7);
             this.tabPage8.Controls.Add(this.olvIP);
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
@@ -1311,10 +1319,60 @@
             this.tabPage8.Text = "Login Data";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(3, 283);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(88, 13);
+            this.label12.TabIndex = 27;
+            this.label12.Text = "Known Login IDs";
+            // 
+            // olvID
+            // 
+            this.olvID.AllColumns.Add(this.olvColumn22);
+            this.olvID.AllColumns.Add(this.olvColumn23);
+            this.olvID.AllColumns.Add(this.olvColumn24);
+            this.olvID.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.olvColumn22,
+            this.olvColumn23,
+            this.olvColumn24});
+            this.olvID.FullRowSelect = true;
+            this.olvID.Location = new System.Drawing.Point(6, 299);
+            this.olvID.Name = "olvID";
+            this.olvID.ShowGroups = false;
+            this.olvID.Size = new System.Drawing.Size(430, 160);
+            this.olvID.TabIndex = 26;
+            this.olvID.UseCompatibleStateImageBehavior = false;
+            this.olvID.View = System.Windows.Forms.View.Details;
+            this.olvID.FormatRow += new System.EventHandler<BrightIdeasSoftware.FormatRowEventArgs>(this.olvID_FormatRow);
+            // 
+            // olvColumn22
+            // 
+            this.olvColumn22.AspectName = "AccID";
+            this.olvColumn22.CellPadding = null;
+            this.olvColumn22.IsVisible = false;
+            this.olvColumn22.Text = "AccID";
+            this.olvColumn22.Width = 0;
+            // 
+            // olvColumn23
+            // 
+            this.olvColumn23.AspectName = "ID1";
+            this.olvColumn23.CellPadding = null;
+            this.olvColumn23.Text = "ID1";
+            this.olvColumn23.Width = 120;
+            // 
+            // olvColumn24
+            // 
+            this.olvColumn24.AspectName = "ID2";
+            this.olvColumn24.CellPadding = null;
+            this.olvColumn24.Text = "ID2";
+            this.olvColumn24.Width = 150;
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 9);
+            this.label7.Location = new System.Drawing.Point(3, 11);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(87, 13);
             this.label7.TabIndex = 25;
@@ -1330,14 +1388,15 @@
             this.olvColumn9,
             this.olvColumn13});
             this.olvIP.FullRowSelect = true;
-            this.olvIP.Location = new System.Drawing.Point(6, 25);
+            this.olvIP.Location = new System.Drawing.Point(6, 27);
             this.olvIP.Name = "olvIP";
             this.olvIP.ShowGroups = false;
-            this.olvIP.Size = new System.Drawing.Size(430, 160);
+            this.olvIP.Size = new System.Drawing.Size(430, 253);
             this.olvIP.TabIndex = 24;
             this.olvIP.UseCompatibleStateImageBehavior = false;
             this.olvIP.View = System.Windows.Forms.View.Details;
             this.olvIP.CellRightClick += new System.EventHandler<BrightIdeasSoftware.CellRightClickEventArgs>(this.olvIP_CellRightClick);
+            this.olvIP.FormatRow += new System.EventHandler<BrightIdeasSoftware.FormatRowEventArgs>(this.olvIP_FormatRow);
             // 
             // olvColumn21
             // 
@@ -1570,6 +1629,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.olvCargo)).EndInit();
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.olvID)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.olvIP)).EndInit();
             this.tabPage9.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
@@ -1717,6 +1777,11 @@
         private System.Windows.Forms.RichTextBox rtbBanReason;
         private System.Windows.Forms.CheckBox checkBanned2;
         private System.Windows.Forms.CheckBox checkSearchDeleted;
+        private System.Windows.Forms.Label label12;
+        private BrightIdeasSoftware.ObjectListView olvID;
+        private BrightIdeasSoftware.OLVColumn olvColumn22;
+        private BrightIdeasSoftware.OLVColumn olvColumn23;
+        private BrightIdeasSoftware.OLVColumn olvColumn24;
     }
 }
 

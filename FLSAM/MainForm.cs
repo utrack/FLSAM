@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
@@ -449,6 +450,9 @@ namespace FLSAM
             DBiFace.AccDB.LoginDB.IPDataReady.Add((sender, e) => olvIP.SetObjects((List<IPData>)sender));
             DBiFace.AccDB.LoginDB.GetIPByAccID(md.AccountID);
 
+            DBiFace.AccDB.LoginDB.IDDataReady.Add((sender, e) => olvID.SetObjects((List<IDData>)sender));
+            DBiFace.AccDB.LoginDB.GetIDByAccID(md.AccountID);
+
             textBoxName.Text = md.Name;
             textBoxMoney.Text = md.Money.ToString(CultureInfo.InvariantCulture);
 
@@ -487,7 +491,7 @@ namespace FLSAM
                 var baseName = baseRow != null ? baseRow.Name : baseNick;
                 textLocation.Text = String.Format("{0} ({1}), docked at {2}",
                     sysName,
-                    _curCharacter.System,
+                    sysNick,
                     baseName
                     );
             }
@@ -514,6 +518,9 @@ namespace FLSAM
             //TODO: background
             DBiFace.AccDB.LoginDB.IPDataReady.Add((sender, e) => olvIP.SetObjects((List<IPData>)sender));
             DBiFace.AccDB.LoginDB.GetIPByAccID(_curCharacter.AccountID);
+            DBiFace.AccDB.LoginDB.IDDataReady.Add((sender, e) => olvID.SetObjects((List<IDData>)sender));
+            DBiFace.AccDB.LoginDB.GetIDByAccID(_curCharacter.AccountID);
+
             //olvIP.SetObjects();
             textBoxName.Text = _curCharacter.Name;
             textBoxMoney.Text = _curCharacter.Money.ToString(CultureInfo.InvariantCulture);
@@ -554,6 +561,7 @@ namespace FLSAM
 
         private void RefreshCargoSpace()
         {
+            if (_curCharacter == null) return;
             var curHold = (from hold in _curCharacter.Cargo 
                            let item = Universe.Gis.Equipment.FindByHash(hold.Item1) 
                            where item != null 
@@ -608,6 +616,7 @@ namespace FLSAM
 
         private void textBoxMoney_TextChanged(object sender, EventArgs e)
         {
+            if (_curCharacter == null) return;
             _curCharacter.Money = uint.Parse(textBoxMoney.Text);
         }
 
@@ -836,6 +845,27 @@ namespace FLSAM
             DBiFace.AccDB.RemoveAccount(_curCharacter.CharPath,_curCharacter.AccountID,_curCharacter.CharID);
             fastObjectListView1.RemoveObject(_curCharacter);
             
+        }
+
+        private void olvIP_FormatRow(object sender, FormatRowEventArgs e)
+        {
+            var ipData = (IPData)e.Model;
+            if (!DBiFace.AccDB.BansIP.IsBanned(ipData.IP)) return;
+
+            e.Item.BackColor = Color.DarkRed;
+            e.Item.ForeColor = Color.WhiteSmoke;
+        }
+
+        private void olvID_FormatRow(object sender, FormatRowEventArgs e)
+        {
+            var ipData = (IDData)e.Model;
+            if (!DBiFace.AccDB.BansIP.IsBanned(ipData.ID1) 
+                && 
+                !DBiFace.AccDB.BansIP.IsBanned(ipData.ID2)) 
+                return;
+
+            e.Item.BackColor = Color.DarkRed;
+            e.Item.ForeColor = Color.WhiteSmoke;
         }
 
         
